@@ -2,7 +2,12 @@
 export default {
   content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        sans: ['Krona One', 'sans-serif'],
+        serif: ['Lato', 'serif'],
+      }
+    },
   },
   plugins: [],
 };
