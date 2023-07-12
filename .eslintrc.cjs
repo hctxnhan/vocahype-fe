@@ -9,6 +9,7 @@ module.exports = {
     'plugin:@typescript-eslint/recommended-requiring-type-checking',
     'plugin:react-hooks/recommended',
     'plugin:import/recommended',
+    'plugin:import/typescript',
     'prettier',
   ],
   parser: '@typescript-eslint/parser',
@@ -28,5 +29,25 @@ module.exports = {
     'import/no-default-export': 'error',
     'import/no-duplicates': 'error',
     indent: ['error', 2],
+  },
+  ignorePatterns: [
+    'node_modules',
+    'dist',
+    'build',
+    '**/*.stories.tsx',
+    'vite.config.ts',
+    '**/*.d.ts',
+  ],
+  settings: {
+    'import/parsers': {
+      '@typescript-eslint/parser': ['.ts', '.tsx'],
+    },
+    'import/resolver': {
+      typescript: {
+        alwaysTryTypes: true,
+        project: './',
+      },
+    },
+    'import/ignore': ['node_modules', '\\.(scss|css|less|svg|json)$'],
   },
 };
