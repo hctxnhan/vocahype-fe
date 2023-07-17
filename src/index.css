@@ -1,6 +1,27 @@
-@import url('https://fonts.googleapis.com/css2?family=Krona+One&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;0,700;1,400;1,700&display=swap');
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@font-face {
+  font-family: 'Panchang';
+  src: url('./assets/fonts/Panchang.ttf');
+}
+@font-face {
+  font-family: 'CabinetGrotesk';
+  src: url('./assets/fonts/CabinetGrotesk.ttf');
+}
+@font-face {
+  font-family: 'GeneralSans';
+  src: url('./assets/fonts/GeneralSans.ttf');
+}
+
+body {
+  font-family: 'GeneralSans';
+}
+
+.global-background {
+  background: no-repeat url('./assets/images/background.jpg');
+  background-position: center;
+  background-size: cover;
+  filter: blur(80px);
+}
