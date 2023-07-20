@@ -5,12 +5,12 @@ import { KnowledgeCheck } from '@/pages/KnowledgeCheck/KnowledgeCheck';
 
 export function MainLayout() {
   return (
-    <div className="h-screen w-full px-8 pb-4">
+    <div className="h-screen w-full px-8 pb-4 flex flex-col text-neutral-950">
       <div className="global-background absolute inset-0 -z-50" />
       <div>
         <Navbar />
       </div>
-      <div className="mt-8 grid h-[calc(100%_-_124px_-_2rem)] grid-cols-mainLayout">
+      <div className="mt-8 grid flex-1 grid-cols-mainLayout">
         <Sidebar />
         <div className="flex flex-col">
           <Breadcrumb>

@@ -35,3 +35,7 @@ body {
     -webkit-text-fill-color: #f8fafc1a;
   }
 }
+
+.center {
+  @apply flex items-center justify-center
+}
