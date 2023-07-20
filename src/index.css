@@ -28,3 +28,14 @@ body {
   background-size: cover;
   filter: blur(80px);
 }
+
+@layer components {
+  .text-outline-transparent {
+    -webkit-text-stroke: 1px rgba(0, 0, 0, 0.02);
+    -webkit-text-fill-color: #f8fafc1a;
+  }
+}
+
+.center {
+  @apply flex items-center justify-center
+}
