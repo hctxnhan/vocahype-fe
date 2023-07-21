@@ -6,15 +6,15 @@ export function Navbar() {
   return (
     <div className="flex">
       <div className="w-[300px]">
-        <div className="w-fit py-8 font-display text-xl font-bold pl-8">
+        <div className="w-fit py-4 pl-8 font-display text-xl font-bold">
           VocaHype
         </div>
       </div>
       <div className="flex flex-1 justify-between gap-8">
-        <div className="w-full max-w-[600px] border-b-4 border-neutral-950/70 py-8">
+        <div className="w-full max-w-[600px] py-4">
           <Searchbar />
         </div>
-        <div className="flex items-center gap-6 border-b-4 border-neutral-950/70 py-8 text-lg">
+        <div className="flex items-center gap-6 py-4 text-lg">
           <div>
             Hello, <span className="font-semibold">Nhan</span>
           </div>
