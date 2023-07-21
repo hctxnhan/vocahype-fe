@@ -17,7 +17,7 @@ export function Breadcrumb({ children }: BreadCrumbProps) {
           <div className="flex items-center">
             {cloneElement(child, { key: index })}
             {index !== length - 1 && (
-              <div className='px-1'>
+              <div className="px-1">
                 <CaretRightIcon />
               </div>
             )}
@@ -29,5 +29,5 @@ export function Breadcrumb({ children }: BreadCrumbProps) {
 }
 
 export function BreadcrumbItem({ children }: { children: React.ReactNode }) {
-  return <div className='font-medium text-neutral-950/70'>{children}</div>;
+  return <div className="font-medium text-neutral-950/70">{children}</div>;
 }

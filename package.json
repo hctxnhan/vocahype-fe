@@ -9,11 +9,12 @@
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "prepare": "husky install",
-    "ladle": "npx ladle serve"
+    "ladle": "npx ladle serve",
+    "pretty": "prettier --write \"src/**/*.{ts,tsx,js,jsx,json,css,scss,md}\""
   },
   "lint-staged": {
     "src/*/**.{ts, tsx, js, jsx, html, css}": [
-      "prettier --write",
+      "npm run pretty",
       "eslint --fix",
       "git add"
     ]

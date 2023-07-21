@@ -3,7 +3,6 @@ import { environment } from './environment';
 
 const axiosInstance = axios.create({
   baseURL: environment.api.baseURL,
-  timeout: 1000,
   headers: { 'X-Custom-Header': 'foobar' },
 });
 
