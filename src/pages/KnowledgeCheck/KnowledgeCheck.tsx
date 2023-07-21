@@ -55,13 +55,6 @@ export function KnowledgeCheck() {
     if (currentIndex < words.length) setCurrentIndex(currentIndex + 1);
   };
 
-  if (isLoading)
-    return (
-      <div>
-        <Loading />
-      </div>
-    );
-
   return (
     <div className="relative h-full gap-16">
       <div className="flex h-full flex-col">
