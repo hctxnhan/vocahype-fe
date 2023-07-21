@@ -32,9 +32,7 @@ export function KnowledgeCheck() {
   if (isLoading)
     return (
       <FillParent>
-        <Loading
-
-        />
+        <Loading />
       </FillParent>
     );
   if (!words) return <div>Something went wrong</div>;

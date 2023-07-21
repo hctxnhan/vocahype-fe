@@ -12,7 +12,7 @@ export function MainLayout() {
       </div>
       <div className="mt-8 grid flex-1 grid-cols-mainLayout">
         <Sidebar />
-        <div className="flex flex-col relative">
+        <div className="relative flex flex-col">
           <Breadcrumb>
             <BreadcrumbItem>Get Started</BreadcrumbItem>
             <BreadcrumbItem>Knowledge</BreadcrumbItem>
