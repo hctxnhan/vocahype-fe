@@ -2,30 +2,35 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { App } from './App.tsx';
 import './index.css';
-import { worker } from './mocks/browser.ts';
+import { SWRConfig } from 'swr/_internal';
+
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 
-// if (import.meta.env.MODE === 'development') {
-//   import('./mocks/browser.ts')
-// .then(({ worker }) => {
-void worker.start();
-// })
-// .then(() => {
-root.render(
+const app = (
   <React.StrictMode>
-    <App />
+    <SWRConfig
+      value={{
+        revalidateOnFocus: false,
+      }}
+    >
+      <App />
+    </SWRConfig>
   </React.StrictMode>
 );
-//     })
-//     .catch(err => {
-//       console.error(err);
-//     });
-// } else {
-//   root.render(
-//     <React.StrictMode>
-//       <App />
-//     </React.StrictMode>
-//   );
-// }
+
+if (import.meta.env.MODE === 'development') {
+  import('./mocks/browser.ts')
+    .then(({ worker }) => {
+      void worker.start();
+    })
+    .then(() => {
+      root.render(app);
+    })
+    .catch(err => {
+      console.error(err);
+    });
+} else {
+  root.render(app);
+}
