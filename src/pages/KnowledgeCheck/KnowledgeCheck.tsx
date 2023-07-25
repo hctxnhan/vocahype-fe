@@ -16,12 +16,14 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { FillParent } from '@/components/layout/FillParent/FillParent';
 
 export function KnowledgeCheck() {
-  const { data, isLoading, mutate, isValidating } = useSWR<APIResponse<APIData<Word[]>>>(
-    'words/knowledge-check',
-    getKnowledgeCheck
-  );
+  const { data, isLoading, mutate, isValidating } = useSWR<
+    APIResponse<APIData<Word[]>>
+  >('words/knowledge-check', getKnowledgeCheck);
 
-  const {isMutating, trigger} = useSWRMutation('words/knowledge-check', postKnowledgeCheck);
+  const { isMutating, trigger } = useSWRMutation(
+    'words/knowledge-check',
+    postKnowledgeCheck
+  );
 
   const words = data?.data.data?.attributes;
 
@@ -136,10 +138,7 @@ export function KnowledgeCheck() {
           </div>
         </div>
         <div className="flex items-center gap-8 self-end">
-          <Button
-            variant={'ghost'}
-            onClick={handleRestart}
-          >
+          <Button variant={'ghost'} onClick={handleRestart}>
             Restart
           </Button>
           <Button
