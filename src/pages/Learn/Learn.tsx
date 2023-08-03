@@ -118,8 +118,9 @@ export function Learn() {
           </motion.div>
         </AnimatePresence>
       </div>
-      <div className="[&>*:not(:last-child)]:border-b [&>*:not(:last-child)]:border-slate-300 [&>*:not(:last-child)]:border-opacity-50">
+      <div>
         <Example
+          className="[&:not(:last-child)]:border-b [&:not(:last-child)]:border-slate-300 [&:not(:last-child)]:border-opacity-50"
           example="“Hardly anyone in the town escaped the slaughter when the rebels were
           defeated.”"
           word="slaughter"
