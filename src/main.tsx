@@ -20,7 +20,7 @@ const app = (
   </React.StrictMode>
 );
 
-if (import.meta.env.MODE === 'development') {
+if (import.meta.env.MODE === 'mock') {
   import('./mocks/browser.ts')
     .then(({ worker }) => {
       void worker.start();

@@ -34,18 +34,9 @@ export function Learn() {
   };
 
   useEffect(() => {
-    animate('.arrow', { rotate: isOpen ? 180 : 0 }, { duration: 0.2 });
-    animate(
-      '.card-image',
-      isOpen
-        ? {
-            height: 300,
-          }
-        : {
-            height: 160,
-          }
-    );
-  }, [isOpen]);
+    void animate('.arrow', { rotate: isOpen ? 180 : 0 }, { duration: 0.2 });
+    void animate('.card-image', isOpen ? { height: 300 } : { height: 160 });
+  }, [isOpen, animate]);
 
   return (
     <div ref={scope} className="relative flex h-full flex-col gap-4">
@@ -73,7 +64,7 @@ export function Learn() {
           onClick={() => setIsOpen(!isOpen)}
           width={30}
           height={30}
-          className="arrow absolute right-8 z-10"
+          className="arrow absolute bottom-8 right-8 z-10"
         />
       </motion.div>
       <div className="flex items-center justify-center gap-16 font-display text-sm font-semibold">
@@ -98,7 +89,7 @@ export function Learn() {
             className=" min-h-[60px] transition-all duration-1000"
             key={currentMean}
             initial={{
-              transform: `translateX(${-nextMean.current * 100}px)`,
+              transform: `translateX(${nextMean.current * 100}px)`,
               opacity: 0,
             }}
             animate={{
@@ -107,7 +98,7 @@ export function Learn() {
             }}
             exit={{
               position: 'absolute',
-              transform: `translateX(${nextMean.current * 100}px)`,
+              transform: `translateX(${-nextMean.current * 100}px)`,
               opacity: 0,
             }}
             transition={{
@@ -119,23 +110,25 @@ export function Learn() {
         </AnimatePresence>
       </div>
       <div>
-        <Example
-          className="[&:not(:last-child)]:border-b [&:not(:last-child)]:border-slate-300 [&:not(:last-child)]:border-opacity-50"
-          example="“Hardly anyone in the town escaped the slaughter when the rebels were
+        <div>
+          <Example
+            className="[&:not(:last-child)]:border-b [&:not(:last-child)]:border-slate-300 [&:not(:last-child)]:border-opacity-50"
+            example="“Hardly anyone in the town escaped the slaughter when the rebels were
           defeated.”"
-          word="slaughter"
-        />
-      </div>
-      <div className="absolute bottom-2 left-0 right-0 flex justify-between gap-4">
-        <Button className="w-full rounded-3xl bg-slate-400 px-8 py-6 font-semibold">
-          HARD
-        </Button>
-        <Button className="w-full rounded-3xl bg-slate-500 px-8 py-6 font-semibold">
-          GOOD
-        </Button>
-        <Button className="w-full rounded-3xl bg-slate-600 px-8 py-6 font-semibold">
-          EASY
-        </Button>
+            word="slaughter"
+          />
+        </div>
+        <div className="absolute bottom-2 left-0 right-0 flex justify-between gap-4">
+          <Button className="w-full rounded-3xl bg-slate-400 px-8 py-6 font-semibold">
+            HARD
+          </Button>
+          <Button className="w-full rounded-3xl bg-slate-500 px-8 py-6 font-semibold">
+            GOOD
+          </Button>
+          <Button className="w-full rounded-3xl bg-slate-600 px-8 py-6 font-semibold">
+            EASY
+          </Button>
+        </div>
       </div>
     </div>
   );

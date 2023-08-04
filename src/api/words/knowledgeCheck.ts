@@ -6,7 +6,7 @@ type KnowledgeCheckBody = Array<{
 }>;
 
 export function getKnowledgeCheck() {
-  return axiosInstance.get('/words/knowledge-check');
+  return axiosInstance.get('/words/knowledge-test');
 }
 
 export function postKnowledgeCheck(

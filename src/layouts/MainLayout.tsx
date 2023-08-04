@@ -3,6 +3,7 @@ import { Sidebar } from '@/components/layout/Sidebar/Sidebar';
 import { Breadcrumb, BreadcrumbItem } from '@/components/ui/breadcrumb';
 import { KnowledgeCheck } from '@/pages/KnowledgeCheck/KnowledgeCheck';
 import { Learn } from '@/pages/Learn/Learn';
+import {Route} from 'wouter'
 
 export function MainLayout() {
   return (
@@ -18,8 +19,8 @@ export function MainLayout() {
             <BreadcrumbItem>Get Started</BreadcrumbItem>
             <BreadcrumbItem>Knowledge</BreadcrumbItem>
           </Breadcrumb>
-          {/* <KnowledgeCheck /> */}
-          <Learn />
+          <Route component={Learn} path="/learn" />
+          <Route component={KnowledgeCheck} path="/knowledge-check" />
         </div>
       </div>
     </div>

@@ -18,10 +18,10 @@ import { FillParent } from '@/components/layout/FillParent/FillParent';
 export function KnowledgeCheck() {
   const { data, isLoading, mutate, isValidating } = useSWR<
     APIResponse<APIData<Word[]>>
-  >('words/knowledge-check', getKnowledgeCheck);
+  >('words/knowledge-test', getKnowledgeCheck);
 
   const { isMutating, trigger } = useSWRMutation(
-    'words/knowledge-check',
+    'words/knowledge-test',
     postKnowledgeCheck
   );
 
