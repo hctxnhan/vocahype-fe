@@ -2,6 +2,7 @@ import { Navbar } from '@/components/layout/Navbar/Navbar';
 import { Sidebar } from '@/components/layout/Sidebar/Sidebar';
 import { Breadcrumb, BreadcrumbItem } from '@/components/ui/breadcrumb';
 import { KnowledgeCheck } from '@/pages/KnowledgeCheck/KnowledgeCheck';
+import { Learn } from '@/pages/Learn/Learn';
 
 export function MainLayout() {
   return (
@@ -17,7 +18,8 @@ export function MainLayout() {
             <BreadcrumbItem>Get Started</BreadcrumbItem>
             <BreadcrumbItem>Knowledge</BreadcrumbItem>
           </Breadcrumb>
-          <KnowledgeCheck />
+          {/* <KnowledgeCheck /> */}
+          <Learn />
         </div>
       </div>
     </div>
