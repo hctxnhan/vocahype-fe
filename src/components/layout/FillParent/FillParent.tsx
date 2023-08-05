@@ -1,7 +1,16 @@
-import { PropsWithChildren } from 'react';
+import { cn } from '@/lib/utils/utils';
 
-export function FillParent({ children }: PropsWithChildren) {
+export function FillParent({
+  children,
+  className,
+  ...rest
+}: React.HTMLAttributes<HTMLDivElement>) {
   return (
-    <div className="center absolute inset-0 overflow-hidden">{children}</div>
+    <div
+      className={cn('center absolute inset-0 overflow-hidden', className)}
+      {...rest}
+    >
+      {children}
+    </div>
   );
 }
