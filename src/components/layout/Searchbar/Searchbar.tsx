@@ -10,7 +10,7 @@ export function Searchbar() {
   const inputRef = useRef<HTMLInputElement>(null);
   const isFocus = useFocus(inputRef);
   const [, navigate] = useLocation();
-  
+
   function handleSearch(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const query = inputRef.current?.value;

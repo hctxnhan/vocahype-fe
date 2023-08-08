@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 export function useRoute(pattern: string) {
   const [match, params] = useWouterRoute(pattern);
   const [newParams, setNewParams] = useState(params);
-  
+
   useEffect(() => {
     function handleUrlChange() {
       if (!match || !window.location.search) return;

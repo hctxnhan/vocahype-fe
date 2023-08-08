@@ -102,7 +102,7 @@ export function KnowledgeCheck() {
     speechSynthesis.speak(utterance);
   }
 
-  if(!currentWord) return null
+  if (!currentWord) return null;
 
   return (
     <>

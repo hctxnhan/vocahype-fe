@@ -68,7 +68,8 @@ export function Learn() {
 
   const definitionList = wordData.relationships?.definition ?? [];
   const exampleList =
-    definitionList[currentMean]?.data?.relationships?.examples?.data?.attributes ?? [];
+    definitionList[currentMean]?.data?.relationships?.examples?.data
+      ?.attributes ?? [];
 
   const handleClick = (next: number) => {
     const current = currentMean + next;
