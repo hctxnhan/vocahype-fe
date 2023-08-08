@@ -10,6 +10,7 @@ import { AnimatePresence, motion, useAnimate } from 'framer-motion';
 import { useEffect, useRef, useState } from 'react';
 import { Example } from './components/Example';
 import { FillParent } from '@/components/layout/FillParent/FillParent';
+import { cn } from '@/lib/utils/utils';
 
 export function Learn() {
   const [currentMean, setCurrentMean] = useState(0);
@@ -32,6 +33,11 @@ export function Learn() {
       setCurrentMean(current);
     }
   };
+
+  function playAudio() {
+    const utterance = new SpeechSynthesisUtterance('SLAUGHTER');
+    speechSynthesis.speak(utterance);
+  }
 
   useEffect(() => {
     animate('.arrow', { rotate: isOpen ? 180 : 0 }, { duration: 0.2 });
@@ -58,7 +64,7 @@ export function Learn() {
         <div className=" relative z-50">
           <div className="flex items-center gap-4">
             <div className="font-serif text-4xl font-black">SLAUGHTER</div>
-            <Button variant={'ghost'} size="icon">
+            <Button onClick={playAudio} variant={'ghost'} size="icon">
               <SpeakerLoudIcon width={20} height={20} />
             </Button>
           </div>
@@ -79,14 +85,21 @@ export function Learn() {
       <div className="flex items-center justify-center gap-16 font-display text-sm font-semibold">
         <div
           onClick={handleClick.bind(null, -1)}
-          className="flex items-center hover:cursor-pointer"
+          className={cn(
+            'flex items-center hover:cursor-pointer',
+            currentMean == 0 && 'pointer-events-none text-slate-500'
+          )}
         >
           <TriangleLeftIcon width={40} height={40} />
           <div>previous</div>
         </div>
         <div
           onClick={handleClick.bind(null, 1)}
-          className="flex items-center hover:cursor-pointer"
+          className={cn(
+            'flex items-center hover:cursor-pointer',
+            currentMean == listMean.length - 1 &&
+              'pointer-events-none text-slate-500'
+          )}
         >
           <div>next</div>
           <TriangleRightIcon width={40} height={40} />
