@@ -1,24 +1,26 @@
 import { checkChildren } from '@/lib/utils/checkChildren';
 import { cloneElement } from 'react';
-import { CaretRightIcon } from '@radix-ui/react-icons';
+import { SlashIcon } from '@radix-ui/react-icons';
+import { cn } from '@/lib/utils/utils';
 
 interface BreadCrumbProps {
   children: React.ReactNode;
+  className?: string;
 }
 
-export function Breadcrumb({ children }: BreadCrumbProps) {
+export function Breadcrumb({ children, className }: BreadCrumbProps) {
   const getValidChildren = checkChildren(children, BreadcrumbItem);
   const length = getValidChildren.length;
 
   return (
-    <div className="flex">
+    <div className={cn('flex', className)}>
       {getValidChildren.map((child, index) => {
         return (
           <div className="flex items-center">
             {cloneElement(child, { key: index })}
             {index !== length - 1 && (
-              <div className="px-1">
-                <CaretRightIcon />
+              <div className="px-0.5 font-bold">
+                <SlashIcon width={16} height={16} />
               </div>
             )}
           </div>
@@ -29,5 +31,7 @@ export function Breadcrumb({ children }: BreadCrumbProps) {
 }
 
 export function BreadcrumbItem({ children }: { children: React.ReactNode }) {
-  return <div className="font-medium text-neutral-950/70">{children}</div>;
+  return (
+    <div className="font-bold uppercase text-neutral-950/70">{children}</div>
+  );
 }

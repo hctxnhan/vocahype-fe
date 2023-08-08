@@ -3,6 +3,7 @@ import * as DialogPrimitive from '@radix-ui/react-dialog';
 import { X } from 'lucide-react';
 
 import { cn } from '@/lib/utils/utils';
+import { Overlay } from '../layout/Overlay/Overlay';
 
 const Dialog = DialogPrimitive.Root;
 
@@ -11,9 +12,13 @@ const DialogClose = DialogPrimitive.Close;
 
 const DialogPortal = ({
   className,
+  children,
   ...props
 }: DialogPrimitive.DialogPortalProps) => (
-  <DialogPrimitive.Portal className={cn(className)} {...props} />
+  <DialogPrimitive.Portal className={cn(className)} {...props}>
+    <Overlay />
+    {children}
+  </DialogPrimitive.Portal>
 );
 DialogPortal.displayName = DialogPrimitive.Portal.displayName;
 

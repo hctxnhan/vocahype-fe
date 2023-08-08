@@ -1,5 +1,3 @@
-import { AxiosResponse } from 'axios';
-
 type PartialPick<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>;
 
 type AllRequiredResponse<D, E, M> = {
@@ -14,12 +12,14 @@ export type APIData<D, R = unknown> = {
   relationships?: R;
 };
 
-type APIResponseSuccess<D, M> = AxiosResponse<
-  PartialPick<AllRequiredResponse<D, null, M>, 'error' | 'meta'>
+type APIResponseSuccess<D, M> = PartialPick<
+  AllRequiredResponse<D, null, M>,
+  'error' | 'meta'
 >;
 
-type APIResponseError<E, M> = AxiosResponse<
-  PartialPick<AllRequiredResponse<null, E, M>, 'data' | 'meta'>
+type APIResponseError<E, M> = PartialPick<
+  AllRequiredResponse<null, E, M>,
+  'data' | 'meta'
 >;
 
 export type APIResponse<
