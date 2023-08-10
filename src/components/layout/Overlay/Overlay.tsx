@@ -5,6 +5,6 @@ export interface OverlayProps {
   fullScreen?: boolean;
 }
 
-export function Overlay({ fullScreen }: OverlayProps) {
+export function Overlay() {
   return <FillParent className={cn('bg-black/70')}></FillParent>;
 }
