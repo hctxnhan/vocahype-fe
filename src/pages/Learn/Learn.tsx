@@ -21,6 +21,7 @@ import { useRef, useState } from 'react';
 import useSWR from 'swr';
 import { useRoute } from 'wouter';
 import { Example } from './components/Example';
+import { cn } from '@/lib/utils/utils';
 
 const variants = {
   arrow: {
@@ -79,6 +80,11 @@ export function Learn() {
     }
   };
 
+  function playAudio() {
+    const utterance = new SpeechSynthesisUtterance(wordData.attributes.word);
+    speechSynthesis.speak(utterance);
+  }
+
   return (
     <div className="relative flex h-full flex-col gap-4">
       <motion.div
@@ -94,7 +100,7 @@ export function Learn() {
             <div className="font-serif text-4xl font-black">
               {wordData.attributes.word}
             </div>
-            <Button variant={'ghost'} size="icon">
+            <Button onClick={playAudio} variant={'ghost'} size="icon">
               <SpeakerLoudIcon width={20} height={20} />
             </Button>
           </div>
@@ -136,14 +142,21 @@ export function Learn() {
       <div className="flex items-center justify-center gap-16 font-display text-sm font-semibold">
         <div
           onClick={handleClick.bind(null, -1)}
-          className="flex items-center hover:cursor-pointer"
+          className={cn(
+            'flex items-center hover:cursor-pointer',
+            currentMean == 0 && 'pointer-events-none text-slate-500'
+          )}
         >
           <TriangleLeftIcon width={40} height={40} />
           <div>previous</div>
         </div>
         <div
           onClick={handleClick.bind(null, 1)}
-          className="flex items-center hover:cursor-pointer"
+          className={cn(
+            'flex items-center hover:cursor-pointer',
+            currentMean >= definitionList.length - 1 &&
+              'pointer-events-none text-slate-500'
+          )}
         >
           <div>next</div>
           <TriangleRightIcon width={40} height={40} />
@@ -175,7 +188,7 @@ export function Learn() {
           </motion.div>
         </AnimatePresence>
       </div>
-      <div className="flex-1">
+      <div className="flex-1 basis-0 overflow-auto pb-16">
         {exampleList?.map((example, index) => (
           <Example
             key={index}
