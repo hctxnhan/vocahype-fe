@@ -1,4 +1,6 @@
 import { axiosInstance } from '@/lib/configs/axios';
+import { APIData, APIResponse } from '@/models/APIResponse';
+import { Word } from '@/models/Word';
 
 type KnowledgeCheckBody = Array<{
   wordId: number;
@@ -6,14 +8,14 @@ type KnowledgeCheckBody = Array<{
 }>;
 
 export function getKnowledgeCheck() {
-  return axiosInstance.get('/words/knowledge-check');
+  return axiosInstance.get<APIResponse<APIData<Word[]>>>(
+    '/words/knowledge-test'
+  );
 }
 
 export function postKnowledgeCheck(
   url: string,
   { arg }: { arg: KnowledgeCheckBody }
 ) {
-  return axiosInstance.post(url, {
-    arg,
-  });
+  return axiosInstance.post(url, arg);
 }
