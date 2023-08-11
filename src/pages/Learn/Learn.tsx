@@ -50,7 +50,7 @@ export function Learn() {
   const [, params] = useRoute('/words/:wordId');
 
   const { data: wordDetail, isLoading } = useSWR(
-    'words/knowledge-test',
+    ['words/:wordId', params?.wordId ?? ''],
     getWord.bind(null, params?.wordId ?? '')
   );
 
