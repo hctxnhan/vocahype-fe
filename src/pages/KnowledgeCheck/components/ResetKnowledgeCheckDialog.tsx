@@ -24,7 +24,7 @@ export function ResetKnowledgeCheckDialog({
         </DialogTitle>
       </DialogHeader>
       <DialogBody>
-        <div className="flex gap-8">
+        <div className="flex items-center gap-8">
           <ExclamationTriangleIcon color="red" width={80} height={80} />
           <div>
             Please make sure that you want to reset current test. All progress
