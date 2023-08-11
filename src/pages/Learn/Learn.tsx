@@ -21,7 +21,7 @@ import { useRef, useState } from 'react';
 import useSWR from 'swr';
 import { useRoute } from 'wouter';
 import { Example } from './components/Example';
-import { cn } from '@/lib/utils/utils';
+import { cn, playAudio } from '@/lib/utils/utils';
 
 const variants = {
   arrow: {
@@ -80,11 +80,6 @@ export function Learn() {
     }
   };
 
-  function playAudio() {
-    const utterance = new SpeechSynthesisUtterance(wordData.attributes.word);
-    speechSynthesis.speak(utterance);
-  }
-
   return (
     <div className="relative flex h-full flex-col gap-4">
       <motion.div
@@ -100,7 +95,7 @@ export function Learn() {
             <div className="font-serif text-4xl font-black">
               {wordData.attributes.word}
             </div>
-            <Button onClick={playAudio} variant={'ghost'} size="icon">
+            <Button onClick={playAudio.bind(null, wordData.attributes.word)} variant={'ghost'} size="icon">
               <SpeakerLoudIcon width={20} height={20} />
             </Button>
           </div>
@@ -188,7 +183,7 @@ export function Learn() {
           </motion.div>
         </AnimatePresence>
       </div>
-      <div className="flex-1 basis-0 overflow-auto pb-16">
+      <div className="flex-1 basis-0 overflow-auto pb-8">
         {exampleList?.map((example, index) => (
           <Example
             key={index}

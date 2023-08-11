@@ -16,6 +16,7 @@ import useSWR from 'swr';
 import useSWRMutation from 'swr/mutation';
 import { ResetKnowledgeCheckDialog } from './components/ResetKnowledgeCheckDialog';
 import { WordBackground } from './components/WordBackground';
+import { playAudio } from '@/lib/utils/utils';
 
 export function KnowledgeCheck() {
   const { data, isLoading, mutate, isValidating } = useSWR(
@@ -97,10 +98,6 @@ export function KnowledgeCheck() {
     }
   };
 
-  function playAudio() {
-    const utterance = new SpeechSynthesisUtterance(currentWord.word);
-    speechSynthesis.speak(utterance);
-  }
 
   if (!currentWord) return null;
 
@@ -133,7 +130,7 @@ export function KnowledgeCheck() {
                 >
                   <div className="flex items-center justify-between gap-2">
                     <div className="text-lg font-bold text-rose-500 ">verb</div>
-                    <Button onClick={playAudio} variant={'ghost'} size="icon">
+                    <Button onClick={playAudio.bind(null, currentWord.word)} variant={'ghost'} size="icon">
                       <SpeakerLoudIcon width={20} height={20} />
                     </Button>
                   </div>
