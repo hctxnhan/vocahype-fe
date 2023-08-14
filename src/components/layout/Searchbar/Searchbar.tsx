@@ -20,6 +20,8 @@ export function Searchbar() {
     }
   }
 
+  const historyList = ['Test', 'Play', 'Hi'];
+
   return (
     <>
       {isFocus && <FillParent className="z-[9998] bg-black/70"></FillParent>}
@@ -29,11 +31,30 @@ export function Searchbar() {
           'z-[9999]': isFocus,
         })}
       >
-        <Input
-          ref={inputRef}
-          placeholder="Find definition for..."
-          className="placeholder:text-neutral-300"
-        />
+        <div className="relative flex-1">
+          <Input
+            ref={inputRef}
+            placeholder="Find definition for..."
+            className="placeholder:text-neutral-300"
+          />
+          {isFocus && (
+            <div className="absolute top-12 w-full rounded-lg bg-white">
+              <div className="flex justify-between px-[32px] py-[16px]">
+                <div className="font-semibold text-slate-400">
+                  RECENT SEARCH
+                </div>
+                <div className="text-red-700 hover:cursor-pointer">
+                  Remove all
+                </div>
+              </div>
+              {historyList?.map(history => (
+                <div className="px-[32px] py-[16px] text-sm text-slate-800 hover:cursor-pointer hover:bg-slate-100">
+                  {history}
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
         <Button type="submit">Search</Button>
       </form>
     </>
