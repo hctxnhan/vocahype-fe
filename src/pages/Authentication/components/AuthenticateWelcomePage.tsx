@@ -1,9 +1,7 @@
 import { FillParent } from '@/components/layout/FillParent/FillParent';
 import { useAuthState } from '@/lib/hooks/firebase/auth/useAuthState';
-import { useLocation } from 'wouter';
 
 export function AuthenticateWelcomePage() {
-  const [, navigate] = useLocation();
   const { user } = useAuthState();
 
   return (
