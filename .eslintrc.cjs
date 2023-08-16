@@ -25,10 +25,27 @@ module.exports = {
       'warn',
       { allowConstantExport: true },
     ],
+    indent: ['error', 2, { SwitchCase: 1 }],
     '@typescript-eslint/no-non-null-assertion': 'off',
     'import/no-default-export': 'error',
     'import/no-duplicates': 'error',
-    indent: ['error', 2],
+    'import/no-unused-modules': 'error',
+    'import/order': [
+      'error',
+      {
+        alphabetize: { order: 'asc' },
+        'newlines-between': 'always',
+        pathGroups: [
+          {
+            pattern: '@/**',
+            group: 'external',
+            position: 'after',
+          },
+        ],
+        pathGroupsExcludedImportTypes: ['builtin'],
+      },
+    ],
+    'no-console': 'error',
   },
   ignorePatterns: [
     'node_modules',

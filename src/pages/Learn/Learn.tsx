@@ -88,7 +88,7 @@ export function Learn() {
         style={{
           backgroundImage: `url("https://static.theprint.in/wp-content/uploads/2022/04/Web_Photo_Editor-71-1024x576.jpg?compress=true")`,
         }}
-        className="relative h-[160] overflow-hidden rounded-3xl bg-cover bg-no-repeat px-16 py-8 text-white transition duration-500"
+        className="relative h-[160] overflow-hidden rounded-lg bg-cover bg-no-repeat px-16 py-8 text-white transition duration-500"
       >
         <div className=" relative z-50">
           <div className="flex items-center gap-4">
@@ -194,13 +194,13 @@ export function Learn() {
         ))}
       </div>
       <div className="flex justify-between gap-4">
-        <Button className="w-full rounded-3xl bg-slate-400 px-8 py-6 font-semibold">
+        <Button className="w-full rounded-lg bg-slate-400 px-8 py-6 font-semibold">
           HARD
         </Button>
-        <Button className="w-full rounded-3xl bg-slate-500 px-8 py-6 font-semibold">
+        <Button className="w-full rounded-lg bg-slate-600 px-8 py-6 font-semibold">
           GOOD
         </Button>
-        <Button className="w-full rounded-3xl bg-slate-600 px-8 py-6 font-semibold">
+        <Button className="w-full rounded-lg bg-slate-800 px-8 py-6 font-semibold">
           EASY
         </Button>
       </div>

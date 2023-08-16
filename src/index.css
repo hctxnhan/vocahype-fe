@@ -26,7 +26,7 @@ body {
   background: no-repeat url('./assets/images/background.jpg');
   background-position: center;
   background-size: cover;
-  filter: blur(80px);
+  filter: blur(80px) grayscale(0.9) brightness(1.1);
 }
 
 @layer components {

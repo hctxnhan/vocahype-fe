@@ -6,6 +6,7 @@ import { Learn } from '@/pages/Learn/Learn';
 import { SearchResult } from '@/pages/Search/SearchResult';
 import { Route } from 'wouter';
 import { Breadcrumb } from '@/components/layout/Breadcrumb/Breadcrumb';
+import { ProfileInfo } from '@/pages/ProfileInfo/ProfileInfo';
 
 export function MainLayout() {
   return (
@@ -22,6 +23,8 @@ export function MainLayout() {
             <Route component={KnowledgeCheck} path="/knowledge-check" />
             <Route component={SearchResult} path="/words" />
             <Route component={Learn} path="/words/:wordId" />
+            <Route component={ProfileInfo} path="/profile" />
+            
           </div>
         </BreadcrumbProvider>
       </div>
