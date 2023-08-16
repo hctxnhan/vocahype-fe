@@ -41,11 +41,11 @@ export function SearchResult() {
     );
 
   return (
-    <div>
+    <div className='flex flex-col h-full'>
       <p className="mb-2 text-lg">
         Search suggestion for <b>"{word}"</b>
       </p>
-      <div className="flex flex-col gap-2">
+      <div className="flex flex-col gap-2 flex-1 basis-0 overflow-auto">
         {searchResult?.data.data?.attributes?.map(word => (
           <div
             onClick={() => selectWord(word.id)}
