@@ -29,7 +29,7 @@ if (import.meta.env.MODE === 'mock') {
       root.render(app);
     })
     .catch(err => {
-      console.error(err);
+      throw err;
     });
 } else {
   root.render(app);

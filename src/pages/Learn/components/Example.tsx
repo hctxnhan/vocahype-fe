@@ -13,7 +13,7 @@ export function Example({ example, word, className, ...rest }: ExampleProps) {
   return (
     <p
       {...rest}
-      className={cn('py-4 text-2xl', className)}
+      className={cn('py-4 text-xl', className)}
       dangerouslySetInnerHTML={{ __html: result }}
     />
   );

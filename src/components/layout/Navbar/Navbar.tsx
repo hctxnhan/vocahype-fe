@@ -1,8 +1,11 @@
 import { Button } from '@/components/ui/button';
 import { Searchbar } from '../Searchbar/Searchbar';
 import { PersonIcon, BellIcon, GearIcon } from '@radix-ui/react-icons';
+import { useLocation } from 'wouter';
 
 export function Navbar() {
+  const [_, navigate] = useLocation();
+
   return (
     <div className="flex">
       <div className="w-[300px]">
@@ -19,7 +22,11 @@ export function Navbar() {
             Hello, <span className="font-semibold">Nhan</span>
           </div>
           <div className="flex items-center gap-2">
-            <Button variant={'ghost'} size="icon">
+            <Button
+              onClick={() => navigate('/profile')}
+              variant={'ghost'}
+              size="icon"
+            >
               <PersonIcon />
             </Button>
             <Button variant={'ghost'} size="icon">
