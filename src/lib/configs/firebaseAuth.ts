@@ -11,3 +11,7 @@ export async function signUpUser(email: string, password: string) {
 export async function signInUser(email: string, password: string) {
   return signInWithEmailAndPassword(auth, email, password);
 }
+
+export async function logOutUser() {
+  return auth.signOut();
+}
