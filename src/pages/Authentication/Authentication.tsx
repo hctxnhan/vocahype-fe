@@ -14,7 +14,7 @@ import { SignIn } from './components/SignIn';
 import { SignUp } from './components/SignUp';
 
 export function Authentication() {
-  const { start, isLoading, error } = useAsyncAction(signInWithGoogle);
+  const { start, isLoading } = useAsyncAction(signInWithGoogle);
   const { authState } = useAuthState();
   if (authState === AuthState.LOADING) return null;
   if (authState === AuthState.SIGNED_IN) return <Redirect to="/" />;
