@@ -1,3 +1,8 @@
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+
 import { FillParent } from '@/components/layout/FillParent/FillParent';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
@@ -19,31 +24,50 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { updateProfileUser } from '@/lib/configs/firebaseAuth';
 import { updateProfileFormScheme } from '@/lib/formScheme/updateProfileFormScheme';
 import { useAuthState } from '@/lib/hooks/firebase/auth/useAuthState';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useEffect } from 'react';
-import { useForm } from 'react-hook-form';
-import { z } from 'zod';
+import { useAsyncAction } from '@/lib/hooks/useAsyncAction';
+import { useToast } from '@/lib/hooks/useToast';
+import { getFirstNLetter } from '@/lib/utils/utils';
 
 export function ProfileInfo() {
   const { user } = useAuthState();
+  const toast = useToast('Update  Profile');
+  const [previewImg, setPreviewImg] = useState<string | null>();
 
   const form = useForm<z.infer<typeof updateProfileFormScheme>>({
     resolver: zodResolver(updateProfileFormScheme),
   });
 
+  const { start } = useAsyncAction<typeof updateProfileUser>(
+    updateProfileUser,
+    {
+      onSuccess: () => {
+        toast.success({
+          msg: 'Successfully update profile',
+        });
+      },
+      onError: error => {
+        toast.error({
+          msg: error.message,
+        });
+      },
+    }
+  );
+
   function onSubmit(data: z.infer<typeof updateProfileFormScheme>) {
-    console.log(data);
+    start([data.email, data.name, data.avatar || '']);
   }
 
   useEffect(() => {
     form.reset({
-      email: user?.email || undefined,
-      name: user?.displayName || undefined,
-      phoneNumber: user?.phoneNumber || undefined,
-      avatar: user?.photoURL || undefined,
+      email: user?.email || '',
+      name: user?.displayName || '',
+      phoneNumber: user?.phoneNumber || '',
+      avatar: user?.photoURL || '',
     });
+    setPreviewImg(user?.photoURL);
   }, [user]);
 
   return (
@@ -59,8 +83,10 @@ export function ProfileInfo() {
                   <FormItem className="space-y-1 text-center">
                     <Label htmlFor="avatar">
                       <Avatar className="h-20 w-20">
-                        <AvatarImage src="https://github.com/shadcn.png" />
-                        <AvatarFallback>CN</AvatarFallback>
+                        {previewImg && <AvatarImage src={previewImg} />}
+                        <AvatarFallback>
+                          {getFirstNLetter(user?.displayName || '', 2)}
+                        </AvatarFallback>
                       </Avatar>
                     </Label>
                     <FormControl>
@@ -69,7 +95,14 @@ export function ProfileInfo() {
                         className="hidden"
                         id="avatar"
                         type="file"
-                        {...field}
+                        onChange={e => {
+                          if (e?.target?.files?.[0]) {
+                            field.onChange(e.target.files[0]);
+                            setPreviewImg(
+                              URL.createObjectURL(e.target.files[0])
+                            );
+                          }
+                        }}
                       />
                     </FormControl>
                     <FormMessage />
@@ -123,7 +156,11 @@ export function ProfileInfo() {
                   <FormItem className="space-y-1">
                     <FormLabel>Phone number</FormLabel>
                     <FormControl>
-                      <Input placeholder="+84 123 123 123" {...field} />
+                      <Input
+                        disabled
+                        placeholder="+84 123 123 123"
+                        {...field}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
