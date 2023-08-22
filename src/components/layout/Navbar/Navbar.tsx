@@ -36,7 +36,7 @@ export function Navbar() {
     { label: 'Setting', icon: <GearIcon width={16} height={16} /> },
   ];
 
-  const { start, isLoading } = useAsyncAction<typeof logOutUser>(logOutUser, {
+  const { start } = useAsyncAction<typeof logOutUser>(logOutUser, {
     onSuccess: () => {
       toast.success({
         msg: 'Successfully log out',
