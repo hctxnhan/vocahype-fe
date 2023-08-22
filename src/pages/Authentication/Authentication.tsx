@@ -3,18 +3,25 @@ import { Redirect } from 'wouter';
 import { FillParent } from '@/components/layout/FillParent/FillParent';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { signInWithGoogle } from '@/lib/configs/firebaseAuth';
 import {
   AuthState,
   useAuthState,
 } from '@/lib/hooks/firebase/auth/useAuthState';
+import { useAsyncAction } from '@/lib/hooks/useAsyncAction';
 
 import { SignIn } from './components/SignIn';
 import { SignUp } from './components/SignUp';
 
 export function Authentication() {
+  const { start, isLoading } = useAsyncAction(signInWithGoogle);
   const { authState } = useAuthState();
   if (authState === AuthState.LOADING) return null;
   if (authState === AuthState.SIGNED_IN) return <Redirect to="/" />;
+
+  function login() {
+    start();
+  }
 
   return (
     <FillParent>
@@ -44,10 +51,19 @@ export function Authentication() {
         </div>
 
         <div className="mt-2 flex w-full gap-2">
-          <Button className="flex-1 bg-[#f44242] text-white" size="sm">
+          <Button
+            disabled={isLoading}
+            className="flex-1 bg-[#f44242] text-white"
+            size="sm"
+            onClick={login}
+          >
             Google
           </Button>
-          <Button size="sm" className="flex-1 bg-[#3B5998] text-white">
+          <Button
+            disabled={true}
+            size="sm"
+            className="flex-1 bg-[#3B5998] text-white"
+          >
             Facebook
           </Button>
         </div>
