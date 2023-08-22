@@ -15,6 +15,9 @@ export async function signInUser(email: string, password: string) {
   return signInWithEmailAndPassword(auth, email, password);
 }
 
+export async function logOutUser() {
+  return auth.signOut();
+}
 export function signInWithGoogle() {
   const provider = new GoogleAuthProvider();
   provider.addScope('profile');
