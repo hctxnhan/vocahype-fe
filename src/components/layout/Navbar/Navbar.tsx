@@ -1,5 +1,3 @@
-import { Button } from '@/components/ui/button';
-import { Searchbar } from '../Searchbar/Searchbar';
 import {
   PersonIcon,
   BellIcon,
@@ -7,6 +5,8 @@ import {
   ExitIcon,
 } from '@radix-ui/react-icons';
 import { useLocation } from 'wouter';
+
+import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -15,9 +15,11 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { useToast } from '@/lib/hooks/useToast';
 import { logOutUser } from '@/lib/configs/firebaseAuth';
 import { useAsyncAction } from '@/lib/hooks/useAsyncAction';
+import { useToast } from '@/lib/hooks/useToast';
+
+import { Searchbar } from '../Searchbar/Searchbar';
 
 export function Navbar() {
   const [_, navigate] = useLocation();
