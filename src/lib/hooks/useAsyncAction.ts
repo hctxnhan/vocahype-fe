@@ -50,9 +50,9 @@ export function useAsyncAction<
   });
 
   const start = useCallback(
-    (args: Parameters<typeof dispatch>) => {
+    (args?: Parameters<typeof dispatch>) => {
       dispatchFn({ type: ActionState.LOADING });
-      dispatch(...args)
+      dispatch(...(args || []) as Parameters<T>)
         .then(data => {
           dispatchFn({ type: ActionState.SUCCESS, data });
           void options?.onSuccess?.(data as Awaited<ReturnType<T>>);
