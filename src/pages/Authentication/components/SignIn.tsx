@@ -1,7 +1,7 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { AuthErrorCodes } from 'firebase/auth';
 import { useForm } from 'react-hook-form';
-import { useLocation } from 'wouter';
+import { Link, useLocation } from 'wouter';
 import { z } from 'zod';
 
 import {
@@ -15,6 +15,7 @@ import {
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -33,7 +34,7 @@ export function SignIn() {
   });
   const toast = useToast('Error encountered while signing in');
   const [, navigate] = useLocation();
-  
+
   const { start, isLoading } = useAsyncAction<typeof signInUser>(signInUser, {
     onSuccess: () => {
       toast.success({
@@ -90,11 +91,7 @@ export function SignIn() {
                     <FormItem>
                       <FormLabel>Email</FormLabel>
                       <FormControl>
-                        <Input
-                          disabled={isLoading}
-                          placeholder="lionelmessy@mail.com"
-                          {...field}
-                        />
+                        <Input disabled={isLoading} {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -106,12 +103,20 @@ export function SignIn() {
                   name="password"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Password</FormLabel>
+                      <div className="flex justify-between">
+                        <FormLabel>Password</FormLabel>
+                        <FormDescription>
+                          <Link href="/auth/reset-password">
+                            <a className="text-sm text-slate-400 hover:text-slate-500">
+                              Forgot password?
+                            </a>
+                          </Link>
+                        </FormDescription>
+                      </div>
                       <FormControl>
                         <Input
                           disabled={isLoading}
                           type="password"
-                          placeholder="12345678abc@_#"
                           {...field}
                         />
                       </FormControl>

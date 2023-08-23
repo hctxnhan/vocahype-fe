@@ -23,10 +23,10 @@ body {
 }
 
 .global-background {
-  background: no-repeat url('./assets/images/background.jpg');
+  background: no-repeat url('./assets/images/background.webp');
   background-position: center;
   background-size: cover;
-  filter: blur(80px) grayscale(0.9) brightness(1.1);
+  filter: blur(80px) grayscale(1) brightness(1.05);
 }
 
 @layer components {
