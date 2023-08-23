@@ -66,20 +66,10 @@ export function Navbar() {
             Hello, <span className="font-semibold">Nhan</span>
           </div>
           <div className="flex items-center gap-2">
-            <Button
-              onClick={() => navigate('/profile')}
-              variant={'ghost'}
-              size="icon"
-            >
-              <PersonIcon />
-            </Button>
-            <Button variant={'ghost'} size="icon">
-              <BellIcon />
-            </Button>
             <DropdownMenu>
               <DropdownMenuTrigger>
                 <Button variant={'ghost'} size="icon">
-                  <GearIcon />
+                  <PersonIcon />
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent className="w-[224px]">
@@ -106,6 +96,12 @@ export function Navbar() {
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
+            <Button variant={'ghost'} size="icon">
+              <BellIcon />
+            </Button>
+            <Button variant={'ghost'} size="icon">
+              <GearIcon />
+            </Button>
           </div>
         </div>
       </div>
