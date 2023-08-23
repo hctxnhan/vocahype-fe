@@ -1,9 +1,9 @@
-import { useRoute as useWouterRoute } from 'wouter';
 import { useEffect, useState } from 'react';
+import { useRoute as useWouterRoute } from 'wouter';
 
-export function useRoute(pattern: string) {
+export function useRoute<T>(pattern: string) {
   const [match, params] = useWouterRoute(pattern);
-  const [newParams, setNewParams] = useState(params);
+  const [newParams, setNewParams] = useState<T>(params as T);
 
   useEffect(() => {
     function handleUrlChange() {
@@ -14,7 +14,7 @@ export function useRoute(pattern: string) {
       setNewParams({
         ...queryParams,
         ...params,
-      });
+      } as T);
     }
 
     handleUrlChange();

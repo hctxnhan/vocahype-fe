@@ -1,14 +1,17 @@
+import { SpeakerLoudIcon } from '@radix-ui/react-icons';
+import useSWR from 'swr';
+import { useLocation } from 'wouter';
+
 import { searchWord } from '@/api/words/searchWord';
 import { FillParent } from '@/components/layout/FillParent/FillParent';
 import { Loading } from '@/components/layout/Loading/Loading';
 import { useRoute } from '@/lib/hooks/useSearchParams';
 import { useSetBreadcrumb } from '@/lib/hooks/useSetBreadcrumb';
-import { SpeakerLoudIcon } from '@radix-ui/react-icons';
-import useSWR from 'swr';
-import { useLocation } from 'wouter';
 
 export function SearchResult() {
-  const { params } = useRoute('/words');
+  const { params } = useRoute<{
+    search: string;
+  }>('/words');
   const word = params?.search;
 
   const [, navigate] = useLocation();
