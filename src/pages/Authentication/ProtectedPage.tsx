@@ -1,8 +1,9 @@
+import { Redirect } from 'wouter';
+
 import {
   AuthState,
   useAuthState,
 } from '@/lib/hooks/firebase/auth/useAuthState';
-import { Redirect } from 'wouter';
 
 export function ProtectedPage({ children }: React.PropsWithChildren) {
   const { authState } = useAuthState();

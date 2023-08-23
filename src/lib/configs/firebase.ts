@@ -13,5 +13,6 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
+export const apiKey = firebaseConfig.apiKey;
 export const auth = getAuth(app);
 export const storage = getStorage(app);

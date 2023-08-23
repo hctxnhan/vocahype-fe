@@ -2,15 +2,8 @@ import * as z from 'zod';
 
 import { regexElementSatisfied } from '../utils/regex';
 
-export const signUpFormScheme = z
+export const resetPasswordSchema = z
   .object({
-    email: z
-      .string({
-        required_error: 'Email is required',
-      })
-      .email({
-        message: 'Email is invalid',
-      }),
     password: z
       .string({
         required_error: 'Password is required',
@@ -20,9 +13,6 @@ export const signUpFormScheme = z
       }),
     passwordConfirmation: z.string({
       required_error: 'Password confirmation is required',
-    }),
-    name: z.string({
-      required_error: 'Name is required',
     }),
   })
   .superRefine((value, ctx) => {

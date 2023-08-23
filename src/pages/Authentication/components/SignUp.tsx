@@ -1,3 +1,9 @@
+import { zodResolver } from '@hookform/resolvers/zod';
+import { updateProfile } from 'firebase/auth';
+import { useForm } from 'react-hook-form';
+import { useLocation } from 'wouter';
+import { z } from 'zod';
+
 import {
   Card,
   CardContent,
@@ -22,11 +28,6 @@ import { signInUser, signUpUser } from '@/lib/configs/firebaseAuth';
 import { signUpFormScheme } from '@/lib/formScheme/signUpFormScheme';
 import { useAsyncAction } from '@/lib/hooks/useAsyncAction';
 import { useToast } from '@/lib/hooks/useToast';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { updateProfile } from 'firebase/auth';
-import { useForm } from 'react-hook-form';
-import { z } from 'zod';
-import { useLocation } from 'wouter';
 
 export function SignUp() {
   const form = useForm<z.infer<typeof signUpFormScheme>>({
@@ -77,11 +78,7 @@ export function SignUp() {
                     <FormItem>
                       <FormLabel>Name</FormLabel>
                       <FormControl>
-                        <Input
-                          disabled={isLoading}
-                          placeholder="Lionel Messy"
-                          {...field}
-                        />
+                        <Input disabled={isLoading} {...field} />
                       </FormControl>
                       <FormDescription>
                         We will use this name to display on your profile.
@@ -98,11 +95,7 @@ export function SignUp() {
                     <FormItem>
                       <FormLabel>Email</FormLabel>
                       <FormControl>
-                        <Input
-                          disabled={isLoading}
-                          placeholder="lionelmessy@mail.com"
-                          {...field}
-                        />
+                        <Input disabled={isLoading} {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -119,7 +112,6 @@ export function SignUp() {
                         <Input
                           disabled={isLoading}
                           type="password"
-                          placeholder="12345678abc@_#"
                           {...field}
                         />
                       </FormControl>
@@ -141,7 +133,6 @@ export function SignUp() {
                         <Input
                           disabled={isLoading}
                           type="password"
-                          placeholder="12345678abc@_#"
                           {...field}
                         />
                       </FormControl>
