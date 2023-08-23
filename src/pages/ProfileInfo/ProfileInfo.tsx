@@ -24,6 +24,7 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { LoadingButton } from '@/components/ui/loading-button';
 import { updateProfileUser } from '@/lib/configs/firebaseAuth';
 import { updateProfileFormScheme } from '@/lib/formScheme/updateProfileFormScheme';
 import { useAuthState } from '@/lib/hooks/firebase/auth/useAuthState';
@@ -40,7 +41,7 @@ export function ProfileInfo() {
     resolver: zodResolver(updateProfileFormScheme),
   });
 
-  const { start } = useAsyncAction<typeof updateProfileUser>(
+  const { start, isLoading } = useAsyncAction<typeof updateProfileUser>(
     updateProfileUser,
     {
       onSuccess: () => {
@@ -82,11 +83,14 @@ export function ProfileInfo() {
                 render={({ field }) => (
                   <FormItem className="space-y-1 text-center">
                     <Label htmlFor="avatar">
-                      <Avatar className="h-20 w-20">
+                      <Avatar className="relative h-20 w-20">
                         {previewImg && <AvatarImage src={previewImg} />}
                         <AvatarFallback>
                           {getFirstNLetter(user?.displayName || '', 2)}
                         </AvatarFallback>
+                        <div className="absolute flex h-full w-full items-center justify-center bg-slate-900/50 text-white opacity-0 hover:cursor-pointer hover:opacity-100">
+                          Edit
+                        </div>
                       </Avatar>
                     </Label>
                     <FormControl>
@@ -169,12 +173,15 @@ export function ProfileInfo() {
             </CardContent>
             <CardFooter className="justify-end">
               <Button
+                type="button"
                 variant={'link'}
                 className="text-red-500 hover:text-red-500/90"
               >
                 Delete account
               </Button>
-              <Button>Update</Button>
+              <LoadingButton type="submit" isLoading={isLoading}>
+                Update
+              </LoadingButton>
             </CardFooter>
           </form>
         </Form>
