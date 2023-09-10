@@ -63,18 +63,18 @@ export function Searchbar() {
           <Input
             ref={inputRef}
             placeholder="Find definition for..."
-            className="placeholder:text-neutral-300"
+            className="border-2 border-slate-300 bg-slate-200 placeholder:text-slate-400 focus-visible:ring-offset-0"
           />
           {isFocus && (
             <div className="absolute top-12 w-full rounded-lg bg-white">
-              <div className="flex items-center justify-between border-b border-solid border-gray-200 px-[32px] py-[16px] text-xs last:border-b-0">
+              <div className="flex items-center justify-between border-b border-solid border-gray-200 px-[32px] py-[16px] pb-2 text-xs last:border-b-0">
                 <div className="font-semibold text-slate-400">
                   RECENT SEARCH
                 </div>
                 {!!history.length && (
                   <div
                     onClick={onRemoveAll}
-                    className="text-red-700 hover:cursor-pointer"
+                    className="font-dinRound text-red-700 hover:cursor-pointer"
                   >
                     Remove all
                   </div>
@@ -95,7 +95,9 @@ export function Searchbar() {
             </div>
           )}
         </div>
-        <Button type="submit">Search</Button>
+        <Button className="text-sm" type="submit">
+          Search
+        </Button>
       </form>
     </>
   );

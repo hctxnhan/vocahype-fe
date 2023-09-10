@@ -95,7 +95,11 @@ export function Learn() {
             <div className="font-serif text-4xl font-black">
               {wordData.attributes.word}
             </div>
-            <Button onClick={playAudio.bind(null, wordData.attributes.word)} variant={'ghost'} size="icon">
+            <Button
+              onClick={playAudio.bind(null, wordData.attributes.word)}
+              variant={'ghost'}
+              size="icon"
+            >
               <SpeakerLoudIcon width={20} height={20} />
             </Button>
           </div>
@@ -194,13 +198,13 @@ export function Learn() {
         ))}
       </div>
       <div className="flex justify-between gap-4">
-        <Button className="w-full rounded-lg bg-slate-400 px-8 py-6 font-semibold">
+        <Button className="w-full rounded-lg bg-rose-600 px-8 py-6 text-lg">
           HARD
         </Button>
-        <Button className="w-full rounded-lg bg-slate-600 px-8 py-6 font-semibold">
+        <Button className="w-full rounded-lg bg-orange-600 px-8 py-6 text-lg">
           GOOD
         </Button>
-        <Button className="w-full rounded-lg bg-slate-800 px-8 py-6 font-semibold">
+        <Button className="w-full rounded-lg bg-sky-800 px-8 py-6 text-lg">
           EASY
         </Button>
       </div>

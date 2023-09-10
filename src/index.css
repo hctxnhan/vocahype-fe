@@ -18,8 +18,13 @@
   src: url('./assets/fonts/GeneralSans.ttf');
 }
 
+@font-face {
+  font-family: 'DinRoundPro';
+  src: url('./assets/fonts/DinRoundPro.ttf');
+}
+
 body {
-  font-family: 'GeneralSans';
+  font-family: 'DinRoundPro';
 }
 
 .global-background {
@@ -31,8 +36,14 @@ body {
 
 @layer components {
   .text-outline-transparent {
-    -webkit-text-stroke: 1px rgba(0, 0, 0, 0.02);
-    -webkit-text-fill-color: #f8fafc1a;
+    /* -webkit-text-stroke: 1px #e0f2fe;
+    -webkit-text-fill-color: red; */
+    text-shadow:
+      2px 2px 0px rgba(224, 242, 254, 1),
+      2px -2px 0px rgba(224, 242, 254, 1),
+      -2px 2px 0px rgba(224, 242, 254, 1),
+      -2px -2px 0px rgba(224, 242, 254, 1);
+    color: white;
   }
 }
 

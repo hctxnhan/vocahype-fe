@@ -62,14 +62,14 @@ export function Navbar() {
           <Searchbar />
         </div>
         <div className="flex items-center gap-6 py-4 text-lg">
-          <div>
-            Hello, <span className="font-semibold">Nhan</span>
+          <div className="text-2xl">
+            Hello, <span className="font-bold">Nhan</span>
           </div>
           <div className="flex items-center gap-2">
             <DropdownMenu>
               <DropdownMenuTrigger>
                 <Button variant={'ghost'} size="icon">
-                  <PersonIcon />
+                  <PersonIcon width={24} height={24} />
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent className="w-[224px]">
@@ -97,10 +97,10 @@ export function Navbar() {
               </DropdownMenuContent>
             </DropdownMenu>
             <Button variant={'ghost'} size="icon">
-              <BellIcon />
+              <BellIcon width={24} height={24} />
             </Button>
             <Button variant={'ghost'} size="icon">
-              <GearIcon />
+              <GearIcon width={24} height={24} />
             </Button>
           </div>
         </div>

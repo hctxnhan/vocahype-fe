@@ -12,11 +12,11 @@ export function NavbarItem({ children, href }: NavbarItemProps) {
     <Link href={href}>
       <div
         className={cn(
-          'cursor-pointer py-4 pl-8 pr-4 font-medium text-neutral-950/50 hover:bg-neutral-50/20',
+          'cursor-pointer rounded-lg py-3 pl-8 pr-4 font-medium text-neutral-950/50 hover:bg-sky-200',
           {
-            '-ml-1 border-l-4 border-neutral-950/70 text-neutral-950 hover:rounded-r-sm':
+            'rounded-lg border-b-4 border-b-sky-600 bg-sky-500 text-sky-50 hover:bg-sky-500':
               match,
-            'hover:rounded-sm': !match,
+            'hover:rounded-lg': !match,
           }
         )}
       >

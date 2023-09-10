@@ -98,7 +98,6 @@ export function KnowledgeCheck() {
     }
   };
 
-
   if (!currentWord) return null;
 
   return (
@@ -106,8 +105,31 @@ export function KnowledgeCheck() {
       <div className="relative h-full gap-16">
         <div className="flex h-full flex-col">
           <div className="flex h-full">
-            <div className="center relative flex flex-1 justify-center overflow-hidden">
-              <AnimatePresence>
+            <div className="relative flex flex-1 justify-center overflow-hidden">
+              <div className="z-10 mt-[200px] flex w-full flex-col items-center gap-12">
+                <h1 className="font-dinRound text-6xl font-black text-sky-600">
+                  {currentWord.word.toUpperCase()}
+                </h1>
+                <div className="flex gap-6">
+                  <Button
+                    onClick={handleClick.bind(null, false)}
+                    variant={'special'}
+                    size={'xl'}
+                    className="bg-red-500"
+                  >
+                    I don’t know
+                  </Button>
+                  <Button
+                    onClick={handleClick.bind(null, true)}
+                    variant={'special'}
+                    size={'xl'}
+                    className="bg-sky-600"
+                  >
+                    Known already
+                  </Button>
+                </div>
+              </div>
+              {/* <AnimatePresence>
                 <motion.div
                   key={currentWord.id}
                   initial={{
@@ -136,14 +158,14 @@ export function KnowledgeCheck() {
                   </div>
                   <h1 className="text-6xl font-black">{currentWord.word}</h1>
                 </motion.div>
-              </AnimatePresence>
+              </AnimatePresence> */}
               <WordBackground word={currentWord.word} />
             </div>
             <div className="relative flex-[0.2] overflow-hidden">
               <CarouselNumber total={words.length} current={currentIndex + 1} />
             </div>
           </div>
-          <div className="flex items-center gap-8 self-end">
+          {/* <div className="flex items-center gap-8 self-end">
             <Dialog>
               <DialogTrigger>
                 <Button variant={'ghost'}>Restart</Button>
@@ -166,7 +188,7 @@ export function KnowledgeCheck() {
             >
               Yes
             </Button>
-          </div>
+          </div> */}
         </div>
       </div>
     </>

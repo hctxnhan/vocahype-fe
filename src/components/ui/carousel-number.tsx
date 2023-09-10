@@ -13,7 +13,7 @@ export function CarouselNumber({ current, total }: CarouselNumberProps) {
         return (
           <motion.div
             key={num}
-            className="absolute bottom-0 left-0 right-0 flex h-16 items-center justify-center text-center font-medium text-white transition"
+            className="absolute bottom-0 left-0 right-0 flex h-16 items-center justify-center text-center font-medium text-sky-500 transition"
             animate={{
               fontSize: `${100 * (1 - Math.abs(index - current) / 3)}px`,
               bottom: current === num ? '50%' : `${50 + (current - num) * 15}%`,

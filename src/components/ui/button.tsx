@@ -5,7 +5,7 @@ import * as React from 'react';
 import { cn } from '@/lib/utils/utils';
 
 const buttonVariants = cva(
-  'inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 dark:ring-offset-neutral-950 dark:focus-visible:ring-neutral-800',
+  'inline-flex items-center justify-center rounded-lg font-dinRound text-xl font-bold ring-offset-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 dark:ring-offset-neutral-950 dark:focus-visible:ring-neutral-800',
   {
     variants: {
       variant: {
@@ -18,10 +18,10 @@ const buttonVariants = cva(
         secondary:
           'bg-neutral-100 text-neutral-900 hover:bg-neutral-100/80 dark:bg-neutral-800 dark:text-neutral-50 dark:hover:bg-neutral-800/80',
         ghost:
-          'hover:bg-neutral-100/50 hover:text-neutral-900 dark:hover:bg-neutral-800 dark:hover:text-neutral-50 focus-visible:outline-none',
+          'hover:bg-neutral-100/50 hover:text-neutral-900 focus-visible:outline-none dark:hover:bg-neutral-800 dark:hover:text-neutral-50',
         link: 'text-neutral-900 underline-offset-4 hover:underline dark:text-neutral-50',
         special: cn(
-          'bg-neutral-950 font-display text-2xl font-medium uppercase text-white hover:bg-neutral-700'
+          'bg-neutral-950 font-dinRound text-xl font-bold uppercase leading-6 text-white hover:bg-neutral-700'
         ),
       },
       size: {

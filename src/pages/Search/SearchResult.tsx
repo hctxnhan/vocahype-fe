@@ -44,15 +44,15 @@ export function SearchResult() {
     );
 
   return (
-    <div className='flex flex-col h-full'>
+    <div className="flex h-full flex-col">
       <p className="mb-2 text-lg">
         Search suggestion for <b>"{word}"</b>
       </p>
-      <div className="flex flex-col gap-2 flex-1 basis-0 overflow-auto">
+      <div className="flex flex-1 basis-0 flex-col gap-2 overflow-auto">
         {searchResult?.data.data?.attributes?.map(word => (
           <div
             onClick={() => selectWord(word.id)}
-            className="flex cursor-pointer flex-col gap-2 rounded-md px-8 py-4 transition hover:bg-white/40"
+            className="flex cursor-pointer flex-col gap-2 rounded-md px-8 py-4 transition hover:border-b-4 hover:border-b-sky-600 hover:bg-sky-500 hover:text-sky-50"
             key={word.id}
           >
             <div className="flex items-baseline gap-4">

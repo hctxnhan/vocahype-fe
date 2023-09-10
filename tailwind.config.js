@@ -15,6 +15,7 @@ module.exports = {
         sans: ['GeneralSans', 'sans-serif'],
         serif: ['CabinetGrotesk', 'serif'],
         display: ['Panchang', 'sans-serif'],
+        dinRound: ['DinRoundPro', 'sans-serif'],
       },
       gridTemplateColumns: {
         mainLayout: '300px 1fr',

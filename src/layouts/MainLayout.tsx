@@ -11,7 +11,7 @@ import { ProfileInfo } from '@/pages/ProfileInfo/ProfileInfo';
 export function MainLayout() {
   return (
     <div className="flex h-screen w-full flex-col px-8 pb-4 text-neutral-950">
-      <div className="global-background absolute inset-0 -z-50" />
+      <div className="absolute inset-0 -z-50 bg-white" />
       <div>
         <Navbar />
       </div>
@@ -24,7 +24,6 @@ export function MainLayout() {
             <Route component={SearchResult} path="/words" />
             <Route component={Learn} path="/words/:wordId" />
             <Route component={ProfileInfo} path="/profile" />
-            
           </div>
         </BreadcrumbProvider>
       </div>
