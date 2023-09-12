@@ -76,13 +76,15 @@ export function SignIn() {
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit) as VoidFunction}>
             <CardHeader>
-              <CardTitle>Sign in</CardTitle>
-              <CardDescription>
-                If you don’t have account. Just register one now before too
-                late. Just kidding, it never too late to use VocaHype.
+              <CardDescription className="flex flex-col gap-2">
+                <div>
+                  If you don’t have account. Just register one now before too
+                  late. Just kidding, it never too late to use VocaHype.
+                </div>
+                <div>Click here to quickly set your account up.</div>
               </CardDescription>
             </CardHeader>
-            <CardContent className="space-y-2">
+            <CardContent className="space-y-2 pt-0">
               <div className="flex flex-col gap-4">
                 <FormField
                   control={form.control}
@@ -103,16 +105,7 @@ export function SignIn() {
                   name="password"
                   render={({ field }) => (
                     <FormItem>
-                      <div className="flex justify-between">
-                        <FormLabel>Password</FormLabel>
-                        <FormDescription>
-                          <Link href="/auth/reset-password">
-                            <a className="text-sm text-slate-400 hover:text-slate-500">
-                              Forgot password?
-                            </a>
-                          </Link>
-                        </FormDescription>
-                      </div>
+                      <FormLabel>Password</FormLabel>
                       <FormControl>
                         <Input
                           disabled={isLoading}
@@ -127,13 +120,23 @@ export function SignIn() {
               </div>
             </CardContent>
             <CardFooter>
-              <LoadingButton
-                className="w-full"
-                type="submit"
-                isLoading={isLoading}
-              >
-                Sign in
-              </LoadingButton>
+              <div className="flex-1">
+                <LoadingButton
+                  className="w-full bg-sky-600 font-medium"
+                  type="submit"
+                  isLoading={isLoading}
+                >
+                  Sign in
+                </LoadingButton>
+                <div className="text-center">
+                  Forgot password?{' '}
+                  <Link href="/auth/reset-password">
+                    <a className="font-bold text-slate-500 hover:cursor-pointer hover:text-slate-600">
+                      Reset
+                    </a>
+                  </Link>
+                </div>
+              </div>
             </CardFooter>
           </form>
         </Form>

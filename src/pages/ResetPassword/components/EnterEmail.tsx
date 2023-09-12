@@ -56,9 +56,6 @@ export function EnterEmail() {
       <Card className="bg-white/80">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit) as VoidFunction}>
-            <CardHeader>
-              <CardTitle>Reset password</CardTitle>
-            </CardHeader>
             <CardContent className="space-y-2">
               <div className="flex flex-col gap-4">
                 <FormField
@@ -86,7 +83,7 @@ export function EnterEmail() {
             </CardContent>
             <CardFooter>
               <LoadingButton
-                className="w-full"
+                className="w-full bg-sky-600 font-medium text-white"
                 type="submit"
                 isLoading={isLoading}
               >

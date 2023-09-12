@@ -25,11 +25,11 @@ export function Authentication() {
 
   return (
     <FillParent>
-      <div className="global-background absolute inset-0 -z-50" />
+      <div className="absolute inset-0 -z-50 bg-sky-500/80" />
       <div className="w-[450px]">
-        <div className="flex flex-col items-center gap-1 pb-8">
-          <div className="w-fit font-display text-3xl font-bold">VocaHype</div>
-          <div className="text-lg font-medium text-slate-500">
+        <div className="flex flex-col items-center gap-1 pb-8 text-sky-50">
+          <div className="w-fit font-display text-4xl font-bold ">VocaHype</div>
+          <div className="text-lg">
             The only English learning app that you’ve ever need
           </div>
         </div>
@@ -46,7 +46,7 @@ export function Authentication() {
           </TabsContent>
         </Tabs>
 
-        <div className="relative mt-8 text-center text-sm font-medium text-slate-500/60">
+        {/* <div className="relative mt-8 text-center text-sm font-medium text-slate-500/60">
           Or continue with
         </div>
 
@@ -66,7 +66,7 @@ export function Authentication() {
           >
             Facebook
           </Button>
-        </div>
+        </div> */}
       </div>
     </FillParent>
   );

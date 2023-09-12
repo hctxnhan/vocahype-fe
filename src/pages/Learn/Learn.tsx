@@ -198,14 +198,17 @@ export function Learn() {
         ))}
       </div>
       <div className="flex justify-between gap-4">
+        <Button className="w-full rounded-lg bg-slate-100 px-8 py-6 text-lg text-black">
+          Ignore
+        </Button>
         <Button className="w-full rounded-lg bg-rose-600 px-8 py-6 text-lg">
-          HARD
+          Hard
         </Button>
         <Button className="w-full rounded-lg bg-orange-600 px-8 py-6 text-lg">
-          GOOD
+          Normal
         </Button>
         <Button className="w-full rounded-lg bg-sky-800 px-8 py-6 text-lg">
-          EASY
+          Easy
         </Button>
       </div>
     </div>

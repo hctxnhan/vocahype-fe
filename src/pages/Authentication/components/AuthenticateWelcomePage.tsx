@@ -7,9 +7,9 @@ export function AuthenticateWelcomePage() {
   return (
     !!user && (
       <FillParent className="center text-center">
-        <div className="global-background absolute inset-0 -z-50" />
-        <p className="text-xl font-medium text-slate-800">Welcome back,</p>
-        <h1 className="mt-3 font-display text-5xl font-bold italic">
+        <div className="absolute inset-0 -z-50 bg-sky-500/80" />
+        <p className="text-xl font-medium text-sky-50">Welcome back,</p>
+        <h1 className="mt-3 font-display text-xl font-bold italic text-sky-50">
           {user?.displayName}
         </h1>
       </FillParent>

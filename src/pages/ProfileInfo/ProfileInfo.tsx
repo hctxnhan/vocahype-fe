@@ -73,7 +73,7 @@ export function ProfileInfo() {
 
   return (
     <FillParent>
-      <Card className="w-[500px] gap-4 bg-white/80">
+      <Card className="w-[500px] gap-4 border-none bg-slate-100/50">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit) as VoidFunction}>
             <CardHeader className="center mx-auto max-w-[350px] gap-2">
@@ -120,7 +120,7 @@ export function ProfileInfo() {
                 }
               </CardDescription>
             </CardHeader>
-            <CardContent className="space-y-2">
+            <CardContent className="space-y-2 pt-0">
               <FormField
                 control={form.control}
                 name="email"
@@ -171,17 +171,19 @@ export function ProfileInfo() {
                 )}
               />
             </CardContent>
-            <CardFooter className="justify-end">
-              <Button
-                type="button"
-                variant={'link'}
-                className="text-red-500 hover:text-red-500/90"
-              >
-                Delete account
-              </Button>
-              <LoadingButton type="submit" isLoading={isLoading}>
-                Update
-              </LoadingButton>
+            <CardFooter className="">
+              <div className="flex flex-1 flex-col items-center gap-1">
+                <div className="text-[14px] font-medium text-red-700 hover:cursor-pointer">
+                  Delete account
+                </div>
+                <LoadingButton
+                  className="w-full bg-sky-600 py-3 text-sm leading-6"
+                  type="submit"
+                  isLoading={isLoading}
+                >
+                  Continue
+                </LoadingButton>
+              </div>
             </CardFooter>
           </form>
         </Form>
