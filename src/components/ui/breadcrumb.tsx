@@ -1,6 +1,7 @@
-import { checkChildren } from '@/lib/utils/checkChildren';
-import { cloneElement } from 'react';
 import { SlashIcon } from '@radix-ui/react-icons';
+import { cloneElement } from 'react';
+
+import { checkChildren } from '@/lib/utils/checkChildren';
 import { cn } from '@/lib/utils/utils';
 
 interface BreadCrumbProps {
@@ -19,7 +20,7 @@ export function Breadcrumb({ children, className }: BreadCrumbProps) {
           <div className="flex items-center">
             {cloneElement(child, { key: index })}
             {index !== length - 1 && (
-              <div className="px-0.5 font-bold">
+              <div className="px-0.5 font-medium">
                 <SlashIcon width={16} height={16} />
               </div>
             )}

@@ -1,3 +1,6 @@
+import { useEffect, useRef, useState } from 'react';
+import { useLocation } from 'wouter';
+
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useClickOutside } from '@/lib/hooks/useClickOutside';
@@ -7,9 +10,10 @@ import {
   setLocalStorageItem,
 } from '@/lib/utils/localStorage';
 import { cn } from '@/lib/utils/utils';
-import { useEffect, useRef, useState } from 'react';
-import { useLocation } from 'wouter';
+
 import { FillParent } from '../FillParent/FillParent';
+
+import { RecentSearch } from './RecentSearch';
 
 export function Searchbar() {
   const inputRef = useRef<HTMLInputElement>(null);
@@ -63,39 +67,18 @@ export function Searchbar() {
           <Input
             ref={inputRef}
             placeholder="Find definition for..."
-            className="border-2 border-slate-300 bg-slate-200 placeholder:text-slate-400 focus-visible:ring-offset-0"
+            className="border-neutral-200 bg-white placeholder:font-normal placeholder:text-neutral-400"
           />
-          {isFocus && (
-            <div className="absolute top-12 w-full rounded-lg bg-white">
-              <div className="flex items-center justify-between border-b border-solid border-gray-200 px-[32px] py-[16px] pb-2 text-xs last:border-b-0">
-                <div className="font-semibold text-slate-400">
-                  RECENT SEARCH
-                </div>
-                {!!history.length && (
-                  <div
-                    onClick={onRemoveAll}
-                    className="font-dinRound text-red-700 hover:cursor-pointer"
-                  >
-                    Remove all
-                  </div>
-                )}
-              </div>
-              {!!history.length && (
-                <div className="max-h-[500px] overflow-auto">
-                  {history?.map(history => (
-                    <div
-                      onClick={onClickWord.bind(null, history)}
-                      className=" border-b border-solid border-gray-200 px-[32px]  py-[16px] text-sm text-slate-800 last:border-b-0 hover:cursor-pointer hover:bg-slate-100 hover:last:rounded-b-lg"
-                    >
-                      {history}
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-          )}
+          <div className="absolute top-12 w-full rounded-lg bg-white">
+            <RecentSearch
+              isOpen={isFocus}
+              history={history}
+              onRemoveAll={onRemoveAll}
+              onClickWord={onClickWord}
+            />
+          </div>
         </div>
-        <Button className="text-sm" type="submit">
+        <Button variant={'outline'} type="submit">
           Search
         </Button>
       </form>

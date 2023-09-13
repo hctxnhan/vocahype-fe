@@ -52,7 +52,7 @@ export function SearchResult() {
         {searchResult?.data.data?.attributes?.map(word => (
           <div
             onClick={() => selectWord(word.id)}
-            className="flex cursor-pointer flex-col gap-2 rounded-md px-8 py-4 transition hover:border-b-4 hover:border-b-sky-600 hover:bg-sky-500 hover:text-sky-50"
+            className="flex cursor-pointer flex-col gap-2 rounded-md border-b-[6px] border-b-transparent px-8 py-4 transition hover:border-b-brand-600 hover:bg-brand-500 hover:text-sky-50"
             key={word.id}
           >
             <div className="flex items-baseline gap-4">

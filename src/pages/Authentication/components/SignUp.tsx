@@ -59,7 +59,7 @@ export function SignUp() {
 
   return (
     <>
-      <Card className="bg-white/80">
+      <Card className="bg-white">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit) as VoidFunction}>
             <CardHeader>
@@ -153,7 +153,7 @@ export function SignUp() {
             </CardContent>
             <CardFooter>
               <LoadingButton
-                className="w-full bg-sky-600 font-medium"
+                className="w-full bg-brand-600 font-medium"
                 type="submit"
                 isLoading={isLoading}
               >

@@ -71,76 +71,68 @@ export function SignIn() {
   }
 
   return (
-    <>
-      <Card className="bg-white/80">
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit) as VoidFunction}>
-            <CardHeader>
-              <CardDescription className="flex flex-col gap-2">
-                <div>
-                  If you don’t have account. Just register one now before too
-                  late. Just kidding, it never too late to use VocaHype.
-                </div>
-                <div>Click here to quickly set your account up.</div>
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-2 pt-0">
-              <div className="flex flex-col gap-4">
-                <FormField
-                  control={form.control}
-                  name="email"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Email</FormLabel>
-                      <FormControl>
-                        <Input disabled={isLoading} {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+    <Card className="bg-white">
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit) as VoidFunction}>
+          <CardHeader>
+            <CardDescription className="flex flex-col gap-2">
+              <div>
+                If you don’t have account. Just register one now before too
+                late. Just kidding, it never too late to use VocaHype.
+              </div>
+              <div>Click here to quickly set your account up.</div>
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-2 pt-0">
+            <div className="flex flex-col gap-4">
+              <FormField
+                control={form.control}
+                name="email"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Email</FormLabel>
+                    <FormControl>
+                      <Input disabled={isLoading} {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
-                <FormField
-                  control={form.control}
-                  name="password"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Password</FormLabel>
-                      <FormControl>
-                        <Input
-                          disabled={isLoading}
-                          type="password"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+              <FormField
+                control={form.control}
+                name="password"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Password</FormLabel>
+                    <FormControl>
+                      <Input disabled={isLoading} type="password" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+          </CardContent>
+          <CardFooter>
+            <div className="flex flex-1 flex-col gap-1">
+              <LoadingButton
+                className="w-full"
+                type="submit"
+                isLoading={isLoading}
+              >
+                Sign in
+              </LoadingButton>
+              <div className="text-center text-sm text-slate-600">
+                Forgot password?{' '}
+                <Link href="/auth/reset-password">
+                  <a className="font-bold hover:cursor-pointer">Reset</a>
+                </Link>
               </div>
-            </CardContent>
-            <CardFooter>
-              <div className="flex-1">
-                <LoadingButton
-                  className="w-full bg-sky-600 font-medium"
-                  type="submit"
-                  isLoading={isLoading}
-                >
-                  Sign in
-                </LoadingButton>
-                <div className="text-center">
-                  Forgot password?{' '}
-                  <Link href="/auth/reset-password">
-                    <a className="font-bold text-slate-500 hover:cursor-pointer hover:text-slate-600">
-                      Reset
-                    </a>
-                  </Link>
-                </div>
-              </div>
-            </CardFooter>
-          </form>
-        </Form>
-      </Card>
-    </>
+            </div>
+          </CardFooter>
+        </form>
+      </Form>
+    </Card>
   );
 }

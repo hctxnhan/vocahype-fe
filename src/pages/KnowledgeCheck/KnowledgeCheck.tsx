@@ -1,3 +1,8 @@
+import { Dialog } from '@radix-ui/react-dialog';
+import { useState } from 'react';
+import useSWR from 'swr';
+import useSWRMutation from 'swr/mutation';
+
 import {
   getKnowledgeCheck,
   postKnowledgeCheck,
@@ -6,17 +11,12 @@ import { FillParent } from '@/components/layout/FillParent/FillParent';
 import { Loading } from '@/components/layout/Loading/Loading';
 import { Button } from '@/components/ui/button';
 import { CarouselNumber } from '@/components/ui/carousel-number';
-import { Dialog, DialogTrigger } from '@/components/ui/dialog';
+import { DialogTrigger } from '@/components/ui/dialog';
 import { useSetBreadcrumb } from '@/lib/hooks/useSetBreadcrumb';
 import { Word } from '@/models/Word';
-import { SpeakerLoudIcon } from '@radix-ui/react-icons';
-import { AnimatePresence, motion } from 'framer-motion';
-import { useState } from 'react';
-import useSWR from 'swr';
-import useSWRMutation from 'swr/mutation';
+
 import { ResetKnowledgeCheckDialog } from './components/ResetKnowledgeCheckDialog';
 import { WordBackground } from './components/WordBackground';
-import { playAudio } from '@/lib/utils/utils';
 
 export function KnowledgeCheck() {
   const { data, isLoading, mutate, isValidating } = useSWR(
@@ -106,89 +106,41 @@ export function KnowledgeCheck() {
         <div className="flex h-full flex-col">
           <div className="flex h-full">
             <div className="relative flex flex-1 justify-center overflow-hidden">
-              <div className="z-10 mt-[200px] flex w-full flex-col items-center gap-12">
-                <h1 className="font-dinRound text-6xl font-black text-sky-600">
+              <div className="vh-flex-column z-10 mt-[200px] w-full items-center gap-12">
+                <h1 className="font-dinRound text-8xl font-black text-brand-600">
                   {currentWord.word.toUpperCase()}
                 </h1>
                 <div className="flex gap-6">
+                  <Dialog>
+                    <DialogTrigger>
+                      <Button
+                        variant={'ghost'}
+                        size={'lg'}
+                        className="font-normal"
+                      >
+                        Restart
+                      </Button>
+                    </DialogTrigger>
+                    <ResetKnowledgeCheckDialog onConfirm={handleRestart} />
+                  </Dialog>
                   <Button
+                    variant={'destructive'}
                     onClick={handleClick.bind(null, false)}
-                    variant={'special'}
-                    size={'xl'}
-                    className="bg-red-500"
+                    size={'lg'}
                   >
                     I don’t know
                   </Button>
-                  <Button
-                    onClick={handleClick.bind(null, true)}
-                    variant={'special'}
-                    size={'xl'}
-                    className="bg-sky-600"
-                  >
+                  <Button onClick={handleClick.bind(null, true)} size={'lg'}>
                     Known already
                   </Button>
                 </div>
               </div>
-              {/* <AnimatePresence>
-                <motion.div
-                  key={currentWord.id}
-                  initial={{
-                    transform: 'translateY(100px)',
-                    opacity: 0,
-                  }}
-                  animate={{
-                    transform: 'translateY(0)',
-                    opacity: 1,
-                  }}
-                  exit={{
-                    position: 'absolute',
-                    transform: 'translateY(-100px)',
-                    opacity: 0,
-                  }}
-                  transition={{
-                    duration: 0.2,
-                  }}
-                  className="z-10 mb-16 flex h-fit flex-col rounded-3xl bg-white px-20 py-16"
-                >
-                  <div className="flex items-center justify-between gap-2">
-                    <div className="text-lg font-bold text-rose-500 ">verb</div>
-                    <Button onClick={playAudio.bind(null, currentWord.word)} variant={'ghost'} size="icon">
-                      <SpeakerLoudIcon width={20} height={20} />
-                    </Button>
-                  </div>
-                  <h1 className="text-6xl font-black">{currentWord.word}</h1>
-                </motion.div>
-              </AnimatePresence> */}
               <WordBackground word={currentWord.word} />
             </div>
             <div className="relative flex-[0.2] overflow-hidden">
               <CarouselNumber total={words.length} current={currentIndex + 1} />
             </div>
           </div>
-          {/* <div className="flex items-center gap-8 self-end">
-            <Dialog>
-              <DialogTrigger>
-                <Button variant={'ghost'}>Restart</Button>
-              </DialogTrigger>
-              <ResetKnowledgeCheckDialog onConfirm={handleRestart} />
-            </Dialog>
-            <Button
-              onClick={handleClick.bind(null, false)}
-              variant={'special'}
-              size={'xl'}
-              className="min-w-[200px] bg-gradient-to-b from-rose-500 from-0% via-rose-600 via-50% to-rose-400 to-100% hover:bg-rose-500/80"
-            >
-              No
-            </Button>
-            <Button
-              onClick={handleClick.bind(null, true)}
-              variant={'special'}
-              size={'xl'}
-              className="min-w-[200px] bg-gradient-to-b from-cyan-500 from-0% via-cyan-600 via-50% to-cyan-500 to-100% hover:bg-teal-500/80"
-            >
-              Yes
-            </Button>
-          </div> */}
         </div>
       </div>
     </>

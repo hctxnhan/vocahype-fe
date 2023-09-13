@@ -53,7 +53,7 @@ export function EnterEmail() {
 
   return (
     <ResetPasswordLayout>
-      <Card className="bg-white/80">
+      <Card className="bg-white">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit) as VoidFunction}>
             <CardContent className="space-y-2">
@@ -83,7 +83,7 @@ export function EnterEmail() {
             </CardContent>
             <CardFooter>
               <LoadingButton
-                className="w-full bg-sky-600 font-medium text-white"
+                className="w-full bg-brand-600 font-medium text-white"
                 type="submit"
                 isLoading={isLoading}
               >

@@ -25,7 +25,7 @@ export function Authentication() {
 
   return (
     <FillParent>
-      <div className="absolute inset-0 -z-50 bg-sky-500/80" />
+      <div className="absolute inset-0 -z-50 bg-brand-500/80" />
       <div className="w-[450px]">
         <div className="flex flex-col items-center gap-1 pb-8 text-sky-50">
           <div className="w-fit font-display text-4xl font-bold ">VocaHype</div>

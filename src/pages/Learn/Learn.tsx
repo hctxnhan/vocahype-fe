@@ -1,14 +1,3 @@
-import { getWord } from '@/api/words/getWord';
-import { FillParent } from '@/components/layout/FillParent/FillParent';
-import { Loading } from '@/components/layout/Loading/Loading';
-import { Button } from '@/components/ui/button';
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from '@/components/ui/tooltip';
-import { useSetBreadcrumb } from '@/lib/hooks/useSetBreadcrumb';
 import {
   ChevronDownIcon,
   QuestionMarkCircledIcon,
@@ -20,8 +9,21 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { useRef, useState } from 'react';
 import useSWR from 'swr';
 import { useRoute } from 'wouter';
-import { Example } from './components/Example';
+
+import { getWord } from '@/api/words/getWord';
+import { FillParent } from '@/components/layout/FillParent/FillParent';
+import { Loading } from '@/components/layout/Loading/Loading';
+import { Button } from '@/components/ui/button';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/ui/tooltip';
+import { useSetBreadcrumb } from '@/lib/hooks/useSetBreadcrumb';
 import { cn, playAudio } from '@/lib/utils/utils';
+
+import { Example } from './components/Example';
 
 const variants = {
   arrow: {
@@ -51,10 +53,12 @@ export function Learn() {
 
   const { data: wordDetail, isLoading } = useSWR(
     ['words/:wordId', params?.wordId ?? ''],
-    getWord.bind(null, params?.wordId ?? '')
+    getWord.bind(null, { wordId: params?.wordId as string } ?? '')
   );
 
-  useSetBreadcrumb(['Learn', wordDetail?.data?.data?.attributes.word ?? '']);
+  const wordData = wordDetail.data.data[0];
+
+  useSetBreadcrumb(['Learn', wordData.attributes.word ?? '']);
 
   if (isLoading)
     return (
@@ -63,11 +67,10 @@ export function Learn() {
       </FillParent>
     );
 
-  if (!wordDetail?.data.data) return null;
-
-  const wordData = wordDetail.data.data;
+  if (!wordData) return null;
 
   const definitionList = wordData.relationships?.definition ?? [];
+
   const exampleList =
     definitionList[currentMean]?.data?.relationships?.examples?.data
       ?.attributes ?? [];
@@ -92,7 +95,7 @@ export function Learn() {
       >
         <div className=" relative z-50">
           <div className="flex items-center gap-4">
-            <div className="font-serif text-4xl font-black">
+            <div className="text-4xl font-black">
               {wordData.attributes.word}
             </div>
             <Button
@@ -207,7 +210,7 @@ export function Learn() {
         <Button className="w-full rounded-lg bg-orange-600 px-8 py-6 text-lg">
           Normal
         </Button>
-        <Button className="w-full rounded-lg bg-sky-800 px-8 py-6 text-lg">
+        <Button className="w-full rounded-lg bg-brand-800 px-8 py-6 text-lg">
           Easy
         </Button>
       </div>
