@@ -32,7 +32,6 @@ const TARGET_API_DEFINITION_FOLDER_PATH = path.join(
 const apiDefinitionFiles = fs.readdirSync(API_DEFINITION_FOLDER_PATH);
 
 function generateImportType(definition: string) {
-  // regex match value of type in definition file
   const regex = /attributes: (\w+);/g;
   const matches = new Set(
     [...definition.matchAll(regex)].map(match => match[1])
@@ -62,17 +61,21 @@ function generateIncludedRelationship(data: APIData): string {
         includedRelationshipType.push(`{
           type: '${nestedData.relationships[key].name}';
           id: string;
-          attributes: ${nestedData.type};
-          relationships: {${Object.keys(
-            nestedData.relationships[key].relationships ?? {}
-          )
-            .map(nestedKey => {
-              return `${nestedKey}: {
-                type: '${nestedData.relationships[key].relationships[nestedKey].name}';
-                id: string;
-              }[]`;
-            })
-            .join(',\n')}},
+          attributes: ${nestedData.relationships[key].type};
+          ${
+            nestedData.relationships[key].relationships
+              ? `relationships: {${Object.keys(
+                  nestedData.relationships[key].relationships
+                )
+                  .map(
+                    nestedKey => `${nestedKey}: {
+                                      type: '${nestedData.relationships[key].relationships[nestedKey].name}';
+                                      id: string;
+                                    }[]`
+                  )
+                  .join(',\n')}}`
+              : ''
+          }
         }`);
 
         if (nestedData.relationships[key].relationships) {
@@ -88,7 +91,6 @@ function generateIncludedRelationship(data: APIData): string {
 }
 
 function generateResponseInterface(api: API['response']['data']) {
-  // Relationship Type
   const apiRelationship = Object.keys(api.relationships);
 
   const relationshipType = apiRelationship.map(key => {
@@ -101,7 +103,6 @@ function generateResponseInterface(api: API['response']['data']) {
   // @ts-ignore
   const includedRelationshipType = generateIncludedRelationship(api);
 
-  // Generate Response Type
   const responseType = `
     export interface Response {
       data: {
@@ -122,7 +123,6 @@ function generateResponseInterface(api: API['response']['data']) {
 }
 
 function generateTsDefinitionForAPI(api: API): string {
-  // Generate Request Type
   const parameters = Object.entries(api.request.parameters).map(
     ([key, value]) => {
       return `${key}: ${value}`;

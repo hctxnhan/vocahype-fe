@@ -21,11 +21,6 @@
               "included": true
             }
           }
-        },
-        "synonyms": {
-          "type": "Synonym",
-          "name": "synonym",
-          "included": true
         }
       }
     }

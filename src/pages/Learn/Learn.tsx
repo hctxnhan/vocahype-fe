@@ -56,9 +56,9 @@ export function Learn() {
     getWord.bind(null, { wordId: params?.wordId as string } ?? '')
   );
 
-  const wordData = wordDetail.data.data[0];
+  const wordData = wordDetail?.getSingleData();
 
-  useSetBreadcrumb(['Learn', wordData.attributes.word ?? '']);
+  useSetBreadcrumb(['Learn', wordData?.attributes.word ?? '']);
 
   if (isLoading)
     return (

@@ -1,5 +1,5 @@
 export type Word = {
-  id: number;
+  id: string;
   word: string;
   count: number;
   point: number;

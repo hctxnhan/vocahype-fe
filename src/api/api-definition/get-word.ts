@@ -1,5 +1,6 @@
 import { Word } from '@/api/model/Word';
 import { Definition } from '@/api/model/Definition';
+import { Example } from '@/api/model/Example';
 
 export interface Params {
   wordId: string;
@@ -15,17 +16,13 @@ export interface Response {
         type: 'definition';
         id: string;
       }[];
-      synonyms: {
-        type: 'synonym';
-        id: string;
-      }[];
     };
   }[];
   included: Array<
     | {
         type: 'definition';
         id: string;
-        attributes: Word;
+        attributes: Definition;
         relationships: {
           examples: {
             type: 'example';
@@ -36,14 +33,7 @@ export interface Response {
     | {
         type: 'example';
         id: string;
-        attributes: Definition;
-        relationships: {};
-      }
-    | {
-        type: 'synonym';
-        id: string;
-        attributes: Word;
-        relationships: {};
+        attributes: Example;
       }
   >;
 }

@@ -1,4 +1,4 @@
 export type Definition = {
-  id: number;
+  id: string;
   definition: string;
 };
