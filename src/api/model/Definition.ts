@@ -1,4 +1,4 @@
-export type Definition = {
+export interface Definition {
   id: string;
   definition: string;
-};
+}

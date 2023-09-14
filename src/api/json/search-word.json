@@ -1,0 +1,22 @@
+{
+  "description": "API for search a word",
+  "request": {
+    "parameters": {
+      "word": "string"
+    }
+  },
+  "response": {
+    "data": {
+      "type": "Word",
+      "name": "word",
+      "relationships": {
+        "pos": {
+          "type": "PartOfSpeech",
+          "name": "pos",
+          "cardinality": "one",
+          "included": true
+        }
+      }
+    }
+  }
+}

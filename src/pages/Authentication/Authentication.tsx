@@ -1,27 +1,26 @@
 import { Redirect } from 'wouter';
 
 import { FillParent } from '@/components/layout/FillParent/FillParent';
-import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { signInWithGoogle } from '@/lib/configs/firebaseAuth';
+// import { signInWithGoogle } from '@/lib/configs/firebaseAuth';
 import {
   AuthState,
   useAuthState,
 } from '@/lib/hooks/firebase/auth/useAuthState';
-import { useAsyncAction } from '@/lib/hooks/useAsyncAction';
+// import { useAsyncAction } from '@/lib/hooks/useAsyncAction';
 
 import { SignIn } from './components/SignIn';
 import { SignUp } from './components/SignUp';
 
 export function Authentication() {
-  const { start, isLoading } = useAsyncAction(signInWithGoogle);
+  // const { start } = useAsyncAction(signInWithGoogle);
   const { authState } = useAuthState();
   if (authState === AuthState.LOADING) return null;
   if (authState === AuthState.SIGNED_IN) return <Redirect to="/" />;
 
-  function login() {
-    start();
-  }
+  // function login() {
+  //   start();
+  // }
 
   return (
     <FillParent>

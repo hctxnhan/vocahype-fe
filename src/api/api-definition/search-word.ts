@@ -1,10 +1,8 @@
 import { Word } from '@/api/model/Word';
-import { Definition } from '@/api/model/Definition';
-import { Example } from '@/api/model/Example';
 import { PartOfSpeech } from '@/api/model/PartOfSpeech';
 
 export interface Params {
-  wordId: string;
+  word: string;
 }
 
 export interface Response {
@@ -13,12 +11,6 @@ export interface Response {
     id: string;
     attributes: Word;
     relationships: {
-      definitions: {
-        data: {
-          type: 'definition';
-          id: string;
-        }[];
-      };
       pos: {
         data: {
           type: 'pos';
@@ -28,27 +20,11 @@ export interface Response {
     };
   }[];
   included: [
-    | {
-        type: 'definition';
-        id: string;
-        attributes: Definition;
-        relationships: {
-          examples: {
-            type: 'example';
-            id: string;
-          }[];
-        };
-      }
-    | {
-        type: 'example';
-        id: string;
-        attributes: Example;
-      }
-    | {
-        type: 'pos';
-        id: string;
-        attributes: PartOfSpeech;
-      },
+    {
+      type: 'pos';
+      id: string;
+      attributes: PartOfSpeech;
+    },
   ];
 }
 

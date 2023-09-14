@@ -8,7 +8,7 @@
     "dev-mock": "vite --mode mock",
     "build": "tsc && vite build",
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "generate": "ts-node --esm cli/generate-api-definition.ts",
+    "generate": "ts-node --esm cli/generate-api-definition.ts && prettier --write src/api/api-definition/**/*.ts",
     "preview": "vite preview",
     "prepare": "husky install",
     "ladle": "npx ladle serve",

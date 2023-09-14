@@ -1,12 +1,13 @@
+import { Route } from 'wouter';
+
+import { Breadcrumb } from '@/components/layout/Breadcrumb/Breadcrumb';
 import { Navbar } from '@/components/layout/Navbar/Navbar';
 import { Sidebar } from '@/components/layout/Sidebar/Sidebar';
 import { BreadcrumbProvider } from '@/lib/context/breadcrumb.context';
 import { KnowledgeCheck } from '@/pages/KnowledgeCheck/KnowledgeCheck';
 import { Learn } from '@/pages/Learn/Learn';
-import { SearchResult } from '@/pages/Search/SearchResult';
-import { Route } from 'wouter';
-import { Breadcrumb } from '@/components/layout/Breadcrumb/Breadcrumb';
 import { ProfileInfo } from '@/pages/ProfileInfo/ProfileInfo';
+import { SearchResult } from '@/pages/Search/SearchResult';
 
 export function MainLayout() {
   return (

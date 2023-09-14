@@ -9,14 +9,17 @@ interface APIData {
   type: string;
   name: string;
   relationships: {
-    [key: string]: APIData & { included?: boolean };
+    [key: string]: APIData & {
+      included?: boolean;
+      cardinality?: 'one' | 'many';
+    };
   };
 }
 
 interface API {
   description: string;
-  request: {
-    parameters: Record<string, any>;
+  request?: {
+    parameters?: Record<string, any>;
   };
   response: {
     data: APIData;
@@ -36,7 +39,7 @@ function generateImportType(definition: string) {
   const matches = new Set(
     [...definition.matchAll(regex)].map(match => match[1])
   );
-  console.log('matches', matches);
+
   const importType = [...matches]
     .map(match => {
       return `import { ${match} } from '@/api/model/${match}';`;
@@ -91,13 +94,15 @@ function generateIncludedRelationship(data: APIData): string {
 }
 
 function generateResponseInterface(api: API['response']['data']) {
-  const apiRelationship = Object.keys(api.relationships);
+  const apiRelationship = Object.keys(api.relationships ?? {});
 
   const relationshipType = apiRelationship.map(key => {
     return `${key}: {
+      data: {
         type: '${api.relationships[key].name}';
         id: string;
-    }[]`;
+      }${api.relationships[key].cardinality === 'one' ? '' : '[]'}
+    }`;
   });
 
   // @ts-ignore
@@ -113,17 +118,27 @@ function generateResponseInterface(api: API['response']['data']) {
           ${relationshipType.join(',\n')}
         };
       }[],
-      included: Array<
-        ${includedRelationshipType}
-      >
+      included: [${includedRelationshipType}]
     }
 `;
 
   return responseType;
 }
 
+function generateAdditionalType(api: API['response']['data']) {
+  const includedRelationshipType = generateIncludedRelationship(api);
+
+  return `
+    ${
+      includedRelationshipType ? `type Included = Response['included'][0];` : ''
+    }
+    type Relationships = Response['data'][0]['relationships'];
+    type Data = Response['data'][0];
+  `;
+}
+
 function generateTsDefinitionForAPI(api: API): string {
-  const parameters = Object.entries(api.request.parameters).map(
+  const parameters = Object.entries(api.request?.parameters ?? {}).map(
     ([key, value]) => {
       return `${key}: ${value}`;
     }
@@ -142,7 +157,62 @@ function generateTsDefinitionForAPI(api: API): string {
   return `
   ${importType}
   ${requestType}
-  ${responseType}`;
+  ${responseType}
+  ${generateAdditionalType(api.response.data)}
+  ${generateResponseClass(api.response.data)}
+  `;
+}
+
+function generateResponseClass(api: API['response']['data']) {
+  const includedRelationshipType = generateIncludedRelationship(api);
+
+  const content = `
+    export class APIResponse {
+      constructor(private response: Response) {}
+
+      get data(): Data[] {
+        return this.response.data;
+      }
+
+      get relationships(): Relationships {
+        return this.response.data[0].relationships;
+      }
+
+      get attributes(): Data['attributes'] {
+        return this.response.data[0].attributes;
+      }
+      ${
+        includedRelationshipType
+          ? `
+      get included(): Included[] {
+        return this.response.included;
+      }
+
+      includedByType<T extends Included['type']>(
+        type: T
+      ): Extract<Included, { type: T }>[] {
+        return this.included.filter(item => item.type === type) as any;
+      }
+
+      firstIncludedByType<T extends Included['type']>(
+        type: T
+      ): Extract<Included, { type: T }> | undefined {
+        return this.includedByType(type)[0];
+      }
+
+      getIncludedByTypeAndId<T extends Included['type']>(
+        type: T,
+        id: string
+      ): Extract<Included, { type: T; id: string }> | undefined {
+        return this.included.find(item => item.type === type && item.id === id) as any;
+      }
+      `
+          : ''
+      }
+    }
+  `;
+
+  return content;
 }
 
 function createDefinitionFile(

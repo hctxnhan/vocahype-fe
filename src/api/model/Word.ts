@@ -1,4 +1,4 @@
-export type Word = {
+export interface Word {
   id: string;
   word: string;
   count: number;
@@ -7,4 +7,4 @@ export type Word = {
   syllable: number;
   phoneticStart: string;
   phoneticEnd: string;
-};
+}

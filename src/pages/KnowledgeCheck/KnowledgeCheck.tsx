@@ -13,7 +13,6 @@ import { Button } from '@/components/ui/button';
 import { CarouselNumber } from '@/components/ui/carousel-number';
 import { DialogTrigger } from '@/components/ui/dialog';
 import { useSetBreadcrumb } from '@/lib/hooks/useSetBreadcrumb';
-import { Word } from '@/models/Word';
 
 import { ResetKnowledgeCheckDialog } from './components/ResetKnowledgeCheckDialog';
 import { WordBackground } from './components/WordBackground';
@@ -31,11 +30,11 @@ export function KnowledgeCheck() {
 
   useSetBreadcrumb(['Knowledge Check']);
 
-  const words = data?.data.data?.attributes;
+  const words = data?.data;
 
   const [{ known, unknown }, setKnownUnknown] = useState<{
-    known: Word[];
-    unknown: Word[];
+    known: string[];
+    unknown: string[];
   }>({
     known: [],
     unknown: [],
@@ -52,17 +51,17 @@ export function KnowledgeCheck() {
 
   if (!words) return <div>Something went wrong</div>;
 
-  const currentWord = words[currentIndex];
+  const currentWord = words[currentIndex]?.attributes ?? '';
   const isLastWord = currentIndex === words.length;
 
   async function onFinished() {
     await trigger([
       ...known.map(word => ({
-        wordId: word.id,
+        wordId: word,
         status: true,
       })),
       ...unknown.map(word => ({
-        wordId: word.id,
+        wordId: word,
         status: false,
       })),
     ]);
@@ -81,13 +80,13 @@ export function KnowledgeCheck() {
   const handleClick = (isKnown: boolean) => {
     if (isKnown) {
       setKnownUnknown({
-        known: [...known, currentWord],
+        known: [...known, currentWord.id],
         unknown,
       });
     } else {
       setKnownUnknown({
         known,
-        unknown: [...unknown, currentWord],
+        unknown: [...unknown, currentWord.id],
       });
     }
 
@@ -113,11 +112,7 @@ export function KnowledgeCheck() {
                 <div className="flex gap-6">
                   <Dialog>
                     <DialogTrigger>
-                      <Button
-                        variant={'ghost'}
-                        size={'lg'}
-                        className="font-normal"
-                      >
+                      <Button variant={'ghost'} size={'lg'}>
                         Restart
                       </Button>
                     </DialogTrigger>

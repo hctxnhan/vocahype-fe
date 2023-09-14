@@ -1,9 +1,11 @@
 import { axiosInstance } from '@/lib/configs/axios';
-import { APIData, APIResponse } from '@/models/APIResponse';
-import { Word } from '@/models/Word';
 
-export function searchWord(word: string) {
-  return axiosInstance.get<APIResponse<APIData<Word[]>>>(
-    `/words?search=${word}`
+import { APIResponse, Params, Response } from '../api-definition/search-word';
+
+export async function searchWord(params: Params) {
+  const response = await axiosInstance.get<Response>(
+    `/words?search=${params.word}`
   );
+
+  return new APIResponse(response.data);
 }

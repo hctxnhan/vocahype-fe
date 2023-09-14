@@ -13,7 +13,7 @@ export function RecentSearch({
 }: RecentSearchProps) {
   return isOpen ? (
     <div>
-      <div className="flex items-center justify-between border-b border-solid border-gray-200 px-[32px] py-[16px] pb-2 text-xs last:border-b-0">
+      <div className="flex items-center justify-between border-b border-solid border-gray-200 px-8 py-4 text-sm last:border-b-0">
         <div className="font-semibold text-slate-400">RECENT SEARCH</div>
         {!!history.length && (
           <div
@@ -29,7 +29,7 @@ export function RecentSearch({
           {history?.map(history => (
             <div
               onClick={onClickWord.bind(null, history)}
-              className=" border-b border-solid border-gray-200 px-[32px]  py-[16px] text-sm text-slate-800 last:border-b-0 hover:cursor-pointer hover:bg-slate-100 hover:last:rounded-b-lg"
+              className=" border-b border-solid border-gray-200 px-[32px]  py-4 text-sm text-slate-800 last:border-b-0 hover:cursor-pointer hover:bg-slate-100 hover:last:rounded-b-lg"
             >
               {history}
             </div>

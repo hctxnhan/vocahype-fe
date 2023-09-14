@@ -21,6 +21,12 @@
               "included": true
             }
           }
+        },
+        "pos": {
+          "type": "PartOfSpeech",
+          "name": "pos",
+          "cardinality": "one",
+          "included": true
         }
       }
     }
