@@ -10,12 +10,10 @@ import {
   CardDescription,
   CardFooter,
   CardHeader,
-  CardTitle,
 } from '@/components/ui/card';
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -59,35 +57,20 @@ export function SignUp() {
 
   return (
     <>
-      <Card className="bg-white/80">
+      <Card className="bg-white">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit) as VoidFunction}>
             <CardHeader>
-              <CardTitle>Create new account</CardTitle>
-              <CardDescription>
-                If you don’t have account. Just register one now before too
-                late. Just kidding, it never too late to use VocaHype.
+              <CardDescription className="flex flex-col gap-2">
+                <div>
+                  If you don’t have account. Just register one now before too
+                  late. Just kidding, it never too late to use VocaHype.
+                </div>
+                <div>Already have account? Sign in.</div>
               </CardDescription>
             </CardHeader>
-            <CardContent className="space-y-2">
+            <CardContent className="space-y-2 pt-0">
               <div className="flex flex-col gap-4">
-                <FormField
-                  control={form.control}
-                  name="name"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Name</FormLabel>
-                      <FormControl>
-                        <Input disabled={isLoading} {...field} />
-                      </FormControl>
-                      <FormDescription>
-                        We will use this name to display on your profile.
-                      </FormDescription>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
                 <FormField
                   control={form.control}
                   name="email"
@@ -95,7 +78,29 @@ export function SignUp() {
                     <FormItem>
                       <FormLabel>Email</FormLabel>
                       <FormControl>
-                        <Input disabled={isLoading} {...field} />
+                        <Input
+                          placeholder="Email"
+                          disabled={isLoading}
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="name"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Name</FormLabel>
+                      <FormControl>
+                        <Input
+                          placeholder="Enter your name"
+                          disabled={isLoading}
+                          {...field}
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -111,6 +116,7 @@ export function SignUp() {
                       <FormControl>
                         <Input
                           disabled={isLoading}
+                          placeholder="Enter your password"
                           type="password"
                           {...field}
                         />
@@ -132,6 +138,7 @@ export function SignUp() {
                       <FormControl>
                         <Input
                           disabled={isLoading}
+                          placeholder="Enter your password"
                           type="password"
                           {...field}
                         />
@@ -144,7 +151,7 @@ export function SignUp() {
             </CardContent>
             <CardFooter>
               <LoadingButton
-                className="w-full"
+                className="w-full bg-brand-600 font-medium"
                 type="submit"
                 isLoading={isLoading}
               >

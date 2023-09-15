@@ -17,12 +17,15 @@ export function SearchResult() {
   const [, navigate] = useLocation();
   const { data: searchResult, isLoading } = useSWR(
     ['words/knowledge-test', word],
-    ([, word]) => searchWord(word ?? '')
+    ([, word]) =>
+      searchWord({
+        word,
+      })
   );
 
   useSetBreadcrumb(['Search', word ?? '']);
 
-  function selectWord(wordId: number) {
+  function selectWord(wordId: string) {
     navigate(`/words/${wordId}`);
   }
 
@@ -33,7 +36,9 @@ export function SearchResult() {
       </FillParent>
     );
 
-  if (!searchResult?.data.data?.attributes?.length)
+  const wordList = searchResult?.data;
+
+  if (!wordList?.length)
     return (
       <div>
         <p className="mb-2 text-lg">
@@ -44,23 +49,32 @@ export function SearchResult() {
     );
 
   return (
-    <div className='flex flex-col h-full'>
-      <p className="mb-2 text-lg">
+    <div className="flex h-full flex-col">
+      <p className="mb-6 text-lg">
         Search suggestion for <b>"{word}"</b>
       </p>
-      <div className="flex flex-col gap-2 flex-1 basis-0 overflow-auto">
-        {searchResult?.data.data?.attributes?.map(word => (
+      <div className="flex flex-1 basis-0 flex-col gap-2 overflow-auto">
+        {wordList.map(word => (
           <div
             onClick={() => selectWord(word.id)}
-            className="flex cursor-pointer flex-col gap-2 rounded-md px-8 py-4 transition hover:bg-white/40"
+            className="mr-2 flex cursor-pointer flex-col gap-2 rounded-md border-b-[6px] border-b-transparent px-8 py-4 transition hover:border-b-brand-600 hover:bg-brand-500 hover:text-sky-50"
             key={word.id}
           >
             <div className="flex items-baseline gap-4">
-              <p className="text-2xl font-semibold">{word.word}</p>
-              <p>adjective</p>
+              <p className="text-2xl font-semibold">{word.attributes.word}</p>
+              <p>
+                {
+                  searchResult?.getIncludedByTypeAndId(
+                    'pos',
+                    word.relationships.pos?.data.id
+                  )?.attributes.description
+                }
+              </p>
             </div>
             <div className="flex items-center gap-4">
-              <p>[{word.phonetic}]</p>
+              {word.attributes.phonetic ? (
+                <p>[{word.attributes.phonetic}]</p>
+              ) : null}
               <SpeakerLoudIcon width={16} height={16} />
             </div>
           </div>

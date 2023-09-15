@@ -1,0 +1,34 @@
+{
+  "description": "API for get word definitions and synonyms",
+  "request": {
+    "parameters": {
+      "wordId": "string"
+    }
+  },
+  "response": {
+    "data": {
+      "type": "Word",
+      "name": "word",
+      "relationships": {
+        "definitions": {
+          "type": "Definition",
+          "name": "definition",
+          "included": true,
+          "relationships": {
+            "examples": {
+              "type": "Example",
+              "name": "example",
+              "included": true
+            }
+          }
+        },
+        "pos": {
+          "type": "PartOfSpeech",
+          "name": "pos",
+          "cardinality": "one",
+          "included": true
+        }
+      }
+    }
+  }
+}

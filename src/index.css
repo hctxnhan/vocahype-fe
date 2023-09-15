@@ -9,17 +9,49 @@
   font-family: 'Panchang';
   src: url('./assets/fonts/Panchang.ttf');
 }
+
 @font-face {
-  font-family: 'CabinetGrotesk';
-  src: url('./assets/fonts/CabinetGrotesk.ttf');
-}
-@font-face {
-  font-family: 'GeneralSans';
-  src: url('./assets/fonts/GeneralSans.ttf');
+    font-family: 'DINRoundPro';
+    src: local('DINRoundPro-Black'),
+        url('./assets/fonts/DINRoundPro-Black.ttf') format('truetype');
+    font-weight: 900;
+    font-style: normal;
 }
 
-body {
-  font-family: 'GeneralSans';
+/* @font-face {
+    font-family: 'DINRoundPro-Medi';
+    src: local('DINRoundPro-Medi'),
+        url('./assets/fonts/DINRoundPro-Medi.ttf') format('truetype');
+    font-weight: 500;
+    font-style: normal;
+} */
+
+@font-face {
+    font-family: 'DINRoundPro';
+    src: local('DINRoundPro-Light'),
+        url('./assets/fonts/DINRoundPro-Light.ttf') format('truetype');
+    font-weight: 300;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'DINRoundPro';
+    src: local('DINRoundPro'),
+        url('./assets/fonts/DINRoundPro-Medi.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'DINRoundPro';
+    src: local('DINRoundPro-Bold'),
+        url('./assets/fonts/DINRoundPro-Bold.ttf') format('truetype');
+    font-weight: 500;
+    font-style: normal;
+}
+
+body, ::before, ::after, input::placeholder {
+  font-family: 'DINRoundPro', sans-serif;
 }
 
 .global-background {
@@ -31,13 +63,25 @@ body {
 
 @layer components {
   .text-outline-transparent {
-    -webkit-text-stroke: 1px rgba(0, 0, 0, 0.02);
-    -webkit-text-fill-color: #f8fafc1a;
+    text-shadow:
+      2px 2px 0px rgba(224, 242, 254, 1),
+      2px -2px 0px rgba(224, 242, 254, 1),
+      -2px 2px 0px rgba(224, 242, 254, 1),
+      -2px -2px 0px rgba(224, 242, 254, 1);
+    color: white;
   }
 }
 
 .center {
   @apply flex items-center justify-center;
+}
+
+.vh-flex-column {
+  @apply flex flex-col;
+}
+
+.vh-flex-row {
+  @apply flex flex-row;
 }
 
 ::-webkit-scrollbar-track {

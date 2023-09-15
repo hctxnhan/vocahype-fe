@@ -1,0 +1,9 @@
+{
+  "description": "API for checking user knowledge of words",
+  "response": {
+    "data": {
+      "type": "WordKnowledgeCheck",
+      "name": "wordknowledgecheck"
+    }
+  }
+}

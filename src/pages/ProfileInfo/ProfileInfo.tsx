@@ -5,7 +5,6 @@ import { z } from 'zod';
 
 import { FillParent } from '@/components/layout/FillParent/FillParent';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Button } from '@/components/ui/button';
 import {
   Card,
   CardContent,
@@ -61,6 +60,15 @@ export function ProfileInfo() {
     start([data.email, data.name, data.avatar || '']);
   }
 
+  const onAvatarChange =
+    (onChange: (...args: any[]) => void) =>
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      if (e?.target?.files?.[0]) {
+        onChange(e.target.files[0]);
+        setPreviewImg(URL.createObjectURL(e.target.files[0]));
+      }
+    };
+
   useEffect(() => {
     form.reset({
       email: user?.email || '',
@@ -73,14 +81,14 @@ export function ProfileInfo() {
 
   return (
     <FillParent>
-      <Card className="w-[500px] gap-4 bg-white/80">
+      <Card className="w-[500px] gap-4 border-none bg-slate-100/50">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit) as VoidFunction}>
             <CardHeader className="center mx-auto max-w-[350px] gap-2">
               <FormField
                 control={form.control}
                 name="avatar"
-                render={({ field }) => (
+                render={({ field: { onChange } }) => (
                   <FormItem className="space-y-1 text-center">
                     <Label htmlFor="avatar">
                       <Avatar className="relative h-20 w-20">
@@ -88,8 +96,8 @@ export function ProfileInfo() {
                         <AvatarFallback>
                           {getFirstNLetter(user?.displayName || '', 2)}
                         </AvatarFallback>
-                        <div className="absolute flex h-full w-full items-center justify-center bg-slate-900/50 text-white opacity-0 hover:cursor-pointer hover:opacity-100">
-                          Edit
+                        <div className="absolute flex h-full w-full items-center justify-center bg-slate-900/50 text-white opacity-0 transition-opacity hover:cursor-pointer hover:opacity-100">
+                          Change
                         </div>
                       </Avatar>
                     </Label>
@@ -99,14 +107,7 @@ export function ProfileInfo() {
                         className="hidden"
                         id="avatar"
                         type="file"
-                        onChange={e => {
-                          if (e?.target?.files?.[0]) {
-                            field.onChange(e.target.files[0]);
-                            setPreviewImg(
-                              URL.createObjectURL(e.target.files[0])
-                            );
-                          }
-                        }}
+                        onChange={onAvatarChange(onChange)}
                       />
                     </FormControl>
                     <FormMessage />
@@ -120,7 +121,7 @@ export function ProfileInfo() {
                 }
               </CardDescription>
             </CardHeader>
-            <CardContent className="space-y-2">
+            <CardContent className="space-y-2 pt-0">
               <FormField
                 control={form.control}
                 name="email"
@@ -171,17 +172,19 @@ export function ProfileInfo() {
                 )}
               />
             </CardContent>
-            <CardFooter className="justify-end">
-              <Button
-                type="button"
-                variant={'link'}
-                className="text-red-500 hover:text-red-500/90"
-              >
-                Delete account
-              </Button>
-              <LoadingButton type="submit" isLoading={isLoading}>
-                Update
-              </LoadingButton>
+            <CardFooter>
+              <div className="vh-flex-column flex-1 items-center gap-1">
+                <div className="text-sm text-red-700 hover:cursor-pointer">
+                  Delete account
+                </div>
+                <LoadingButton
+                  className="w-full bg-brand-600 py-3 text-sm leading-6"
+                  type="submit"
+                  isLoading={isLoading}
+                >
+                  Update
+                </LoadingButton>
+              </div>
             </CardFooter>
           </form>
         </Form>

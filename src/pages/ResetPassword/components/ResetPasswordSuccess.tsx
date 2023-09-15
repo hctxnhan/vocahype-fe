@@ -16,7 +16,7 @@ export function ResetPasswordSuccess() {
 
   return (
     <ResetPasswordLayout showLoginText={false}>
-      <Card className="bg-white/80">
+      <Card className="bg-white">
         <CardHeader>
           <CardTitle>Reset password</CardTitle>
         </CardHeader>

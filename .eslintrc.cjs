@@ -54,6 +54,7 @@ module.exports = {
     '**/*.stories.tsx',
     'vite.config.ts',
     '**/*.d.ts',
+    '**/api-definition/**/*.ts',
   ],
   settings: {
     'import/parsers': {

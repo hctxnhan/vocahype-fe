@@ -1,3 +1,5 @@
+import { ExclamationTriangleIcon } from '@radix-ui/react-icons';
+
 import { Button } from '@/components/ui/button';
 import {
   DialogBody,
@@ -7,7 +9,6 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
-import { ExclamationTriangleIcon } from '@radix-ui/react-icons';
 
 export interface ResetKnowledgeCheckDialogProps {
   onConfirm?: () => void;
@@ -34,7 +35,7 @@ export function ResetKnowledgeCheckDialog({
       </DialogBody>
       <DialogFooter>
         <DialogClose>
-          <Button>Cancel</Button>
+          <Button variant={'ghost'}>Cancel</Button>
         </DialogClose>
         <Button onClick={onConfirm} variant={'destructive'} type="submit">
           Go ahead

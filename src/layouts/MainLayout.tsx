@@ -1,17 +1,18 @@
+import { Route } from 'wouter';
+
+import { Breadcrumb } from '@/components/layout/Breadcrumb/Breadcrumb';
 import { Navbar } from '@/components/layout/Navbar/Navbar';
 import { Sidebar } from '@/components/layout/Sidebar/Sidebar';
 import { BreadcrumbProvider } from '@/lib/context/breadcrumb.context';
 import { KnowledgeCheck } from '@/pages/KnowledgeCheck/KnowledgeCheck';
 import { Learn } from '@/pages/Learn/Learn';
-import { SearchResult } from '@/pages/Search/SearchResult';
-import { Route } from 'wouter';
-import { Breadcrumb } from '@/components/layout/Breadcrumb/Breadcrumb';
 import { ProfileInfo } from '@/pages/ProfileInfo/ProfileInfo';
+import { SearchResult } from '@/pages/Search/SearchResult';
 
 export function MainLayout() {
   return (
     <div className="flex h-screen w-full flex-col px-8 pb-4 text-neutral-950">
-      <div className="global-background absolute inset-0 -z-50" />
+      <div className="absolute inset-0 -z-50 bg-white" />
       <div>
         <Navbar />
       </div>
@@ -24,7 +25,6 @@ export function MainLayout() {
             <Route component={SearchResult} path="/words" />
             <Route component={Learn} path="/words/:wordId" />
             <Route component={ProfileInfo} path="/profile" />
-            
           </div>
         </BreadcrumbProvider>
       </div>

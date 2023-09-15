@@ -1,14 +1,3 @@
-import { getWord } from '@/api/words/getWord';
-import { FillParent } from '@/components/layout/FillParent/FillParent';
-import { Loading } from '@/components/layout/Loading/Loading';
-import { Button } from '@/components/ui/button';
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from '@/components/ui/tooltip';
-import { useSetBreadcrumb } from '@/lib/hooks/useSetBreadcrumb';
 import {
   ChevronDownIcon,
   QuestionMarkCircledIcon,
@@ -20,8 +9,21 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { useRef, useState } from 'react';
 import useSWR from 'swr';
 import { useRoute } from 'wouter';
-import { Example } from './components/Example';
+
+import { getWord } from '@/api/words/getWord';
+import { FillParent } from '@/components/layout/FillParent/FillParent';
+import { Loading } from '@/components/layout/Loading/Loading';
+import { Button } from '@/components/ui/button';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/ui/tooltip';
+import { useSetBreadcrumb } from '@/lib/hooks/useSetBreadcrumb';
 import { cn, playAudio } from '@/lib/utils/utils';
+
+import { Example } from './components/Example';
 
 const variants = {
   arrow: {
@@ -43,18 +45,20 @@ const variants = {
 };
 
 export function Learn() {
-  const [currentMean, setCurrentMean] = useState(0);
+  const [currentDef, setCurrentDef] = useState(0);
   const [isOpen, setIsOpen] = useState(false);
-  const nextMean = useRef(1);
+  const nextDef = useRef(1);
 
   const [, params] = useRoute('/words/:wordId');
 
   const { data: wordDetail, isLoading } = useSWR(
     ['words/:wordId', params?.wordId ?? ''],
-    getWord.bind(null, params?.wordId ?? '')
+    getWord.bind(null, { wordId: params?.wordId as string } ?? '')
   );
 
-  useSetBreadcrumb(['Learn', wordDetail?.data?.data?.attributes.word ?? '']);
+  const wordData = wordDetail?.attributes;
+
+  useSetBreadcrumb(['Learn', wordData?.word ?? '']);
 
   if (isLoading)
     return (
@@ -63,20 +67,25 @@ export function Learn() {
       </FillParent>
     );
 
-  if (!wordDetail?.data.data) return null;
+  if (!wordData) return null;
 
-  const wordData = wordDetail.data.data;
+  const definitionList = wordDetail.relationships.definitions;
+  const partOfSpeech = wordDetail.firstIncludedByType('pos')?.attributes;
+  const exampleList = wordDetail.includedByType('example');
 
-  const definitionList = wordData.relationships?.definition ?? [];
-  const exampleList =
-    definitionList[currentMean]?.data?.relationships?.examples?.data
-      ?.attributes ?? [];
+  const currentDefData = {
+    id: definitionList.data[currentDef]?.id,
+    data: wordDetail.getIncludedByTypeAndId(
+      'definition',
+      definitionList.data[currentDef]?.id
+    )?.attributes.definition,
+  };
 
   const handleClick = (next: number) => {
-    const current = currentMean + next;
-    if (current >= 0 && current < definitionList.length) {
-      nextMean.current = current - currentMean;
-      setCurrentMean(current);
+    const current = currentDef + next;
+    if (current >= 0 && current < definitionList.data.length) {
+      nextDef.current = current - currentDef;
+      setCurrentDef(current);
     }
   };
 
@@ -92,20 +101,18 @@ export function Learn() {
       >
         <div className=" relative z-50">
           <div className="flex items-center gap-4">
-            <div className="font-serif text-4xl font-black">
-              {wordData.attributes.word}
-            </div>
-            <Button onClick={playAudio.bind(null, wordData.attributes.word)} variant={'ghost'} size="icon">
+            <div className="text-4xl font-black">{wordData.word}</div>
+            <Button
+              onClick={playAudio.bind(null, wordData.word)}
+              variant={'ghost'}
+              size="icon"
+            >
               <SpeakerLoudIcon width={20} height={20} />
             </Button>
           </div>
-          <div className="font-sans font-normal">
-            [{wordData.attributes.phonetic}]
-          </div>
+          <div className="font-sans font-normal">[{wordData.phonetic}]</div>
           <div className="flex items-center gap-2">
-            <div className="font-display font-bold">
-              {wordData.relationships?.pos?.data?.attributes.posTag}
-            </div>
+            <div className="font-display font-bold">{partOfSpeech?.posTag}</div>
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger asChild>
@@ -116,9 +123,7 @@ export function Learn() {
                   />
                 </TooltipTrigger>
                 <TooltipContent>
-                  <p className="text">
-                    {wordData.relationships?.pos?.data?.attributes.description}
-                  </p>
+                  <p className="text">{partOfSpeech?.description}</p>
                 </TooltipContent>
               </Tooltip>
             </TooltipProvider>
@@ -139,7 +144,7 @@ export function Learn() {
           onClick={handleClick.bind(null, -1)}
           className={cn(
             'flex items-center hover:cursor-pointer',
-            currentMean == 0 && 'pointer-events-none text-slate-500'
+            currentDef == 0 && 'pointer-events-none text-slate-500'
           )}
         >
           <TriangleLeftIcon width={40} height={40} />
@@ -149,7 +154,7 @@ export function Learn() {
           onClick={handleClick.bind(null, 1)}
           className={cn(
             'flex items-center hover:cursor-pointer',
-            currentMean >= definitionList.length - 1 &&
+            currentDef >= definitionList.data.length - 1 &&
               'pointer-events-none text-slate-500'
           )}
         >
@@ -157,13 +162,15 @@ export function Learn() {
           <TriangleRightIcon width={40} height={40} />
         </div>
       </div>
+
+      {/* TODO: Extract to a component */}
       <div className="relative flex items-center justify-center overflow-hidden text-lg font-bold transition-all">
         <AnimatePresence>
           <motion.div
-            className=" min-h-[60px] transition-all duration-1000"
-            key={currentMean}
+            className="transition-all duration-1000"
+            key={currentDef}
             initial={{
-              transform: `translateX(${nextMean.current * 100}px)`,
+              transform: `translateX(${nextDef.current * 100}px)`,
               opacity: 0,
             }}
             animate={{
@@ -172,14 +179,14 @@ export function Learn() {
             }}
             exit={{
               position: 'absolute',
-              transform: `translateX(${-nextMean.current * 100}px)`,
+              transform: `translateX(${-nextDef.current * 100}px)`,
               opacity: 0,
             }}
             transition={{
               duration: 0.2,
             }}
           >
-            {definitionList[currentMean]?.data?.attributes.definition}
+            {currentDefData.data}
           </motion.div>
         </AnimatePresence>
       </div>
@@ -188,20 +195,26 @@ export function Learn() {
           <Example
             key={index}
             className="[&:not(:last-child)]:border-b [&:not(:last-child)]:border-slate-300 [&:not(:last-child)]:border-opacity-50"
-            example={`“${example.example}”`}
-            word={wordData.attributes.word}
+            example={`“${example.attributes.example}”`}
+            word={wordData.word}
           />
         ))}
       </div>
       <div className="flex justify-between gap-4">
-        <Button className="w-full rounded-lg bg-slate-400 px-8 py-6 font-semibold">
-          HARD
+        <Button className="w-full" variant={'secondary'} size={'lg'}>
+          Ignore
         </Button>
-        <Button className="w-full rounded-lg bg-slate-600 px-8 py-6 font-semibold">
-          GOOD
+        <Button className="w-full" variant={'destructive'} size={'lg'}>
+          Hard
         </Button>
-        <Button className="w-full rounded-lg bg-slate-800 px-8 py-6 font-semibold">
-          EASY
+        <Button
+          className="w-full border-orange-800 bg-orange-500 hover:bg-orange-600"
+          size={'lg'}
+        >
+          Normal
+        </Button>
+        <Button className="w-full" size={'lg'}>
+          Easy
         </Button>
       </div>
     </div>

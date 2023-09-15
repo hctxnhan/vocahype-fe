@@ -16,6 +16,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { logOutUser } from '@/lib/configs/firebaseAuth';
+import { useAuthState } from '@/lib/hooks/firebase/auth/useAuthState';
 import { useAsyncAction } from '@/lib/hooks/useAsyncAction';
 import { useToast } from '@/lib/hooks/useToast';
 
@@ -24,6 +25,7 @@ import { Searchbar } from '../Searchbar/Searchbar';
 export function Navbar() {
   const [_, navigate] = useLocation();
   const toast = useToast('Log out');
+  const { user } = useAuthState();
 
   const menuConfig = [
     {
@@ -62,14 +64,14 @@ export function Navbar() {
           <Searchbar />
         </div>
         <div className="flex items-center gap-6 py-4 text-lg">
-          <div>
-            Hello, <span className="font-semibold">Nhan</span>
+          <div className="">
+            Hello, <span className="font-bold">{user?.displayName}</span>
           </div>
           <div className="flex items-center gap-2">
             <DropdownMenu>
               <DropdownMenuTrigger>
                 <Button variant={'ghost'} size="icon">
-                  <PersonIcon />
+                  <PersonIcon width={20} height={20} />
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent className="w-[224px]">
@@ -97,10 +99,10 @@ export function Navbar() {
               </DropdownMenuContent>
             </DropdownMenu>
             <Button variant={'ghost'} size="icon">
-              <BellIcon />
+              <BellIcon width={20} height={20} />
             </Button>
             <Button variant={'ghost'} size="icon">
-              <GearIcon />
+              <GearIcon width={20} height={20} />
             </Button>
           </div>
         </div>

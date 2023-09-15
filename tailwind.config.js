@@ -1,4 +1,6 @@
 /** @type {import('tailwindcss').Config} */
+import colors from 'tailwindcss/colors';
+
 module.exports = {
   content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
   darkMode: ['class'],
@@ -11,10 +13,12 @@ module.exports = {
       },
     },
     extend: {
+      colors: {
+        brand: colors.sky,
+      },
       fontFamily: {
-        sans: ['GeneralSans', 'sans-serif'],
-        serif: ['CabinetGrotesk', 'serif'],
         display: ['Panchang', 'sans-serif'],
+        dinRound: ['DinRoundPro', 'sans-serif'],
       },
       gridTemplateColumns: {
         mainLayout: '300px 1fr',
