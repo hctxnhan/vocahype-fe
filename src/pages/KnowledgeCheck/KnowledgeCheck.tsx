@@ -52,7 +52,6 @@ export function KnowledgeCheck() {
   if (!words) return <div>Something went wrong</div>;
 
   const currentWord = words[currentIndex]?.attributes ?? '';
-  const isLastWord = currentIndex === words.length;
 
   async function onFinished() {
     await trigger([
@@ -91,8 +90,7 @@ export function KnowledgeCheck() {
     }
 
     if (currentIndex < words.length) setCurrentIndex(currentIndex + 1);
-
-    if (isLastWord) {
+    if (currentIndex + 1 === words.length) {
       void onFinished();
     }
   };
