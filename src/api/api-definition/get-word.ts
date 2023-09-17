@@ -2,6 +2,7 @@ import { Word } from '@/api/model/Word';
 import { Definition } from '@/api/model/Definition';
 import { Example } from '@/api/model/Example';
 import { PartOfSpeech } from '@/api/model/PartOfSpeech';
+import { Synonym } from '@/api/model/Synonym';
 
 export interface Params {
   wordId: string;
@@ -24,6 +25,12 @@ export interface Response {
           type: 'pos';
           id: string;
         };
+      };
+      synonyms: {
+        data: {
+          type: 'synonym';
+          id: string;
+        }[];
       };
     };
   }[];
@@ -48,6 +55,11 @@ export interface Response {
         type: 'pos';
         id: string;
         attributes: PartOfSpeech;
+      }
+    | {
+        type: 'synonym';
+        id: string;
+        attributes: Synonym;
       },
   ];
 }

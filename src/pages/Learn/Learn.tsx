@@ -24,6 +24,7 @@ import { useSetBreadcrumb } from '@/lib/hooks/useSetBreadcrumb';
 import { cn, playAudio } from '@/lib/utils/utils';
 
 import { Example } from './components/Example';
+import { Synonym } from './components/Synonym';
 
 const variants = {
   arrow: {
@@ -56,9 +57,9 @@ export function Learn() {
     getWord.bind(null, { wordId: params?.wordId as string } ?? '')
   );
 
-  const wordData = wordDetail?.attributes;
+  const wordData = wordDetail?.data[0];
 
-  useSetBreadcrumb(['Learn', wordData?.word ?? '']);
+  useSetBreadcrumb(['Learn', wordData?.attributes.word ?? '']);
 
   if (isLoading)
     return (
@@ -73,13 +74,32 @@ export function Learn() {
   const partOfSpeech = wordDetail.firstIncludedByType('pos')?.attributes;
   const exampleList = wordDetail.includedByType('example');
 
-  const currentDefData = {
-    id: definitionList.data[currentDef]?.id,
-    data: wordDetail.getIncludedByTypeAndId(
-      'definition',
-      definitionList.data[currentDef]?.id
-    )?.attributes.definition,
-  };
+  const synonymsList =
+    wordDetail
+      .includedByType('synonym')
+      ?.filter(synonym => synonym.attributes.isSynonym)
+      .map(synonym => synonym.attributes) ?? [];
+  const antonymsList =
+    wordDetail
+      .includedByType('synonym')
+      ?.filter(synonym => !synonym.attributes.isSynonym)
+      .map(synonym => synonym.attributes) ?? [];
+
+  const definitionListLength = definitionList?.data?.length ?? 0;
+
+  const currentDefData =
+    definitionListLength > 0
+      ? {
+          id: definitionList.data[currentDef]?.id,
+          data: wordDetail.getIncludedByTypeAndId(
+            'definition',
+            definitionList.data[currentDef]?.id
+          )?.attributes.definition,
+        }
+      : {
+          id: '',
+          data: '',
+        };
 
   const handleClick = (next: number) => {
     const current = currentDef + next;
@@ -101,16 +121,20 @@ export function Learn() {
       >
         <div className=" relative z-50">
           <div className="flex items-center gap-4">
-            <div className="text-4xl font-black">{wordData.word}</div>
+            <div className="text-4xl font-black">
+              {wordData.attributes.word}
+            </div>
             <Button
-              onClick={playAudio.bind(null, wordData.word)}
+              onClick={playAudio.bind(null, wordData.attributes.word)}
               variant={'ghost'}
               size="icon"
             >
               <SpeakerLoudIcon width={20} height={20} />
             </Button>
           </div>
-          <div className="font-sans font-normal">[{wordData.phonetic}]</div>
+          <div className="font-sans font-normal">
+            [{wordData.attributes.phonetic}]
+          </div>
           <div className="flex items-center gap-2">
             <div className="font-display font-bold">{partOfSpeech?.posTag}</div>
             <TooltipProvider>
@@ -139,29 +163,31 @@ export function Learn() {
           <ChevronDownIcon width={30} height={30} />
         </motion.div>
       </motion.div>
-      <div className="flex items-center justify-center gap-16 font-display text-sm font-semibold">
-        <div
-          onClick={handleClick.bind(null, -1)}
-          className={cn(
-            'flex items-center hover:cursor-pointer',
-            currentDef == 0 && 'pointer-events-none text-slate-500'
-          )}
-        >
-          <TriangleLeftIcon width={40} height={40} />
-          <div>previous</div>
+      {definitionListLength > 1 && (
+        <div className="flex items-center justify-center gap-16 font-display text-sm font-semibold">
+          <div
+            onClick={handleClick.bind(null, -1)}
+            className={cn(
+              'flex items-center hover:cursor-pointer',
+              currentDef == 0 && 'pointer-events-none text-slate-500'
+            )}
+          >
+            <TriangleLeftIcon width={40} height={40} />
+            <div>previous</div>
+          </div>
+          <div
+            onClick={handleClick.bind(null, 1)}
+            className={cn(
+              'flex items-center hover:cursor-pointer',
+              currentDef >= definitionList.data.length - 1 &&
+                'pointer-events-none text-slate-500'
+            )}
+          >
+            <div>next</div>
+            <TriangleRightIcon width={40} height={40} />
+          </div>
         </div>
-        <div
-          onClick={handleClick.bind(null, 1)}
-          className={cn(
-            'flex items-center hover:cursor-pointer',
-            currentDef >= definitionList.data.length - 1 &&
-              'pointer-events-none text-slate-500'
-          )}
-        >
-          <div>next</div>
-          <TriangleRightIcon width={40} height={40} />
-        </div>
-      </div>
+      )}
 
       {/* TODO: Extract to a component */}
       <div className="relative flex items-center justify-center overflow-hidden text-lg font-bold transition-all">
@@ -196,26 +222,32 @@ export function Learn() {
             key={index}
             className="[&:not(:last-child)]:border-b [&:not(:last-child)]:border-slate-300 [&:not(:last-child)]:border-opacity-50"
             example={`“${example.attributes.example}”`}
-            word={wordData.word}
+            word={wordData.attributes.word}
           />
         ))}
       </div>
-      <div className="flex justify-between gap-4">
-        <Button className="w-full" variant={'secondary'} size={'lg'}>
-          Ignore
-        </Button>
-        <Button className="w-full" variant={'destructive'} size={'lg'}>
-          Hard
-        </Button>
-        <Button
-          className="w-full border-orange-800 bg-orange-500 hover:bg-orange-600"
-          size={'lg'}
-        >
-          Normal
-        </Button>
-        <Button className="w-full" size={'lg'}>
-          Easy
-        </Button>
+      <div>
+        <div className="vh-flex-column gap-2 mb-2">
+          <Synonym title="Synonyms" synonymsList={synonymsList} />
+          <Synonym title="Antonyms" synonymsList={antonymsList} />
+        </div>
+        <div className="flex justify-between gap-4">
+          <Button className="w-full" variant={'secondary'} size={'lg'}>
+            Ignore
+          </Button>
+          <Button className="w-full" variant={'destructive'} size={'lg'}>
+            Hard
+          </Button>
+          <Button
+            className="w-full border-orange-800 bg-orange-500 hover:bg-orange-600"
+            size={'lg'}
+          >
+            Normal
+          </Button>
+          <Button className="w-full" size={'lg'}>
+            Easy
+          </Button>
+        </div>
       </div>
     </div>
   );
