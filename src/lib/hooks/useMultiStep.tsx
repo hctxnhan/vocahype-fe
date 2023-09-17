@@ -2,8 +2,7 @@ import {
   ReactNode,
   createContext,
   useCallback,
-  useMemo,
-  useState,
+  useState
 } from 'react';
 
 interface IStepScreen {
@@ -25,32 +24,30 @@ export function useMultistep(
     onExit?: GenericEventHandler;
   }
 ) {
-  const options = useMemo(() => {
-    return optionsInput;
-  }, []);
+  const options = optionsInput
 
   const [currentStep, setCurrentStep] = useState<number>(0);
   const stepCount = options.length;
 
   const nextScreen = useCallback(
-    function () {
-      if (currentStep === stepCount - 1) configs?.onFinish?.();
-      const nextNonSkipStep = currentStep + 1;
+    function (e?: Event) {
+      e?.preventDefault();
+      if (currentStep === stepCount - 1) return configs?.onFinish?.();
+      const nextStep = currentStep + 1;
 
-      setCurrentStep(nextNonSkipStep);
+      setCurrentStep(nextStep);
     },
     [currentStep, configs?.onFinish, stepCount]
   );
 
   const prevScreen = useCallback(
-    function prevScreen() {
-      if (currentStep === 0) {
-        configs?.onExit?.();
-        return;
-      }
+    function prevScreen(e?: Event) {
+      e?.preventDefault();
 
-      const prevFirstNonSkipStep = currentStep - 1;
-      setCurrentStep(prevFirstNonSkipStep);
+      if (currentStep === 0) return configs?.onExit?.();
+
+      const prevStep = currentStep - 1;
+      setCurrentStep(prevStep);
     },
     [currentStep, configs?.onExit]
   );

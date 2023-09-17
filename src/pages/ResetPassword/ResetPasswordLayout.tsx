@@ -1,7 +1,8 @@
 import { PropsWithChildren } from 'react';
-import { Redirect } from 'wouter';
+import { Redirect, useLocation } from 'wouter';
 
 import { FillParent } from '@/components/layout/FillParent/FillParent';
+import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import {
   AuthState,
@@ -16,9 +17,14 @@ export function ResetPasswordLayout({
   children,
   showLoginText = true,
 }: ResetPasswordLayoutProps) {
+  const [_, navigate] = useLocation();
   const { authState } = useAuthState();
   if (authState === AuthState.LOADING) return null;
   if (authState === AuthState.SIGNED_IN) return <Redirect to="/" />;
+
+  function goToSignIn() {
+    navigate('/auth');
+  }
 
   return (
     <FillParent>
@@ -38,8 +44,15 @@ export function ResetPasswordLayout({
         </Tabs>
 
         {showLoginText && (
-          <div className="relative mt-2 text-center text-sm font-medium leading-9 text-sky-50">
-            If that not you, return to login here
+          <div className="relative mt-2 text-center text-sm leading-9 text-sky-50">
+            If that not you,{' '}
+            <Button
+              className="text-inherit underline"
+              variant="link"
+              onClick={goToSignIn as VoidFunction}
+            >
+              return to login
+            </Button>
           </div>
         )}
       </div>

@@ -29,6 +29,13 @@ const buttonVariants = cva(
         icon: 'h-10 w-10 border-0 hover:bg-neutral-100',
       },
     },
+    compoundVariants: [
+      {
+        variant: 'link',
+        size: 'default',
+        className: 'p-0 border-none outline-none underline-offset-2 h-fit normal-case text-brand-500',
+      },
+    ],
     defaultVariants: {
       variant: 'default',
       size: 'default',
