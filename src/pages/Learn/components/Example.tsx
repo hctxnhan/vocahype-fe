@@ -1,5 +1,6 @@
-import { cn } from '@/lib/utils/utils';
 import { useMemo } from 'react';
+
+import { cn } from '@/lib/utils/utils';
 
 interface ExampleProps extends React.HTMLAttributes<HTMLParagraphElement> {
   example: string;
