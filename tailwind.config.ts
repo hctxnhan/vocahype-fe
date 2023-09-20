@@ -1,7 +1,8 @@
-/** @type {import('tailwindcss').Config} */
-import colors from 'tailwindcss/colors';
+import type { Config } from 'tailwindcss'
+import colors from 'tailwindcss/colors'
+import animate from 'tailwindcss-animate'
 
-module.exports = {
+export default {
   content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
   darkMode: ['class'],
   theme: {
@@ -25,12 +26,12 @@ module.exports = {
       },
       keyframes: {
         'accordion-down': {
-          from: { height: 0 },
+          from: { height: '0' },
           to: { height: 'var(--radix-accordion-content-height)' },
         },
         'accordion-up': {
           from: { height: 'var(--radix-accordion-content-height)' },
-          to: { height: 0 },
+          to: { height: '0' },
         },
       },
       animation: {
@@ -39,5 +40,8 @@ module.exports = {
       },
     },
   },
-  plugins: [require('tailwindcss-animate')],
-};
+  plugins: [
+    animate,
+  ],
+} satisfies Config
+

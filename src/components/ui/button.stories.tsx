@@ -12,8 +12,16 @@ export const ButtonStory: Story = () => (
     <Button variant={'link'} size={'xl'}>
       Link
     </Button>
+    <Button variant={'link'}>
+      Link
+    </Button>
     <Button variant={'outline'} size={'xl'}>
       Outline
+    </Button>
+    <Button
+      color='pink'
+    >
+      Custom color
     </Button>
   </div>
 );

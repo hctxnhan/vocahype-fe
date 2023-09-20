@@ -24,6 +24,7 @@ import { useSetBreadcrumb } from '@/lib/hooks/useSetBreadcrumb';
 import { cn, playAudio } from '@/lib/utils/utils';
 
 import { Example } from './components/Example';
+import { LearnButton } from './components/LearnButton';
 import { Synonym } from './components/Synonym';
 
 const variants = {
@@ -57,9 +58,9 @@ export function Learn() {
     getWord.bind(null, { wordId: params?.wordId as string } ?? '')
   );
 
-  const wordData = wordDetail?.data[0];
+  const wordData = wordDetail?.data[0].attributes;
 
-  useSetBreadcrumb(['Learn', wordData?.attributes.word ?? '']);
+  useSetBreadcrumb(['Learn', wordData?.word ?? '']);
 
   if (isLoading)
     return (
@@ -90,16 +91,16 @@ export function Learn() {
   const currentDefData =
     definitionListLength > 0
       ? {
-          id: definitionList.data[currentDef]?.id,
-          data: wordDetail.getIncludedByTypeAndId(
-            'definition',
-            definitionList.data[currentDef]?.id
-          )?.attributes.definition,
-        }
+        id: definitionList.data[currentDef]?.id,
+        data: wordDetail.getIncludedByTypeAndId(
+          'definition',
+          definitionList.data[currentDef]?.id
+        )?.attributes.definition,
+      }
       : {
-          id: '',
-          data: '',
-        };
+        id: '',
+        data: '',
+      };
 
   const handleClick = (next: number) => {
     const current = currentDef + next;
@@ -122,10 +123,10 @@ export function Learn() {
         <div className=" relative z-50">
           <div className="flex items-center gap-4">
             <div className="text-4xl font-black">
-              {wordData.attributes.word}
+              {wordData.word}
             </div>
             <Button
-              onClick={playAudio.bind(null, wordData.attributes.word)}
+              onClick={playAudio.bind(null, wordData.word)}
               variant={'ghost'}
               size="icon"
             >
@@ -133,7 +134,7 @@ export function Learn() {
             </Button>
           </div>
           <div className="font-sans font-normal">
-            [{wordData.attributes.phonetic}]
+            [{wordData.phonetic}]
           </div>
           <div className="flex items-center gap-2">
             <div className="font-display font-bold">{partOfSpeech?.posTag}</div>
@@ -222,7 +223,7 @@ export function Learn() {
             key={index}
             className="[&:not(:last-child)]:border-b [&:not(:last-child)]:border-slate-300 [&:not(:last-child)]:border-opacity-50"
             example={`“${example.attributes.example}”`}
-            word={wordData.attributes.word}
+            word={wordData.word}
           />
         ))}
       </div>
@@ -231,23 +232,8 @@ export function Learn() {
           <Synonym title="Synonyms" synonymsList={synonymsList} />
           <Synonym title="Antonyms" synonymsList={antonymsList} />
         </div>
-        <div className="flex justify-between gap-4">
-          <Button className="w-full" variant={'secondary'} size={'lg'}>
-            Ignore
-          </Button>
-          <Button className="w-full" variant={'destructive'} size={'lg'}>
-            Hard
-          </Button>
-          <Button
-            className="w-full border-orange-800 bg-orange-500 hover:bg-orange-600"
-            size={'lg'}
-          >
-            Normal
-          </Button>
-          <Button className="w-full" size={'lg'}>
-            Easy
-          </Button>
-        </div>
+        
+        <LearnButton wordId={wordData.id} word={wordData.word} />
       </div>
     </div>
   );

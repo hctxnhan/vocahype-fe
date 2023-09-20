@@ -50,22 +50,25 @@ export function useAsyncAction<
   });
 
   const start = useCallback(
-    (args?: Parameters<typeof dispatch>) => {
+    (
+      args?: Parameters<typeof dispatch>,
+      fetchOptions: typeof options = options
+    ) => {
       dispatchFn({ type: ActionState.LOADING });
-      dispatch(...(args || []) as Parameters<T>)
+      dispatch(...((args || []) as Parameters<T>))
         .then(data => {
           dispatchFn({ type: ActionState.SUCCESS, data });
-          void options?.onSuccess?.(data as Awaited<ReturnType<T>>);
+          void fetchOptions?.onSuccess?.(data as Awaited<ReturnType<T>>);
         })
         .catch(error => {
           dispatchFn({
             type: ActionState.ERROR,
             data: error as E,
           });
-          void options?.onError?.(error as E);
+          void fetchOptions?.onError?.(error as E);
         });
     },
-    [dispatch]
+    [dispatch, options]
   );
 
   return {
