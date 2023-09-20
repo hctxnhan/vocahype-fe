@@ -1,26 +1,23 @@
+import { useState } from 'react';
 import { Redirect } from 'wouter';
 
 import { FillParent } from '@/components/layout/FillParent/FillParent';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-// import { signInWithGoogle } from '@/lib/configs/firebaseAuth';
 import {
   AuthState,
   useAuthState,
 } from '@/lib/hooks/firebase/auth/useAuthState';
-// import { useAsyncAction } from '@/lib/hooks/useAsyncAction';
 
-import { SignIn } from './components/SignIn';
-import { SignUp } from './components/SignUp';
+import { SignIn } from './components/SignIn/SignIn';
+import { SignUp } from './components/SignUp/SignUp';
 
 export function Authentication() {
-  // const { start } = useAsyncAction(signInWithGoogle);
+  const [activeTab, setActiveTab] = useState<string>('signIn');
+
   const { authState } = useAuthState();
+
   if (authState === AuthState.LOADING) return null;
   if (authState === AuthState.SIGNED_IN) return <Redirect to="/" />;
-
-  // function login() {
-  //   start();
-  // }
 
   return (
     <FillParent>
@@ -32,40 +29,18 @@ export function Authentication() {
             The only English learning app that you’ve ever need
           </div>
         </div>
-        <Tabs defaultValue="signIn">
+        <Tabs value={activeTab} onValueChange={setActiveTab}>
           <TabsList>
             <TabsTrigger value="signIn">Sign In</TabsTrigger>
             <TabsTrigger value="signUp">Sign Up</TabsTrigger>
           </TabsList>
           <TabsContent value="signIn">
-            <SignIn />
+            <SignIn goToSignUp={() => setActiveTab('signUp')} />
           </TabsContent>
           <TabsContent value="signUp">
-            <SignUp />
+            <SignUp goToSignIn={() => setActiveTab('signIn')} />
           </TabsContent>
         </Tabs>
-
-        {/* <div className="relative mt-8 text-center text-sm font-medium text-slate-500/60">
-          Or continue with
-        </div>
-
-        <div className="mt-2 flex w-full gap-2">
-          <Button
-            disabled={isLoading}
-            className="flex-1 bg-[#f44242] text-white"
-            size="sm"
-            onClick={login}
-          >
-            Google
-          </Button>
-          <Button
-            disabled={true}
-            size="sm"
-            className="flex-1 bg-[#3B5998] text-white"
-          >
-            Facebook
-          </Button>
-        </div> */}
       </div>
     </FillParent>
   );

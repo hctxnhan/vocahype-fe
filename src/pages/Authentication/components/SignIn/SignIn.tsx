@@ -1,9 +1,10 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { AuthErrorCodes } from 'firebase/auth';
 import { useForm } from 'react-hook-form';
-import { Link, useLocation } from 'wouter';
+import { useLocation } from 'wouter';
 import { z } from 'zod';
 
+import { Button } from '@/components/ui/button';
 import {
   Card,
   CardContent,
@@ -20,13 +21,16 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import { Link } from '@/components/ui/link';
 import { LoadingButton } from '@/components/ui/loading-button';
 import { signInUser } from '@/lib/configs/firebaseAuth';
 import { signInFormScheme } from '@/lib/formScheme/signInFormScheme';
 import { useAsyncAction } from '@/lib/hooks/useAsyncAction';
 import { useToast } from '@/lib/hooks/useToast';
 
-export function SignIn() {
+import { AuthenticationThirdParty } from '../AuthenticationThirdParty';
+
+export function SignIn(props: { goToSignUp: VoidFunction }) {
   const form = useForm<z.infer<typeof signInFormScheme>>({
     resolver: zodResolver(signInFormScheme),
   });
@@ -36,6 +40,7 @@ export function SignIn() {
   const { start, isLoading } = useAsyncAction<typeof signInUser>(signInUser, {
     onSuccess: () => {
       toast.success({
+        title: 'Welcome back',
         msg: 'Successfully signed in',
       });
       navigate('/');
@@ -78,7 +83,13 @@ export function SignIn() {
                 If you don’t have account. Just register one now before too
                 late. Just kidding, it never too late to use VocaHype.
               </div>
-              <div>Click here to quickly set your account up.</div>
+              <div>
+                Click{' '}
+                <Button onClick={props.goToSignUp} variant={'link'}>
+                  here
+                </Button>{' '}
+                to quickly set your account up.
+              </div>
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-2 pt-0">
@@ -102,7 +113,13 @@ export function SignIn() {
                 name="password"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Password</FormLabel>
+                    <div className="flex items-center justify-between">
+                      <FormLabel>Password</FormLabel>
+                      <div className="text-center text-sm text-slate-600">
+                        Forgot password?{' '}
+                        <Link href="/auth/reset-password">Here</Link>
+                      </div>
+                    </div>
                     <FormControl>
                       <Input disabled={isLoading} type="password" {...field} />
                     </FormControl>
@@ -121,12 +138,7 @@ export function SignIn() {
               >
                 Sign in
               </LoadingButton>
-              <div className="text-center text-sm text-slate-600">
-                Forgot password?{' '}
-                <Link href="/auth/reset-password">
-                  <a className="font-bold hover:cursor-pointer">Reset</a>
-                </Link>
-              </div>
+              <AuthenticationThirdParty />
             </div>
           </CardFooter>
         </form>
