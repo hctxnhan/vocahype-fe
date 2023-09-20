@@ -32,7 +32,8 @@
     /* Paths */
     "baseUrl": ".",
     "paths": {
-      "@/*": ["src/*"]
+      "@/*": ["src/*"],
+      "~/*": ["./*"],
     }
   },
   "include": ["src", "vite.config.ts", ".eslintrc.cjs", "tailwind.config.js"],

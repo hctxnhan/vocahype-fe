@@ -1,5 +1,6 @@
-import { cn } from '@/lib/utils/utils';
 import { AnimatePresence, motion } from 'framer-motion';
+
+import { cn } from '@/lib/utils/utils';
 
 export function FillParent({
   className,
