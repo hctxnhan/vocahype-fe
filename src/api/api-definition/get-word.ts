@@ -8,6 +8,10 @@ export interface Params {
   wordId: string;
 }
 
+export interface WordListParams {
+  page: number;
+}
+
 export interface Response {
   data: {
     type: 'word';
