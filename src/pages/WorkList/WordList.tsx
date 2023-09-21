@@ -12,7 +12,7 @@ import { WordItem } from "./components/WordItem";
 export function WordList () {
 
 	const toast = useToast();
-	const [page, setPage] = useState(0)
+	const [page] = useState(0)
 	const [words, setWords] = useState<APIResponse['data']>([])
 
 	const { data, isLoading, isValidating } = useSWR(
