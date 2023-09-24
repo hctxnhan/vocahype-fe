@@ -34,7 +34,7 @@ export interface Response {
       };
     };
   }[];
-  meta?: Metadata;
+
   included: [
     | {
         type: 'definition';

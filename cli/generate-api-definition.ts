@@ -96,32 +96,31 @@ function generateIncludedRelationship(data: APIData): string {
   return includedRelationshipType.join('|\n');
 }
 
-function generateResponseInterface(api: API['response']['data']) {
-  const apiRelationship = Object.keys(api.relationships ?? {});
+function generateResponseInterface(api: API['response']) {
+  const apiRelationship = Object.keys(api.data.relationships ?? {});
 
   const relationshipType = apiRelationship.map(key => {
     return `${key}: {
       data: {
-        type: '${api.relationships[key].name}';
+        type: '${api.data.relationships[key].name}';
         id: string;
-      }${api.relationships[key].cardinality === 'one' ? '' : '[]'}
+      }${api.data.relationships[key].cardinality === 'one' ? '' : '[]'}
     }`;
   });
 
-  // @ts-ignore
-  const includedRelationshipType = generateIncludedRelationship(api);
+  const includedRelationshipType = generateIncludedRelationship(api.data);
 
   const responseType = `
     export interface Response {
       data: {
-        type: '${api.name}';
+        type: '${api.data.name}';
         id: string;
-        attributes: ${api.type};
+        attributes: ${api.data.type};
         relationships: {
           ${relationshipType.join(',\n')}
         };
       }[],
-      meta?: Metadata;
+      ${api.meta ? 'meta?: Metadata;' : ''}
       included: [${includedRelationshipType}]
     }
 `;
@@ -184,7 +183,7 @@ function generateTsDefinitionForAPI(api: API): string {
   }
   `;
 
-  const responseType = generateResponseInterface(api.response.data);
+  const responseType = generateResponseInterface(api.response);
   const metadataType = generateMetadata(api.response.meta);
 
   const importType = generateImportType(responseType);

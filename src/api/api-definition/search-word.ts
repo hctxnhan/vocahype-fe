@@ -19,7 +19,7 @@ export interface Response {
       };
     };
   }[];
-  meta?: Metadata;
+
   included: [
     {
       type: 'pos';

@@ -48,8 +48,9 @@ export function WordList() {
     }
   };
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const handleLearnWord = (id: string, index: number) => {
+    // eslint-disable-next-line no-console
+    console.log(id, index);
     void mutate();
   };
 
