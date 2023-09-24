@@ -8,10 +8,6 @@ export interface Params {
   wordId: string;
 }
 
-export interface WordListParams {
-  page: number;
-}
-
 export interface Response {
   data: {
     type: 'word';
@@ -68,9 +64,9 @@ export interface Response {
   ];
 }
 
-type Included = Response['included'][0];
-type Relationships = Response['data'][0]['relationships'];
-type Data = Response['data'][0];
+export type Included = Response['included'][0];
+export type Relationships = Response['data'][0]['relationships'];
+export type Data = Response['data'][0];
 
 export class APIResponse {
   constructor(private response: Response) {}

@@ -130,10 +130,12 @@ function generateAdditionalType(api: API['response']['data']) {
 
   return `
     ${
-      includedRelationshipType ? `type Included = Response['included'][0];` : ''
+      includedRelationshipType
+        ? `export type Included = Response['included'][0];`
+        : ''
     }
-    type Relationships = Response['data'][0]['relationships'];
-    type Data = Response['data'][0];
+    export type Relationships = Response['data'][0]['relationships'];
+    export type Data = Response['data'][0];
   `;
 }
 

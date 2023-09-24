@@ -1,13 +1,14 @@
-import { Data } from "@/api/api-definition/get-word-list";
+import { APIResponse } from "@/api/api-definition/get-word-list";
 import { learnWord } from "@/api/words/learnWord";
+import { Button } from "@/components/ui/button";
 import { useAsyncAction } from "@/lib/hooks/useAsyncAction";
 import { useToast } from "@/lib/hooks/useToast";
 import { WordLevel } from "@/lib/interfaces/word";
 import { useLocation } from "wouter";
 
 interface WordItemProps {
-  data: Data;
-  onLearnWord: (id: string) => void
+  data: APIResponse['data'][0];
+  onLearnWord: (id: string, index: number) => void
 }
 
 export function WordItem ({ data, onLearnWord }: WordItemProps) {
@@ -29,7 +30,7 @@ export function WordItem ({ data, onLearnWord }: WordItemProps) {
       start([id, level], {
         onSuccess: () => {
           toast.success({ title: `Word "${word}" is added to ${level.toUpperCase()} list` });
-          onLearnWord(id);
+          onLearnWord(id, 0);
         },
         onError: () => {
           toast.error({ title: `Failed to add "${word}" to ${level} list` });
@@ -45,10 +46,10 @@ export function WordItem ({ data, onLearnWord }: WordItemProps) {
         <div className="text-slate-400 text-sm font-bold">2 days overdue</div>
       </div>
       <div className="flex justify-between">
-        <div onClick={handleLearn('ignore')} className="text-rose-600 text-sm font-bold hover:cursor-pointer">IGNORE</div>
-        <div className="text-slate-500 text-sm font-bold hover:cursor-pointer">NEXT WEEK</div>
-        <div className="text-slate-500 text-sm font-bold hover:cursor-pointer">TOMORROW</div>
-        <div onClick={handleClickLearnWord} className="text-sky-600 text-sm font-bold hover:cursor-pointer">LEARN</div>
+        <Button variant={'link'} onClick={handleLearn('ignore')} className="text-rose-600 text-sm font-bold hover:cursor-pointer">IGNORE</Button>
+        <Button variant={'link'} className="text-slate-500 text-sm font-bold hover:cursor-pointer">NEXT WEEK</Button>
+        <Button variant={'link'} className="text-slate-500 text-sm font-bold hover:cursor-pointer">TOMORROW</Button>
+        <Button variant={'link'} onClick={handleClickLearnWord} className="text-sky-600 text-sm font-bold hover:cursor-pointer">LEARN</Button>
       </div>
     </div>
   )

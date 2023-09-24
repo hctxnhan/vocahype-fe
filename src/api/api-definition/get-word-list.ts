@@ -4,8 +4,9 @@ import { Example } from '@/api/model/Example';
 import { PartOfSpeech } from '@/api/model/PartOfSpeech';
 import { Synonym } from '@/api/model/Synonym';
 
-export interface WordListParams {
-  page: number;
+export interface Params {
+  offset: number;
+  limit: number;
 }
 
 export interface Response {
@@ -41,11 +42,9 @@ export interface Response {
         attributes: Definition;
         relationships: {
           examples: {
-            data: {
-              type: 'example';
-              id: string;
-            }[];
-          };
+            type: 'example';
+            id: string;
+          }[];
         };
       }
     | {
@@ -64,22 +63,11 @@ export interface Response {
         attributes: Synonym;
       },
   ];
-  meta: {
-    pagination: {
-      first: number;
-      last: number;
-      next?: number;
-      page: number;
-      size: number;
-      total: number;
-    };
-  };
 }
 
-type Included = Response['included'][0];
-type Relationships = Response['data'][0]['relationships'];
+export type Included = Response['included'][0];
+export type Relationships = Response['data'][0]['relationships'];
 export type Data = Response['data'][0];
-type Meta = Response['meta'];
 
 export class APIResponse {
   constructor(private response: Response) {}
@@ -98,10 +86,6 @@ export class APIResponse {
 
   get included(): Included[] {
     return this.response.included;
-  }
-
-  get meta(): Meta {
-    return this.response.meta;
   }
 
   includedByType<T extends Included['type']>(
