@@ -8,7 +8,7 @@ import { KnowledgeCheck } from '@/pages/KnowledgeCheck/KnowledgeCheck';
 import { Learn } from '@/pages/Learn/Learn';
 import { ProfileInfo } from '@/pages/ProfileInfo/ProfileInfo';
 import { SearchResult } from '@/pages/Search/SearchResult';
-import { WordList } from '@/pages/WorkList/WordList';
+import { WordList } from '@/pages/WordList/WordList';
 
 export function MainLayout () {
 	return (
