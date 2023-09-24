@@ -1,1 +1,1 @@
-export type WordLevel = 'easy' | 'hard' | 'normal' | 'mastered' | 'ignore' | 'learn'
+export type WordLevel = 'easy' | 'hard' | 'normal' | 'mastered' | 'ignore';

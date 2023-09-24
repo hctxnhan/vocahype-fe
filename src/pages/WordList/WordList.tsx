@@ -1,17 +1,13 @@
-import { APIResponse } from "@/api/api-definition/get-word";
-import { getLearnWordList, learnWord } from "@/api/words/learnWord";
+import { APIResponse } from "@/api/api-definition/get-word-list";
+import { getLearnWordList } from "@/api/words/learnWord";
 import { FillParent } from "@/components/layout/FillParent/FillParent";
 import { Loading } from "@/components/layout/Loading/Loading";
-import { useAsyncAction } from "@/lib/hooks/useAsyncAction";
-import { useToast } from "@/lib/hooks/useToast";
-import { WordLevel } from "@/lib/interfaces/word";
 import { WheelEvent, useEffect, useState } from "react";
 import useSWR from "swr";
 import { WordItem } from "./components/WordItem";
 
 export function WordList () {
 
-  const toast = useToast();
   const [page] = useState(0)
   const [words, setWords] = useState<APIResponse['data']>([])
 
@@ -21,20 +17,6 @@ export function WordList () {
     ([, page]) =>
       getLearnWordList({ page })
   );
-  const { start } = useAsyncAction(learnWord);
-
-  const handleClickLearn =
-    (level: WordLevel, wordId: string, word: string) => () => {
-      start([wordId, level], {
-        onSuccess: () => {
-          toast.success({ title: `Word "${word}" is added to ${level.toUpperCase()} list` });
-          setWords(words.filter(item => item.attributes.id != wordId))
-        },
-        onError: () => {
-          toast.error({ title: `Failed to add "${word}" to ${level} list` });
-        },
-      });
-    };
 
   const handleScroll = (event: WheelEvent) => {
     const container = event.currentTarget;
@@ -45,6 +27,10 @@ export function WordList () {
       behavior: 'smooth'
     });
   };
+
+  const handleLearnWord = (id: string) => {
+    setWords(words.filter(item => item.attributes.id != id))
+  }
 
   useEffect(() => {
     if (data) {
@@ -69,11 +55,7 @@ export function WordList () {
       </div>
       <div onWheel={handleScroll} className="flex gap-2 overflow-auto">
         {words.length ?
-          words?.map(word => <WordItem onLearn={
-            handleClickLearn('normal', word.attributes.id, word.attributes.word)
-          } onIgnore={
-            handleClickLearn('ignore', word.attributes.id, word.attributes.word)
-          } word={word.attributes.word} key={word.id} />)
+          words?.map(word => <WordItem onLearnWord={handleLearnWord} data={word} key={word.id} />)
           : <div className="w-full text-center h-[350px]">Not data display</div>}
       </div>
     </div>
