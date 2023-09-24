@@ -5,7 +5,7 @@ import { Loading } from "@/components/layout/Loading/Loading";
 import { useAsyncAction } from "@/lib/hooks/useAsyncAction";
 import { useToast } from "@/lib/hooks/useToast";
 import { WordLevel } from "@/lib/interfaces/word";
-import { useEffect, useState } from "react";
+import { WheelEvent, useEffect, useState } from "react";
 import useSWR from "swr";
 import { WordItem } from "./components/WordItem";
 
@@ -14,6 +14,7 @@ export function WordList () {
 	const toast = useToast();
 	const [page] = useState(0)
 	const [words, setWords] = useState<APIResponse['data']>([])
+
 
 	const { data, isLoading, isValidating } = useSWR(
 		['/words/learn', page],
@@ -34,6 +35,16 @@ export function WordList () {
 				},
 			});
 		};
+
+	const handleScroll = (event: WheelEvent) => {
+		const container = event.currentTarget;
+		const scrollAmount = event.deltaY;
+		container.scrollTo({
+			top: 0,
+			left: container.scrollLeft + scrollAmount,
+			behavior: 'smooth'
+		});
+	};
 
 	useEffect(() => {
 		if (data) {
@@ -56,7 +67,7 @@ export function WordList () {
 				<div className="text-sky-700 text-[32px] font-bold leading-normal">Keep up the good work, Nhan!</div>
 				<div className="text-lg text-slate-600">You have 10 words in progress today, 3 words have due and 3 more words to learn</div>
 			</div>
-			<div className="flex gap-2 overflow-auto">
+			<div onWheel={handleScroll} className="flex gap-2 overflow-auto">
 				{words.length ?
 					words?.map(word => <WordItem onLearn={
 						handleClickLearn('normal', word.attributes.id, word.attributes.word)
