@@ -23,6 +23,9 @@ interface API {
   };
   response: {
     data: APIData;
+    meta?: {
+      pagination?: boolean;
+    }
   };
 }
 
@@ -118,11 +121,40 @@ function generateResponseInterface(api: API['response']['data']) {
           ${relationshipType.join(',\n')}
         };
       }[],
+      meta?: Metadata;
       included: [${includedRelationshipType}]
     }
 `;
 
   return responseType;
+}
+
+
+function generatePaginationMetadata() {
+  return `
+    pagination: {
+      first:number;
+      last:number;
+      next:number;
+      page:number;
+      size:number;
+      total:number;
+    }
+  `
+}
+
+function generateMetadata(api: API['response']['meta']) {
+  if (!api) {
+    return '';
+  }
+
+  const paginationMetadata = api.pagination ? generatePaginationMetadata() : '';
+
+  return `
+    export interface Metadata {
+      ${paginationMetadata}
+    }
+  `
 }
 
 function generateAdditionalType(api: API['response']['data']) {
@@ -153,12 +185,14 @@ function generateTsDefinitionForAPI(api: API): string {
   `;
 
   const responseType = generateResponseInterface(api.response.data);
+  const metadataType = generateMetadata(api.response.meta);
 
   const importType = generateImportType(responseType);
 
   return `
   ${importType}
   ${requestType}
+  ${metadataType}
   ${responseType}
   ${generateAdditionalType(api.response.data)}
   ${generateResponseClass(api.response.data)}

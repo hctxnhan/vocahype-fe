@@ -9,6 +9,17 @@ export interface Params {
   limit: number;
 }
 
+export interface Metadata {
+  pagination: {
+    first: number;
+    last: number;
+    next: number;
+    page: number;
+    size: number;
+    total: number;
+  };
+}
+
 export interface Response {
   data: {
     type: 'word';
@@ -35,6 +46,7 @@ export interface Response {
       };
     };
   }[];
+  meta?: Metadata;
   included: [
     | {
         type: 'definition';

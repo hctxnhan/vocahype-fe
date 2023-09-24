@@ -9,6 +9,7 @@ export interface Response {
     attributes: WordKnowledgeCheck;
     relationships: {};
   }[];
+  meta?: Metadata;
   included: [];
 }
 

@@ -17,7 +17,7 @@ export function Breadcrumb({ children, className }: BreadCrumbProps) {
     <div className={cn('flex', className)}>
       {getValidChildren.map((child, index) => {
         return (
-          <div className="flex items-center">
+          <div className="flex items-center" key={index}>
             {cloneElement(child, { key: index })}
             {index !== length - 1 && (
               <div className="px-0.5 font-medium">
