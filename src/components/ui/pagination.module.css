@@ -1,0 +1,3 @@
+.paginationPageSizeValue span {
+  @apply font-medium text-neutral-900;
+}

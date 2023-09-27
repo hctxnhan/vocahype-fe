@@ -2,7 +2,10 @@
   "description": "API for search a word",
   "request": {
     "parameters": {
-      "word": "string"
+      "word": "string",
+      "exact": "string",
+      "'page[offset]'": "string",
+      "'page[limit]'": "string"
     }
   },
   "response": {

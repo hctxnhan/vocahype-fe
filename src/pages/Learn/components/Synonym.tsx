@@ -14,11 +14,17 @@ export function Synonym({
       <>
         <div>
           <p className="font-display font-bold">{title}</p>
-          {synonymsList.map(synonym => (
-            <Link key={synonym.id} href={`/words/${synonym.id}`}>
-              <a className="text-blue-500 hover:underline">{synonym.synonym}</a>
-            </Link>
-          ))}
+          <div
+            className='flex flex-wrap gap-2 mt-2'
+          >
+            {synonymsList.map(synonym => (
+              <Link key={synonym.id} href={`/words/${synonym.id}`}>
+                <a className="text-blue-500 hover:underline">
+                  {synonym.synonym}
+                </a>
+              </Link>
+            ))}
+          </div>
         </div>
       </>
     )
