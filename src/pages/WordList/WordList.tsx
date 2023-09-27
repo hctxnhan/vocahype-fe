@@ -48,6 +48,7 @@ export function WordList () {
 
   const handleLearnWord = (id: string, index: number) => {
     // eslint-disable-next-line no-console
+    console.log(id, index)
     void mutate();
   };
 

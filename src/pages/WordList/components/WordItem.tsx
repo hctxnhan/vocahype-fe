@@ -71,7 +71,7 @@ export function WordItem ({ data, dueDate, status, onLearnWord }: WordItemProps)
   return (
     <div className="my-8 flex h-[350px] w-[350px] flex-shrink-0 flex-grow-0 basis-auto flex-col justify-between rounded-lg border-2 border-slate-300 p-4">
       <div className="flex flex-col gap-2">
-        <div className="text-2xl font-bold text-sky-700">{word}</div>
+        <div className="text-2xl font-bold text-brand-700">{word}</div>
         <div className={cn("text-base font-bold ", statusColor)}>{status.toUpperCase()}</div>
         {dueDate && <div className="text-sm font-medium text-slate-400">{dayjs().diff(dayjs(dueDate), 'd')} days overdue</div>}
       </div>
@@ -100,7 +100,7 @@ export function WordItem ({ data, dueDate, status, onLearnWord }: WordItemProps)
         <Button
           variant={'link'}
           onClick={handleClickLearnWord}
-          className="text-sm font-bold text-sky-600"
+          className="text-sm font-bold text-brand-600"
         >
           LEARN
         </Button>
