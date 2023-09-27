@@ -1,5 +1,4 @@
 import * as dayjs from 'dayjs';
-import { useMemo } from 'react';
 import { useLocation } from 'wouter';
 
 import { Word } from '@/api/model/Word';
