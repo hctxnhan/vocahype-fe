@@ -1,26 +1,48 @@
 import { SpeakerLoudIcon } from '@radix-ui/react-icons';
+import { useState } from 'react';
 import useSWR from 'swr';
 import { useLocation } from 'wouter';
 
 import { searchWord } from '@/api/words/searchWord';
 import { FillParent } from '@/components/layout/FillParent/FillParent';
 import { Loading } from '@/components/layout/Loading/Loading';
+import { Button } from '@/components/ui/button';
+import { Pagination, PaginationState } from '@/components/ui/pagination';
 import { useRoute } from '@/lib/hooks/useSearchParams';
 import { useSetBreadcrumb } from '@/lib/hooks/useSetBreadcrumb';
 
 export function SearchResult() {
   const { params } = useRoute<{
     search: string;
+    exact: string;
+    'page[offset]': string;
+    'page[limit]': string;
   }>('/words');
   const word = params?.search;
 
+  const [totalPage, setTotalPage] = useState(1);
+
   const [, navigate] = useLocation();
   const { data: searchResult, isLoading } = useSWR(
-    ['words/knowledge-test', word],
+    [
+      'words/knowledge-test',
+      word,
+      params?.exact ?? 'false',
+      params?.['page[offset]'] ?? '1',
+      params?.['page[limit]'] ?? '10',
+    ],
     ([, word]) =>
       searchWord({
         word,
-      })
+        exact: params?.exact ?? 'false',
+        'page[limit]': params?.['page[limit]'] ?? '10',
+        'page[offset]': params?.['page[offset]'] ?? '1',
+      }),
+    {
+      onSuccess: data => {
+        setTotalPage(data.meta?.pagination.last ?? 1);
+      },
+    }
   );
 
   useSetBreadcrumb(['Search', word ?? '']);
@@ -29,16 +51,27 @@ export function SearchResult() {
     navigate(`/words/${wordId}`);
   }
 
-  if (isLoading)
-    return (
-      <FillParent>
-        <Loading />
-      </FillParent>
-    );
+  function onChangePagination(state: PaginationState) {
+    const searchParams = new URLSearchParams({
+      search: word,
+      exact: params?.exact ?? 'false',
+      'page[offset]': String(state.page),
+      'page[limit]': String(state.limit),
+    });
+    navigate(`/words?${searchParams.toString()}`);
+  }
+
+  function playPronunciation(word: string) {
+    return (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+      e.stopPropagation();
+      const utterance = new SpeechSynthesisUtterance(word);
+      speechSynthesis.speak(utterance);
+    };
+  }
 
   const wordList = searchResult?.data;
 
-  if (!wordList?.length)
+  if (!wordList?.length && !isLoading)
     return (
       <div>
         <p className="mb-2 text-lg">
@@ -53,32 +86,65 @@ export function SearchResult() {
       <p className="mb-6 text-lg">
         Search suggestion for <b>"{word}"</b>
       </p>
-      <div className="flex flex-1 basis-0 flex-col gap-2 overflow-auto">
-        {wordList.map(word => (
-          <div
-            onClick={() => selectWord(word.id)}
-            className="mr-2 flex cursor-pointer flex-col gap-2 rounded-md border-b-[6px] border-b-transparent px-8 py-4 transition hover:border-b-brand-600 hover:bg-brand-500 hover:text-sky-50"
-            key={word.id}
-          >
-            <div className="flex items-baseline gap-4">
-              <p className="text-2xl font-semibold">{word.attributes.word}</p>
-              <p>
-                {
-                  searchResult?.getIncludedByTypeAndId(
-                    'pos',
-                    word.relationships.pos?.data.id
-                  )?.attributes.description
-                }
-              </p>
-            </div>
-            <div className="flex items-center gap-4">
-              {word.attributes.phonetic ? (
-                <p>[{word.attributes.phonetic}]</p>
-              ) : null}
-              <SpeakerLoudIcon width={16} height={16} />
-            </div>
+      <div className="relative h-full flex-1 basis-0 overflow-auto">
+        {!isLoading && wordList?.length ? (
+          <div className="flex w-full flex-col">
+            {wordList.map(word => (
+              <Button
+                variant={'ghost'}
+                onClick={() => selectWord(word.id)}
+                className="my-1 ml-1 mr-2 flex h-fit cursor-pointer flex-col gap-2 rounded-md border-b-[6px] border-b-transparent bg-neutral-100 px-8 py-4 transition hover:border-b-brand-600 hover:bg-brand-500 hover:text-sky-50"
+                key={word.id}
+              >
+                <div className="center gap-4">
+                  <p className="text-2xl font-semibold">
+                    {word.attributes.word}
+                  </p>
+                  {
+                    searchResult?.getIncludedByTypeAndId(
+                      'pos',
+                      word.relationships.pos?.data.id
+                    )?.attributes.description
+                  }
+                </div>
+                <div className="center gap-2">
+                  {word.attributes.phonetic ? (
+                    <p>[{word.attributes.phonetic}]</p>
+                  ) : null}
+                  <Button
+                    onClick={playPronunciation(word.attributes.word)}
+                    size={'icon'}
+                    variant={'ghost'}
+                    className="flex items-center gap-4 transition-none"
+                  >
+                    <SpeakerLoudIcon width={16} height={16} />
+                  </Button>
+                </div>
+              </Button>
+            ))}
           </div>
-        ))}
+        ) : (
+          <FillParent>
+            <Loading />
+          </FillParent>
+        )}
+      </div>
+      <div className="pt-6">
+        <Pagination
+          defaultValue={{
+            page: Number(params?.['page[offset]'] ?? '1'),
+            limit: Number(params?.['page[limit]'] ?? '10'),
+            total: 1,
+          }}
+          onChange={onChangePagination}
+        >
+          <div className="center gap-2">
+            <Pagination.PageSize />
+            <Pagination.Prev />
+            <Pagination.PageNumber totalPage={totalPage} />
+            <Pagination.Next />
+          </div>
+        </Pagination>
       </div>
     </div>
   );

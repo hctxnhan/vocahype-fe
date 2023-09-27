@@ -3,6 +3,19 @@ import { PartOfSpeech } from '@/api/model/PartOfSpeech';
 
 export interface Params {
   word: string;
+  exact: string;
+  'page[offset]': string;
+  'page[limit]': string;
+}
+
+export interface Metadata {
+  pagination: {
+    first: number;
+    last: number;
+    page: number;
+    size: number;
+    total: number;
+  };
 }
 
 export interface Response {
@@ -19,7 +32,7 @@ export interface Response {
       };
     };
   }[];
-
+  meta: Metadata;
   included: [
     {
       type: 'pos';
@@ -46,6 +59,10 @@ export class APIResponse {
 
   get attributes(): Data['attributes'] {
     return this.response.data[0].attributes;
+  }
+
+  get meta(): Metadata {
+    return this.response.meta;
   }
 
   get included(): Included[] {

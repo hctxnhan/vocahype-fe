@@ -14,7 +14,6 @@ export interface Metadata {
   pagination: {
     first: number;
     last: number;
-    next: number;
     page: number;
     size: number;
     total: number;
@@ -53,7 +52,7 @@ export interface Response {
       };
     };
   }[];
-  meta?: Metadata;
+  meta: Metadata;
   included: [
     | {
         type: 'definition';
@@ -106,6 +105,10 @@ export class APIResponse {
 
   get attributes(): Data['attributes'] {
     return this.response.data[0].attributes;
+  }
+
+  get meta(): Metadata {
+    return this.response.meta;
   }
 
   get included(): Included[] {

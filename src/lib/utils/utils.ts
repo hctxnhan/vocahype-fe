@@ -19,3 +19,7 @@ export function getFirstNLetter(value: string, n: number) {
   }
   return result.join('');
 }
+
+export const preventPropagation = {
+  onClick: (e: React.MouseEvent) => e.stopPropagation(),
+}

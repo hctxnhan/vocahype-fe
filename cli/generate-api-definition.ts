@@ -120,8 +120,8 @@ function generateResponseInterface(api: API['response']) {
           ${relationshipType.join(',\n')}
         };
       }[],
-      ${api.meta ? 'meta?: Metadata;' : ''}
-      included: [${includedRelationshipType}]
+      ${api.meta ? 'meta: Metadata;' : ''}
+      included: [${includedRelationshipType}],
     }
 `;
 
@@ -134,7 +134,6 @@ function generatePaginationMetadata() {
     pagination: {
       first:number;
       last:number;
-      next:number;
       page:number;
       size:number;
       total:number;
@@ -194,12 +193,12 @@ function generateTsDefinitionForAPI(api: API): string {
   ${metadataType}
   ${responseType}
   ${generateAdditionalType(api.response.data)}
-  ${generateResponseClass(api.response.data)}
+  ${generateResponseClass(api.response)}
   `;
 }
 
-function generateResponseClass(api: API['response']['data']) {
-  const includedRelationshipType = generateIncludedRelationship(api);
+function generateResponseClass(api: API['response']) {
+  const includedRelationshipType = generateIncludedRelationship(api.data);
 
   const content = `
     export class APIResponse {
@@ -216,6 +215,11 @@ function generateResponseClass(api: API['response']['data']) {
       get attributes(): Data['attributes'] {
         return this.response.data[0].attributes;
       }
+
+      ${api.meta ? `get meta(): Metadata {
+        return this.response.meta;
+      }` : ''}
+
       ${
         includedRelationshipType
           ? `
