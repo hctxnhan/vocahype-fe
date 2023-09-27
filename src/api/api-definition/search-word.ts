@@ -3,6 +3,9 @@ import { PartOfSpeech } from '@/api/model/PartOfSpeech';
 
 export interface Params {
   word: string;
+  exact: string;
+  'page[offset]': string;
+  'page[limit]': string;
 }
 
 export interface Response {
@@ -26,11 +29,18 @@ export interface Response {
       attributes: PartOfSpeech;
     },
   ];
+  meta: {
+    pagination: {
+      total: number;
+      last: number;
+    }
+  }
 }
 
 type Included = Response['included'][0];
 type Relationships = Response['data'][0]['relationships'];
 type Data = Response['data'][0];
+type Meta = Response['meta'];
 
 export class APIResponse {
   constructor(private response: Response) {}
@@ -49,6 +59,10 @@ export class APIResponse {
 
   get included(): Included[] {
     return this.response.included;
+  }
+
+  get meta(): Meta {
+    return this.response.meta;
   }
 
   includedByType<T extends Included['type']>(
