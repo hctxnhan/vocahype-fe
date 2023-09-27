@@ -4,24 +4,22 @@ import useSWRInfinite from 'swr/infinite';
 import { APIResponse } from '@/api/api-definition/get-word-list';
 import { FillParent } from '@/components/layout/FillParent/FillParent';
 import { Loading } from '@/components/layout/Loading/Loading';
-import { fetcher } from '@/lib/configs/axios';
 import { useAuthState } from '@/lib/hooks/firebase/auth/useAuthState';
 import { useSetBreadcrumb } from '@/lib/hooks/useSetBreadcrumb';
 
+import { getLearnWordList } from '@/api/words/learnWord';
+import { WORD_STATUS_LEARN } from '@/lib/enums/word';
 import { WordItem } from './components/WordItem';
 
-export function WordList() {
+export function WordList () {
   useSetBreadcrumb(['Learning']);
 
   const { user } = useAuthState();
 
   const { data, mutate, size, setSize, isLoading } =
     useSWRInfinite<APIResponse>(index => {
-      // const hasNextPage = data?.[0].getMeta()?.pagination.last > index;
-      // if (!hasNextPage) return null;
-
-      return `/words/learn?page%5Boffset%5D=${index}&page%5Blimit%5D=10`;
-    }, fetcher);
+      return `/words/learn?page%5Boffset%5D=${index + 1}&page%5Blimit%5D=10`;
+    }, getLearnWordList);
 
   const words = data?.flatMap(item => item?.data) ?? [];
 
@@ -40,7 +38,7 @@ export function WordList() {
     });
     if (
       container.scrollLeft + container.clientWidth + 200 >=
-        container.scrollWidth &&
+      container.scrollWidth &&
       !isLoadingMore &&
       isReachingEnd
     ) {
@@ -50,7 +48,6 @@ export function WordList() {
 
   const handleLearnWord = (id: string, index: number) => {
     // eslint-disable-next-line no-console
-    console.log(id, index);
     void mutate();
   };
 
@@ -76,13 +73,19 @@ export function WordList() {
       </div>
       <div onWheel={handleScroll} className="flex gap-2 overflow-auto">
         {words.length ? (
-          words.map((word, index) => (
-            <WordItem
-              onLearnWord={handleLearnWord.bind(null, word.id, index)}
-              data={word.attributes}
-              key={word.id}
-            />
-          ))
+          words.map((word, index) => {
+            const comprehensionId = word.relationships.comprehension.data.id as string
+            const comprehension = data?.[0].getIncludedByTypeAndId('comprehension', comprehensionId)
+            return (
+              <WordItem
+                status={comprehension?.attributes.status as WORD_STATUS_LEARN}
+                dueDate={comprehension?.attributes.dueDate || ''}
+                onLearnWord={handleLearnWord.bind(null, word.id, index)}
+                data={word.attributes}
+                key={word.id}
+              />
+            )
+          })
         ) : (
           <div className="h-[350px] w-full text-center">No data to display</div>
         )}

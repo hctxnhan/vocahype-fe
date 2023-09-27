@@ -33,6 +33,12 @@
           "type": "Synonym",
           "name": "synonym",
           "included": true
+        },
+        "comprehension": {
+          "type": "Comprehension",
+          "name": "comprehension",
+          "cardinality": "one",
+          "included": true
         }
       }
     },

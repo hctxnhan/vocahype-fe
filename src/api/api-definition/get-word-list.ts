@@ -3,6 +3,7 @@ import { Definition } from '@/api/model/Definition';
 import { Example } from '@/api/model/Example';
 import { PartOfSpeech } from '@/api/model/PartOfSpeech';
 import { Synonym } from '@/api/model/Synonym';
+import { Comprehension } from '@/api/model/Comprehension';
 
 export interface Params {
   offset: number;
@@ -44,6 +45,12 @@ export interface Response {
           id: string;
         }[];
       };
+      comprehension: {
+        data: {
+          type: 'comprehension';
+          id: string;
+        };
+      };
     };
   }[];
   meta?: Metadata;
@@ -73,6 +80,11 @@ export interface Response {
         type: 'synonym';
         id: string;
         attributes: Synonym;
+      }
+    | {
+        type: 'comprehension';
+        id: string;
+        attributes: Comprehension;
       },
   ];
 }
