@@ -14,11 +14,11 @@ export function NavbarItem({ children, href }: NavbarItemProps) {
     <Link href={href}>
       <div
         className={cn(
-          'cursor-pointer rounded-lg border-b-[6px] border-transparent py-3 pl-8 pr-4 font-medium text-neutral-950/50 hover:bg-brand-200',
+          'cursor-pointer rounded-lg border-b-[6px] border-transparent py-3 pl-8 pr-4 font-medium text-neutral-950/50 hover:bg-brand-300 hover:text-brand-50',
           {
-            'rounded-lg border-b-sky-600 bg-brand-500 text-sky-50 hover:bg-brand-500':
+            'rounded-lg border-b-sky-600 bg-brand-500 text-brand-50 hover:bg-brand-500':
               match,
-            'hover:rounded-lg hover:border-brand-300': !match,
+            'hover:rounded-lg hover:border-brand-400': !match,
           }
         )}
       >

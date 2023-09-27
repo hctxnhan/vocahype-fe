@@ -20,6 +20,9 @@
           "included": true
         }
       }
+    },
+    "meta": {
+      "pagination": true
     }
   }
 }

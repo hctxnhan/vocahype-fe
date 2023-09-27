@@ -17,7 +17,7 @@ import { useSetBreadcrumb } from '@/lib/hooks/useSetBreadcrumb';
 import { ResetKnowledgeCheckDialog } from './components/ResetKnowledgeCheckDialog';
 import { WordBackground } from './components/WordBackground';
 
-export function KnowledgeCheck() {
+export function KnowledgeCheck () {
   const { data, isLoading, mutate, isValidating } = useSWR(
     'words/knowledge-test',
     getKnowledgeCheck
@@ -54,7 +54,7 @@ export function KnowledgeCheck() {
   const currentWord = words[currentIndex]?.attributes ?? '';
   const isLastWord = currentIndex === words.length - 1;
 
-  async function onFinished() {
+  async function onFinished () {
     await trigger([
       ...known.map(word => ({
         wordId: word,
@@ -68,7 +68,7 @@ export function KnowledgeCheck() {
     handleRestart();
   }
 
-  function handleRestart() {
+  function handleRestart () {
     setCurrentIndex(0);
     setKnownUnknown({
       known: [],

@@ -23,6 +23,9 @@ interface API {
   };
   response: {
     data: APIData;
+    meta?: {
+      pagination?: boolean;
+    }
   };
 }
 
@@ -93,36 +96,63 @@ function generateIncludedRelationship(data: APIData): string {
   return includedRelationshipType.join('|\n');
 }
 
-function generateResponseInterface(api: API['response']['data']) {
-  const apiRelationship = Object.keys(api.relationships ?? {});
+function generateResponseInterface(api: API['response']) {
+  const apiRelationship = Object.keys(api.data.relationships ?? {});
 
   const relationshipType = apiRelationship.map(key => {
     return `${key}: {
       data: {
-        type: '${api.relationships[key].name}';
+        type: '${api.data.relationships[key].name}';
         id: string;
-      }${api.relationships[key].cardinality === 'one' ? '' : '[]'}
+      }${api.data.relationships[key].cardinality === 'one' ? '' : '[]'}
     }`;
   });
 
-  // @ts-ignore
-  const includedRelationshipType = generateIncludedRelationship(api);
+  const includedRelationshipType = generateIncludedRelationship(api.data);
 
   const responseType = `
     export interface Response {
       data: {
-        type: '${api.name}';
+        type: '${api.data.name}';
         id: string;
-        attributes: ${api.type};
+        attributes: ${api.data.type};
         relationships: {
           ${relationshipType.join(',\n')}
         };
       }[],
-      included: [${includedRelationshipType}]
+      ${api.meta ? 'meta: Metadata;' : ''}
+      included: [${includedRelationshipType}],
     }
 `;
 
   return responseType;
+}
+
+
+function generatePaginationMetadata() {
+  return `
+    pagination: {
+      first:number;
+      last:number;
+      page:number;
+      size:number;
+      total:number;
+    }
+  `
+}
+
+function generateMetadata(api: API['response']['meta']) {
+  if (!api) {
+    return '';
+  }
+
+  const paginationMetadata = api.pagination ? generatePaginationMetadata() : '';
+
+  return `
+    export interface Metadata {
+      ${paginationMetadata}
+    }
+  `
 }
 
 function generateAdditionalType(api: API['response']['data']) {
@@ -130,10 +160,12 @@ function generateAdditionalType(api: API['response']['data']) {
 
   return `
     ${
-      includedRelationshipType ? `type Included = Response['included'][0];` : ''
+      includedRelationshipType
+        ? `export type Included = Response['included'][0];`
+        : ''
     }
-    type Relationships = Response['data'][0]['relationships'];
-    type Data = Response['data'][0];
+    export type Relationships = Response['data'][0]['relationships'];
+    export type Data = Response['data'][0];
   `;
 }
 
@@ -150,21 +182,23 @@ function generateTsDefinitionForAPI(api: API): string {
   }
   `;
 
-  const responseType = generateResponseInterface(api.response.data);
+  const responseType = generateResponseInterface(api.response);
+  const metadataType = generateMetadata(api.response.meta);
 
   const importType = generateImportType(responseType);
 
   return `
   ${importType}
   ${requestType}
+  ${metadataType}
   ${responseType}
   ${generateAdditionalType(api.response.data)}
-  ${generateResponseClass(api.response.data)}
+  ${generateResponseClass(api.response)}
   `;
 }
 
-function generateResponseClass(api: API['response']['data']) {
-  const includedRelationshipType = generateIncludedRelationship(api);
+function generateResponseClass(api: API['response']) {
+  const includedRelationshipType = generateIncludedRelationship(api.data);
 
   const content = `
     export class APIResponse {
@@ -181,6 +215,11 @@ function generateResponseClass(api: API['response']['data']) {
       get attributes(): Data['attributes'] {
         return this.response.data[0].attributes;
       }
+
+      ${api.meta ? `get meta(): Metadata {
+        return this.response.meta;
+      }` : ''}
+
       ${
         includedRelationshipType
           ? `

@@ -43,6 +43,7 @@
     "axios": "^1.4.0",
     "class-variance-authority": "^0.6.1",
     "clsx": "^1.2.1",
+    "dayjs": "^1.11.10",
     "firebase": "^10.1.0",
     "framer-motion": "^10.13.0",
     "lucide-react": "^0.260.0",

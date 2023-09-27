@@ -3,9 +3,21 @@ import { Definition } from '@/api/model/Definition';
 import { Example } from '@/api/model/Example';
 import { PartOfSpeech } from '@/api/model/PartOfSpeech';
 import { Synonym } from '@/api/model/Synonym';
+import { Comprehension } from '@/api/model/Comprehension';
 
 export interface Params {
-  wordId: string;
+  offset: number;
+  limit: number;
+}
+
+export interface Metadata {
+  pagination: {
+    first: number;
+    last: number;
+    page: number;
+    size: number;
+    total: number;
+  };
 }
 
 export interface Response {
@@ -32,9 +44,15 @@ export interface Response {
           id: string;
         }[];
       };
+      comprehension: {
+        data: {
+          type: 'comprehension';
+          id: string;
+        };
+      };
     };
   }[];
-
+  meta: Metadata;
   included: [
     | {
         type: 'definition';
@@ -61,6 +79,11 @@ export interface Response {
         type: 'synonym';
         id: string;
         attributes: Synonym;
+      }
+    | {
+        type: 'comprehension';
+        id: string;
+        attributes: Comprehension;
       },
   ];
 }
@@ -82,6 +105,10 @@ export class APIResponse {
 
   get attributes(): Data['attributes'] {
     return this.response.data[0].attributes;
+  }
+
+  get meta(): Metadata {
+    return this.response.meta;
   }
 
   get included(): Included[] {

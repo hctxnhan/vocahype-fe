@@ -16,4 +16,6 @@ axiosInstance.interceptors.request.use(
   }
 );
 
-export { axiosInstance };
+const fetcher = (url: string) => axiosInstance.get(url).then(res => res.data);
+
+export { axiosInstance, fetcher };

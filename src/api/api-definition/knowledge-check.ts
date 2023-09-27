@@ -9,11 +9,12 @@ export interface Response {
     attributes: WordKnowledgeCheck;
     relationships: {};
   }[];
+
   included: [];
 }
 
-type Relationships = Response['data'][0]['relationships'];
-type Data = Response['data'][0];
+export type Relationships = Response['data'][0]['relationships'];
+export type Data = Response['data'][0];
 
 export class APIResponse {
   constructor(private response: Response) {}

@@ -40,7 +40,7 @@ export function SearchResult() {
       }),
     {
       onSuccess: data => {
-        setTotalPage(data.meta.pagination.last ?? 1);
+        setTotalPage(data.meta?.pagination.last ?? 1);
       },
     }
   );
