@@ -1,14 +1,15 @@
-import { WheelEvent } from 'react';
+import dayjs from 'dayjs';
+import { WheelEvent, useMemo } from 'react';
 import useSWRInfinite from 'swr/infinite';
 
 import { APIResponse } from '@/api/api-definition/get-word-list';
+import { getLearnWordList } from '@/api/words/learnWord';
 import { FillParent } from '@/components/layout/FillParent/FillParent';
 import { Loading } from '@/components/layout/Loading/Loading';
+import { WORD_STATUS_LEARN } from '@/lib/enums/word';
 import { useAuthState } from '@/lib/hooks/firebase/auth/useAuthState';
 import { useSetBreadcrumb } from '@/lib/hooks/useSetBreadcrumb';
 
-import { getLearnWordList } from '@/api/words/learnWord';
-import { WORD_STATUS_LEARN } from '@/lib/enums/word';
 import { WordItem } from './components/WordItem';
 
 export function WordList () {
@@ -22,6 +23,14 @@ export function WordList () {
     }, getLearnWordList);
 
   const words = data?.flatMap(item => item?.data) ?? [];
+
+  const countWordStatus = useMemo(() => {
+    const comprehensionList = data?.flatMap(item => item.includedByType('comprehension'))
+    return {
+      progress: comprehensionList?.length || 0,
+      due: comprehensionList?.filter(item => dayjs().diff(dayjs(item.attributes.dueDate), 'd')).length || 0
+    }
+  }, [data])
 
   const isLoadingMore =
     isLoading || (size > 0 && data && typeof data[size - 1] === 'undefined');
@@ -67,14 +76,13 @@ export function WordList () {
           Keep up the good work, {user?.displayName}!
         </div>
         <div className="text-lg font-medium text-slate-600">
-          You have 10 words in progress today, 3 words have due and 3 more words
-          to learn
+          You have {countWordStatus.progress} words in progress today, {countWordStatus.due} words have due
         </div>
       </div>
       <div onWheel={handleScroll} className="flex gap-2 overflow-auto">
         {words.length ? (
           words.map((word, index) => {
-            const comprehensionId = word.relationships.comprehension.data.id as string
+            const comprehensionId = word.relationships.comprehension?.data.id
             const comprehension = data?.[0].getIncludedByTypeAndId('comprehension', comprehensionId)
             return (
               <WordItem

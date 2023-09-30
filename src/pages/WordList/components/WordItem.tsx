@@ -16,10 +16,10 @@ interface WordItemProps {
   onLearnWord: (id: string, index: number) => void;
 }
 
-export function WordItem({
+export function WordItem ({
   data,
   dueDate,
-  status,
+  status = WORD_STATUS_LEARN.TO_LEARN,
   onLearnWord,
 }: WordItemProps) {
   const { id, word } = data;
@@ -32,6 +32,14 @@ export function WordItem({
   const handleClickLearnWord = () => {
     navigate(`/words/${id}`);
   };
+
+  const renderDueDate = () => {
+    const due = dayjs().diff(dayjs(dueDate), 'd')
+    if (due > 0)
+      return `${due} days overdue`
+    else
+      return 'Due today'
+  }
 
   const handleIgnore = () => {
     ignoreWord([id, 'ignore'], {
@@ -67,15 +75,15 @@ export function WordItem({
         <div className="text-2xl font-bold text-brand-700">{word}</div>
         <div
           className={cn('text-base font-bold', {
-            'text-rose-600': status === WORD_STATUS_LEARN.TO_LEARN,
-            'text-green-600': status === WORD_STATUS_LEARN.LEARNING,
+            'text-rose-600': status === WORD_STATUS_LEARN.LEARNING,
+            'text-green-600': status === WORD_STATUS_LEARN.TO_LEARN,
           })}
         >
           {status.toUpperCase()}
         </div>
         {dueDate && (
           <div className="text-sm font-medium text-slate-400">
-            {dayjs().diff(dayjs(dueDate), 'd')} days overdue
+            {renderDueDate()}
           </div>
         )}
       </div>
