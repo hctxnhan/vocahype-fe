@@ -23,7 +23,7 @@ export function MainLayout () {
           <div className="relative flex flex-col overflow-x-hidden">
             <Breadcrumb />
             <Route component={KnowledgeCheck} path="/knowledge-check" />
-            <Route component={SearchResult} path="/words" />
+            <Route component={SearchResult} path="/search" />
             <Route component={Learn} path="/words/:wordId" />
             <Route component={ProfileInfo} path="/profile" />
             <Route component={WordList} path="/learn" />

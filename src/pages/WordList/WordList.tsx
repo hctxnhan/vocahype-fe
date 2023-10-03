@@ -71,7 +71,7 @@ export function WordList () {
 
   return (
     <div className="flex flex-1 flex-col">
-      <div className="mb-16 flex flex-col gap-2">
+      <div className="mb-4 flex flex-col gap-2">
         <div className="text-4xl font-bold leading-normal text-brand-600">
           Keep up the good work, {user?.displayName}!
         </div>

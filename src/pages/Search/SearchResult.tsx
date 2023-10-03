@@ -8,39 +8,41 @@ import { FillParent } from '@/components/layout/FillParent/FillParent';
 import { Loading } from '@/components/layout/Loading/Loading';
 import { Button } from '@/components/ui/button';
 import { Pagination, PaginationState } from '@/components/ui/pagination';
-import { useRoute } from '@/lib/hooks/useSearchParams';
 import { useSetBreadcrumb } from '@/lib/hooks/useSetBreadcrumb';
+import { getSearchParamsCurrentUrl } from '@/lib/utils/utils';
 
 export function SearchResult() {
-  const { params } = useRoute<{
+  const params = getSearchParamsCurrentUrl<{
     search: string;
     exact: string;
     'page[offset]': string;
     'page[limit]': string;
-  }>('/words');
+  }>();
+  
   const word = params?.search;
-
   const [totalPage, setTotalPage] = useState(1);
-
   const [, navigate] = useLocation();
   const { data: searchResult, isLoading } = useSWR(
     [
-      'words/knowledge-test',
+      'search',
       word,
       params?.exact ?? 'false',
       params?.['page[offset]'] ?? '1',
       params?.['page[limit]'] ?? '10',
     ],
-    ([, word]) =>
-      searchWord({
-        word,
+    ([, word]) => {
+      if(!word) return Promise.resolve(null);
+
+      return searchWord({
+        word ,
         exact: params?.exact ?? 'false',
         'page[limit]': params?.['page[limit]'] ?? '10',
         'page[offset]': params?.['page[offset]'] ?? '1',
-      }),
+      });
+    },
     {
       onSuccess: data => {
-        setTotalPage(data.meta?.pagination.last ?? 1);
+        setTotalPage(data?.meta?.pagination.last ?? 1);
       },
     }
   );
@@ -52,13 +54,14 @@ export function SearchResult() {
   }
 
   function onChangePagination(state: PaginationState) {
+
     const searchParams = new URLSearchParams({
-      search: word,
-      exact: params?.exact ?? 'false',
+      search: word ?? '',
+      exact: params.exact ?? 'false',
       'page[offset]': String(state.page),
       'page[limit]': String(state.limit),
     });
-    navigate(`/words?${searchParams.toString()}`);
+    navigate(`/search?${searchParams.toString()}`);
   }
 
   function playPronunciation(word: string) {
