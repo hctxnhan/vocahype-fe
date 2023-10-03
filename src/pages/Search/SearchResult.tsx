@@ -8,20 +8,21 @@ import { FillParent } from '@/components/layout/FillParent/FillParent';
 import { Loading } from '@/components/layout/Loading/Loading';
 import { Button } from '@/components/ui/button';
 import { Pagination, PaginationState } from '@/components/ui/pagination';
+import { useSearchParams } from '@/lib/hooks/useSearchParams';
 import { useSetBreadcrumb } from '@/lib/hooks/useSetBreadcrumb';
-import { getSearchParamsCurrentUrl } from '@/lib/utils/utils';
 
 export function SearchResult() {
-  const params = getSearchParamsCurrentUrl<{
+  const params = useSearchParams<{
     search: string;
     exact: string;
     'page[offset]': string;
     'page[limit]': string;
   }>();
   
-  const word = params?.search;
   const [totalPage, setTotalPage] = useState(1);
-  const [, navigate] = useLocation();
+  const [, navigate, ] = useLocation();
+
+  const word = params?.search;
   const { data: searchResult, isLoading } = useSWR(
     [
       'search',
@@ -34,7 +35,7 @@ export function SearchResult() {
       if(!word) return Promise.resolve(null);
 
       return searchWord({
-        word ,
+        word,
         exact: params?.exact ?? 'false',
         'page[limit]': params?.['page[limit]'] ?? '10',
         'page[offset]': params?.['page[offset]'] ?? '1',
@@ -54,7 +55,6 @@ export function SearchResult() {
   }
 
   function onChangePagination(state: PaginationState) {
-
     const searchParams = new URLSearchParams({
       search: word ?? '',
       exact: params.exact ?? 'false',
@@ -134,6 +134,7 @@ export function SearchResult() {
       </div>
       <div className="pt-6">
         <Pagination
+          key={word?.concat(params?.exact ?? 'false')}
           defaultValue={{
             page: Number(params?.['page[offset]'] ?? '1'),
             limit: Number(params?.['page[limit]'] ?? '10'),

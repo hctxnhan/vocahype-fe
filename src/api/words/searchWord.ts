@@ -4,7 +4,7 @@ import { APIResponse, Params, Response } from '../api-definition/search-word';
 
 export async function searchWord(params: Params) {
   const searchParams = new URLSearchParams({
-    search: params.word,
+    search: params.word.trim(),
     exact: params.exact,
     'page[offset]': params['page[offset]'],
     'page[limit]': params['page[limit]'],

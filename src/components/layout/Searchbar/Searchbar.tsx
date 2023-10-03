@@ -35,7 +35,7 @@ export function Searchbar() {
   const [, navigate] = useLocation();
 
   function search(word: string) {
-    if(!word) return;
+    if (!word) return;
 
     const searchParams = new URLSearchParams({
       search: word,
@@ -60,18 +60,18 @@ export function Searchbar() {
     }
   }
 
-  const onRemoveAll = () => {
+  function onRemoveAll() {
     inputRef.current?.focus();
     removeLocalStorageItem('historySearch');
     setHistory([]);
-  };
+  }
 
-  const onClickWord = (word: string) => {
+  function onClickWord(word: string) {
     if (inputRef.current) {
       inputRef.current.value = word;
       search(word);
     }
-  };
+  }
 
   useEffect(() => {
     setHistory(getLocalStorageItem<string[]>('historySearch') || []);
