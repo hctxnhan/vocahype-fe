@@ -1,4 +1,4 @@
-import { useRoute } from '@/lib/hooks/useSearchParams';
+import { useSearchParams } from '@/lib/hooks/useSearchParams';
 
 import { ResetPassword } from '../ResetPassword/components/ResetPassword';
 
@@ -7,16 +7,21 @@ enum AuthActionType {
 }
 
 export function AuthAction() {
-  const { params } = useRoute<{
+  const params = useSearchParams<{
     mode: AuthActionType;
     oobCode: string;
     apiKey: string;
-  }>('/auth/action');
+  }>();
 
   switch (params.mode) {
     case AuthActionType.RESET_PASSWORD:
-      return <ResetPassword apiKey={params.apiKey} oobCode={params.oobCode} />;
+      if (params.apiKey && params.oobCode) {
+        return (
+          <ResetPassword apiKey={params.apiKey} oobCode={params.oobCode} />
+        );
+      }
+      return <></>;
     default:
-      return <></>
+      return <></>;
   }
 }

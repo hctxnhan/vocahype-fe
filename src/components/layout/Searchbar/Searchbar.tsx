@@ -35,18 +35,23 @@ export function Searchbar() {
   const [, navigate] = useLocation();
 
   function search(word: string) {
+    if (!word) return;
+
     const searchParams = new URLSearchParams({
       search: word,
       exact: isExact ? 'true' : 'false',
       'page[offset]': '1',
       'page[limit]': '10',
     });
-    navigate(`/words?${searchParams.toString()}`);
+
+    setIsFocus(false);
+    navigate(`/search?${searchParams.toString()}`);
   }
 
   function handleSearch(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const query = inputRef.current?.value;
+
     if (query) {
       const newHistoryList = [...new Set([query, ...history])];
       setLocalStorageItem('historySearch', newHistoryList);
@@ -55,19 +60,18 @@ export function Searchbar() {
     }
   }
 
-  const onRemoveAll = () => {
+  function onRemoveAll() {
     inputRef.current?.focus();
     removeLocalStorageItem('historySearch');
     setHistory([]);
-  };
+  }
 
-  const onClickWord = (word: string) => {
+  function onClickWord(word: string) {
     if (inputRef.current) {
       inputRef.current.value = word;
-      setIsFocus(false);
       search(word);
     }
-  };
+  }
 
   useEffect(() => {
     setHistory(getLocalStorageItem<string[]>('historySearch') || []);

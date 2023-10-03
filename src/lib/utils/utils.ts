@@ -23,3 +23,12 @@ export function getFirstNLetter(value: string, n: number) {
 export const preventPropagation = {
   onClick: (e: React.MouseEvent) => e.stopPropagation(),
 }
+
+export function getSearchParams<T>(url: string) {
+  const urlSearchParams = new URLSearchParams(url);
+  const queryParams = Object.fromEntries(urlSearchParams.entries());
+
+  return queryParams as T;
+}
+
+export const getSearchParamsCurrentUrl = <T>() => getSearchParams<Partial<T>>(window.location.search);
