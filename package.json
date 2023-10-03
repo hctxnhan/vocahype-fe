@@ -12,14 +12,14 @@
     "preview": "vite preview",
     "postinstall": "husky install",
     "ladle": "npx ladle serve",
-    "pretty": "prettier --write \"src/**/*.{ts,tsx,js,jsx,json,css,scss,md}\""
+    "pretty": "prettier --write \"src/**/*.{ts,tsx,js,jsx,json,css,scss,md}\"",
+    "lint:staged": "lint-staged"
   },
   "lint-staged": {
     "src/*/**.{ts, tsx, css}": [
       "npm run build",
       "npm run pretty",
-      "eslint --fix",
-      "git add"
+      "eslint --fix"
     ]
   },
   "dependencies": {
