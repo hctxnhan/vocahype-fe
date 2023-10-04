@@ -1,21 +1,22 @@
 import axios from 'axios';
+
 import { environment } from './environment';
+import { auth } from './firebase';
 
 const axiosInstance = axios.create({
   baseURL: environment.api.baseURL,
-  headers: { 'X-Custom-Header': 'foobar' },
+  headers: { 'X-Custom-Header': 'foobar', 'Access-Control-Allow-Origin': '*' },
 });
 
 axiosInstance.interceptors.request.use(
-  config => {
-    config.headers['Access-Control-Allow-Origin'] = '*';
+  async (config) => {
+    const token = await auth.currentUser?.getIdToken() ?? '';
+    config.headers.Authorization = `Bearer ${token}`;
     return config;
   },
   error => {
     return Promise.reject(error);
-  }
+  },
 );
 
-const fetcher = (url: string) => axiosInstance.get(url).then(res => res.data);
-
-export { axiosInstance, fetcher };
+export { axiosInstance };
