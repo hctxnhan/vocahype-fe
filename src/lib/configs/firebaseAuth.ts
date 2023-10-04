@@ -6,7 +6,8 @@ import {
   signInWithEmailAndPassword,
   signInWithPopup,
   updateEmail,
-  updateProfile
+  updateProfile,
+  sendEmailVerification,
 } from 'firebase/auth';
 import {
   getDownloadURL,
@@ -67,4 +68,12 @@ export async function updateProfileUser(
       updateEmail(auth.currentUser, email),
     ]);
   return null;
+}
+
+export async function sendVerificationEmail() {
+  if (auth?.currentUser) {
+    return sendEmailVerification(auth.currentUser);
+  }
+
+  return Promise.reject('User are not signed in!');
 }

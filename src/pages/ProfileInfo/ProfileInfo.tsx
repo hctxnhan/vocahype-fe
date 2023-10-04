@@ -5,6 +5,7 @@ import { z } from 'zod';
 
 import { FillParent } from '@/components/layout/FillParent/FillParent';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Button } from '@/components/ui/button';
 import {
   Card,
   CardContent,
@@ -24,40 +25,62 @@ import {
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { LoadingButton } from '@/components/ui/loading-button';
-import { updateProfileUser } from '@/lib/configs/firebaseAuth';
+import {
+  sendVerificationEmail,
+  updateProfileUser,
+} from '@/lib/configs/firebaseAuth';
 import { updateProfileFormScheme } from '@/lib/formScheme/updateProfileFormScheme';
 import { useAuthState } from '@/lib/hooks/firebase/auth/useAuthState';
 import { useAsyncAction } from '@/lib/hooks/useAsyncAction';
 import { useToast } from '@/lib/hooks/useToast';
-import { getFirstNLetter } from '@/lib/utils/utils';
+import { cn, getFirstNLetter } from '@/lib/utils/utils';
 
 export function ProfileInfo() {
   const { user } = useAuthState();
-  const toast = useToast('Update  Profile');
+  const emailVerified = user?.emailVerified || false;
+
+  const toast = useToast();
   const [previewImg, setPreviewImg] = useState<string | null>();
 
   const form = useForm<z.infer<typeof updateProfileFormScheme>>({
     resolver: zodResolver(updateProfileFormScheme),
   });
 
-  const { start, isLoading } = useAsyncAction<typeof updateProfileUser>(
+  const updateProfileAction = useAsyncAction<typeof updateProfileUser>(
     updateProfileUser,
     {
       onSuccess: () => {
         toast.success({
+          title: 'Update profile',
           msg: 'Successfully update profile',
         });
       },
       onError: error => {
         toast.error({
+          title: 'Update profile',
           msg: error.message,
         });
       },
     }
   );
 
+  const sendEmailVerificationAction = useAsyncAction(sendVerificationEmail, {
+    onSuccess: () => {
+      toast.success({
+        title: 'Verification email',
+        msg: 'A verification email has been sent to your email address. Please check your email and click on the link provided to verify your email address.',
+      });
+    },
+    onError: error => {
+      toast.error({
+        title: 'Verification email',
+        msg: error.message,
+      });
+    },
+  });
+
   function onSubmit(data: z.infer<typeof updateProfileFormScheme>) {
-    start([data.email, data.name, data.avatar || '']);
+    updateProfileAction.start([data.email, data.name, data.avatar || '']);
   }
 
   const onAvatarChange =
@@ -127,7 +150,19 @@ export function ProfileInfo() {
                 name="email"
                 render={({ field }) => (
                   <FormItem className="space-y-1">
-                    <FormLabel>Email</FormLabel>
+                    <FormLabel>
+                      Email ({emailVerified ? 'Verified' : 'Unverified'})
+                      <Button
+                        className={cn({
+                          hidden: emailVerified,
+                        })}
+                        type="button"
+                        onClick={() => sendEmailVerificationAction.start()}
+                        variant={'link'}
+                      >
+                        Send verification
+                      </Button>
+                    </FormLabel>
                     <FormControl>
                       <Input
                         type="email"
@@ -180,7 +215,7 @@ export function ProfileInfo() {
                 <LoadingButton
                   className="w-full bg-brand-600 py-3 text-sm leading-6"
                   type="submit"
-                  isLoading={isLoading}
+                  isLoading={updateProfileAction.isLoading}
                 >
                   Update
                 </LoadingButton>
