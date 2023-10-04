@@ -105,7 +105,7 @@ export function ProfileInfo () {
         <span className='text-slate-800 text-2xl font-bold'>PROFILE</span>
         <div className='flex gap-8'>
           <Card className='flex-1'>
-            <CardHeader className="p-8 center mx-auto max-w-[350px] gap-2">
+            <CardHeader className="p-8 center mx-auto max-w-[350px] h-full gap-2 center">
               <FormField
                 control={form.control}
                 name="avatar"
@@ -135,11 +135,8 @@ export function ProfileInfo () {
                   </FormItem>
                 )}
               />
-              <span className='text-xl mt-0 font-bold'>{user?.displayName}</span>
+              <span className='text-2xl mt-0 font-bold'>{user?.displayName}</span>
               <span className="text-center mt-0 text-slate-500 text-sm">
-                {
-                  'This is your bio description. So its content is up to you. I don’t give a shit =))))'
-                }
               </span>
             </CardHeader>
           </Card>
