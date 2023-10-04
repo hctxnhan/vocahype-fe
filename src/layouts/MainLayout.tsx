@@ -6,7 +6,7 @@ import { Sidebar } from '@/components/layout/Sidebar/Sidebar';
 import { BreadcrumbProvider } from '@/lib/context/breadcrumb.context';
 import { KnowledgeCheck } from '@/pages/KnowledgeCheck/KnowledgeCheck';
 import { Learn } from '@/pages/Learn/Learn';
-import { ProfileInfo } from '@/pages/ProfileInfo/ProfileInfo';
+import { ProfileSettings } from '@/pages/ProfileSettings/sections/ProfileSettings';
 import { SearchResult } from '@/pages/Search/SearchResult';
 import { WordList } from '@/pages/WordList/WordList';
 
@@ -25,7 +25,7 @@ export function MainLayout () {
             <Route component={KnowledgeCheck} path="/knowledge-check" />
             <Route component={SearchResult} path="/search" />
             <Route component={Learn} path="/words/:wordId" />
-            <Route component={ProfileInfo} path="/profile" />
+            <Route component={ProfileSettings} path="/profile" />
             <Route component={WordList} path="/learn" />
           </div>
         </BreadcrumbProvider>
