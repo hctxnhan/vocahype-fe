@@ -85,7 +85,11 @@ export function SignIn(props: { goToSignUp: VoidFunction }) {
               </div>
               <div>
                 Click{' '}
-                <Button onClick={props.goToSignUp} variant={'link'}>
+                <Button
+                  type="button"
+                  onClick={props.goToSignUp}
+                  variant={'link'}
+                >
                   here
                 </Button>{' '}
                 to quickly set your account up.
