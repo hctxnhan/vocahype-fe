@@ -7,11 +7,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import {
   Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
+  CardHeader
 } from '@/components/ui/card';
 import {
   Form,
@@ -24,6 +20,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { LoadingButton } from '@/components/ui/loading-button';
+import { TextArea } from '@/components/ui/textarea';
 import {
   sendVerificationEmail,
   updateProfileUser,
@@ -34,7 +31,8 @@ import { useAsyncAction } from '@/lib/hooks/useAsyncAction';
 import { useToast } from '@/lib/hooks/useToast';
 import { cn, getFirstNLetter } from '@/lib/utils/utils';
 
-export function ProfileInfo() {
+
+export function ProfileInfo () {
   const { user } = useAuthState();
   const emailVerified = user?.emailVerified || false;
 
@@ -78,7 +76,7 @@ export function ProfileInfo() {
     },
   });
 
-  function onSubmit(data: z.infer<typeof updateProfileFormScheme>) {
+  function onSubmit (data: z.infer<typeof updateProfileFormScheme>) {
     updateProfileAction.start([data.email, data.name, data.avatar || '']);
   }
 
@@ -102,121 +100,143 @@ export function ProfileInfo() {
   }, [user]);
 
   return (
-    <Card className="gap-4 border-none bg-transparent">
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit) as VoidFunction}>
-          <CardHeader className="center mx-auto max-w-[350px] gap-2">
-            <FormField
-              control={form.control}
-              name="avatar"
-              render={({ field: { onChange } }) => (
-                <FormItem className="space-y-1 text-center">
-                  <Label htmlFor="avatar">
-                    <Avatar className="relative h-20 w-20">
-                      {previewImg && <AvatarImage src={previewImg} />}
-                      <AvatarFallback>
-                        {getFirstNLetter(user?.displayName || '', 2)}
-                      </AvatarFallback>
-                      <div className="absolute flex h-full w-full items-center justify-center bg-slate-900/50 text-white opacity-0 transition-opacity hover:cursor-pointer hover:opacity-100">
-                        Change
-                      </div>
-                    </Avatar>
-                  </Label>
-                  <FormControl>
-                    <Input
-                      accept="image/jpg, image/png, image/jpeg"
-                      className="hidden"
-                      id="avatar"
-                      type="file"
-                      onChange={onAvatarChange(onChange)}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <CardTitle>{user?.displayName}</CardTitle>
-            <CardDescription className="text-center">
-              {
-                'This is your bio description. So its content is up to you. I don’t give a shit =))))'
-              }
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-2 pt-0">
-            <FormField
-              control={form.control}
-              name="email"
-              render={({ field }) => (
-                <FormItem className="space-y-1">
-                  <FormLabel>
-                    Email ({emailVerified ? 'Verified' : 'Unverified'})
-                    <Button
-                      className={cn({
-                        hidden: emailVerified,
-                      })}
-                      type="button"
-                      onClick={() => sendEmailVerificationAction.start()}
-                      variant={'link'}
-                    >
-                      Send verification
-                    </Button>
-                  </FormLabel>
-                  <FormControl>
-                    <Input
-                      type="email"
-                      placeholder="lionelmessy@gmail.com"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+    <Form {...form}>
+      <form className="vh-flex-column gap-4" onSubmit={form.handleSubmit(onSubmit) as VoidFunction}>
+        <span className='text-slate-800 text-2xl font-bold'>PROFILE</span>
+        <div className='flex gap-8'>
+          <Card className='flex-1'>
+            <CardHeader className="p-8 center mx-auto max-w-[350px] h-full gap-2 center">
+              <FormField
+                control={form.control}
+                name="avatar"
+                render={({ field: { onChange } }) => (
+                  <FormItem className="space-y-1 text-center">
+                    <Label htmlFor="avatar">
+                      <Avatar className="relative h-60 w-60">
+                        {previewImg && <AvatarImage src={previewImg} />}
+                        <AvatarFallback>
+                          {getFirstNLetter(user?.displayName || '', 2)}
+                        </AvatarFallback>
+                        <div className="absolute flex h-full w-full items-center justify-center bg-slate-900/50 text-white opacity-0 transition-opacity hover:cursor-pointer hover:opacity-100">
+                          Change
+                        </div>
+                      </Avatar>
+                    </Label>
+                    <FormControl>
+                      <Input
+                        accept="image/jpg, image/png, image/jpeg"
+                        className="hidden h-9"
+                        id="avatar"
+                        type="file"
+                        onChange={onAvatarChange(onChange)}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <span className='text-2xl mt-0 font-bold'>{user?.displayName}</span>
+              <span className="text-center mt-0 text-slate-500 text-sm">
+              </span>
+            </CardHeader>
+          </Card>
+          <div className='flex-1'>
+            <div className='vh-flex-column gap-4 mb-6'>
+              <FormField
+                control={form.control}
+                name="email"
+                render={({ field }) => (
+                  <FormItem className="space-y-1">
+                    <FormLabel>
+                      Email ({emailVerified ? 'Verified' : 'Unverified'})
+                      <Button
+                        className={cn({
+                          hidden: emailVerified,
+                        })}
+                        type="button"
+                        onClick={() => sendEmailVerificationAction.start()}
+                        variant={'link'}
+                      >
+                        Send verification
+                      </Button>
+                    </FormLabel>
+                    <FormControl>
+                      <Input
+                        type="email"
+                        placeholder="lionelmessy@gmail.com"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
-            <FormField
-              control={form.control}
-              name="name"
-              render={({ field }) => (
-                <FormItem className="space-y-1">
-                  <FormLabel>Name</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Lionel Messy" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+              <FormField
+                control={form.control}
+                name="name"
+                render={({ field }) => (
+                  <FormItem className="space-y-1">
+                    <FormLabel>Name</FormLabel>
+                    <FormControl>
+                      <Input className="h-9" placeholder="Lionel Messy" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
-            <FormField
-              control={form.control}
-              name="phoneNumber"
-              render={({ field }) => (
-                <FormItem className="space-y-1">
-                  <FormLabel>Phone number</FormLabel>
-                  <FormControl>
-                    <Input disabled placeholder="+84 123 123 123" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </CardContent>
-          <CardFooter>
+              <FormField
+                control={form.control}
+                name="phoneNumber"
+                render={({ field }) => (
+                  <FormItem className="space-y-1">
+                    <FormLabel>Phone number</FormLabel>
+                    <FormControl>
+                      <Input
+                        className="h-9"
+                        disabled
+                        placeholder="+84 123 123 123"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="bio"
+                render={({ field }) => (
+                  <FormItem className="space-y-1">
+                    <FormLabel>Bio</FormLabel>
+                    <FormControl>
+                      <TextArea
+                        disabled
+                        rows={4}
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
             <div className="vh-flex-column flex-1 items-center gap-1">
               <div className="text-sm text-red-700 hover:cursor-pointer">
                 Delete account
               </div>
               <LoadingButton
-                className="w-full bg-brand-600 py-3 text-sm leading-6"
+                className="w-full bg-brand-600 py-3 text-sm leading-6 font-medium"
                 type="submit"
                 isLoading={updateProfileAction.isLoading}
               >
-                Update
+                Update profile
               </LoadingButton>
             </div>
-          </CardFooter>
-        </form>
-      </Form>
-    </Card>
+          </div>
+        </div>
+      </form>
+    </Form>
   );
 }
