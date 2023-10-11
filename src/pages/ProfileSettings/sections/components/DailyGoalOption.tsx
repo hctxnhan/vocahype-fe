@@ -3,15 +3,15 @@ import { useId } from 'react';
 import { cn } from '@/lib/utils/utils';
 
 export interface DailyGoalOptionProps {
-  value: number;
+  value: string;
   time: number;
   description: string;
   label: string;
-  currentValue: number;
-  onChange: (value: number) => void;
+  currentValue: string;
+  onChange: (value: string) => void;
 }
 
-export function DailyGoalOption({
+export function DailyGoalOption ({
   value,
   currentValue,
   label,
