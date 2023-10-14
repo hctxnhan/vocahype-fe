@@ -1,3 +1,4 @@
+import dayjs from 'dayjs';
 import { useLocation } from 'wouter';
 
 import { Word } from '@/api/model/Word';
@@ -33,12 +34,11 @@ export function WordItem ({
   };
 
   const renderDueDate = () => {
-    // const due = dayjs().diff(dayjs(dueDate), 'd')
-    // if (due > 0)
-    //   return `${due} days overdue`
-    // else
-    //   return 'Due today'
-    return ''
+    const due = dayjs().diff(dayjs(dueDate), 'd')
+    if (due > 0)
+      return `${due} days overdue`
+    else
+      return 'Due today'
   }
 
   const handleIgnore = () => {

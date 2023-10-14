@@ -78,7 +78,7 @@ export function DailyGoalSetting () {
 
   if (isLoading)
     return (
-      <FillParent>
+      <FillParent className='fixed bg-black/70'>
         <Loading />
       </FillParent>
     );
