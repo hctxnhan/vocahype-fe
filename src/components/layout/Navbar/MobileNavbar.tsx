@@ -1,17 +1,11 @@
-import { Button } from '@/components/ui/button';
-import { Searchbar } from '../Searchbar/Searchbar';
-import { NavbarItem } from './NavbarItem';
-import {
-  Sheet,
-  SheetClose,
-  SheetContent,
-  SheetDescription,
-  SheetFooter,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from '@/components/ui/sheet';
 import { MenuIcon } from 'lucide-react';
+
+import { Button } from '@/components/ui/button';
+import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
+
+import { Searchbar } from '../Searchbar/Searchbar';
+
+import { NavbarItem } from './NavbarItem';
 
 export function MobileNavbar() {
   return (

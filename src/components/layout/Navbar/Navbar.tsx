@@ -16,11 +16,11 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { logOutUser } from '@/lib/configs/firebaseAuth';
-import { useAuthState } from '@/lib/hooks/firebase/auth/useAuthState';
 import { useAsyncAction } from '@/lib/hooks/useAsyncAction';
 import { useToast } from '@/lib/hooks/useToast';
 
 import { Searchbar } from '../Searchbar/Searchbar';
+
 import { MobileNavbar } from './MobileNavbar';
 
 export function Navbar() {

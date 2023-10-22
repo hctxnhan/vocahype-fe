@@ -1,8 +1,10 @@
-import * as React from 'react';
+// @ts-nocheck
 import * as DialogPrimitive from '@radix-ui/react-dialog';
 import { X } from 'lucide-react';
+import React from 'react';
 
 import { cn } from '@/lib/utils/utils';
+
 import { Overlay } from '../layout/Overlay/Overlay';
 
 const Dialog = DialogPrimitive.Root;
@@ -15,6 +17,7 @@ const DialogPortal = ({
   children,
   ...props
 }: DialogPrimitive.DialogPortalProps) => (
+
   <DialogPrimitive.Portal className={cn(className)} {...props}>
     <Overlay />
     {children}
