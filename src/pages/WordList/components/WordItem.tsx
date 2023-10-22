@@ -16,7 +16,7 @@ interface WordItemProps {
   onLearnWord: (id: string, index: number) => void;
 }
 
-export function WordItem ({
+export function WordItem({
   data,
   dueDate,
   status = WORD_STATUS_LEARN.TO_LEARN,
@@ -34,12 +34,10 @@ export function WordItem ({
   };
 
   const renderDueDate = () => {
-    const due = dayjs().diff(dayjs(dueDate), 'd')
-    if (due > 0)
-      return `${due} days overdue`
-    else
-      return 'Due today'
-  }
+    const due = dayjs().diff(dayjs(dueDate), 'd');
+    if (due > 0) return `${due} days overdue`;
+    else return 'Due today';
+  };
 
   const handleIgnore = () => {
     ignoreWord([id, 'ignore'], {
@@ -70,7 +68,7 @@ export function WordItem ({
   };
 
   return (
-    <div className="my-8 flex h-[350px] w-[350px] flex-shrink-0 flex-grow-0 basis-auto flex-col justify-between rounded-lg border-2 border-slate-300 p-4">
+    <div className="mb-2 flex h-[350px] w-[350px] flex-shrink-0 flex-grow-0 basis-auto flex-col justify-between rounded-lg border-2 border-slate-300 p-4 max-sm:my-0 max-sm:h-[200px] max-sm:w-full">
       <div className="flex flex-col gap-2">
         <div className="text-2xl font-bold text-brand-700">{word}</div>
         <div
@@ -87,7 +85,7 @@ export function WordItem ({
           </div>
         )}
       </div>
-      <div className="flex justify-between">
+      <div className="flex flex-wrap justify-between gap-2">
         <Button
           variant={'link'}
           onClick={handleIgnore}

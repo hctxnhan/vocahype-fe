@@ -12,3 +12,9 @@ export function postDailyGoal(level: string) {
     level,
   });
 }
+
+export function postTrackLearningTime(time: number) {
+  return axiosInstance.post(`/learning-time`, {
+    time,
+  });
+}

@@ -1,10 +1,13 @@
 import { useEffect, useState } from 'react';
 import useSWR from 'swr';
 
-import { getUserprofile } from '@/api/words/profile';
+
+import { getUserprofile, postDailyGoal } from '@/api/words/profile';
 import { FillParent } from '@/components/layout/FillParent/FillParent';
 import { Loading } from '@/components/layout/Loading/Loading';
 import { DAILY_GOAL_LEVEL } from '@/lib/enums/level';
+import { useAsyncAction } from '@/lib/hooks/useAsyncAction';
+import { useToast } from '@/lib/hooks/useToast';
 
 import { DailyGoalSelection } from './components/DailyGoalSelection';
 
@@ -59,47 +62,67 @@ const goalSettingOptions = [
   },
 ];
 
-export function DailyGoalSetting () {
+export function DailyGoalSetting() {
   const [currentValue, setCurrentValue] = useState('basic');
 
-  const { data, isLoading } = useSWR(
-    'profile',
-    getUserprofile
-  );
+  const { data, isLoading: isFetchingProfile } = useSWR('profile', getUserprofile);
 
-  const profile = data?.data?.[0]?.attributes
+  const toast = useToast();
+  const { start, isLoading: isSettingGoal } = useAsyncAction(postDailyGoal);
+
+  function handleUpdateDailyGoal(level: DAILY_GOAL_LEVEL) {
+    start([level], {
+      onSuccess: () => {
+        toast.success({ title: 'Updated daily goal successfully' });
+      },
+      onError: () => {
+        toast.error({ title: 'Daily goal update failed' });
+      },
+    });
+  }
+
+  function handleChangeGoal(value: string) {
+    setCurrentValue(value);
+    handleUpdateDailyGoal(value as DAILY_GOAL_LEVEL);
+  }
+
+  const profile = data?.data?.[0]?.attributes;
+  const isLoading = isFetchingProfile || isSettingGoal;
 
   useEffect(() => {
     if (!isLoading && profile) {
-      const dailyGoal = goalSettingOptions.find(item => item.time * 60 === profile?.goalSeconds)?.value || ''
-      setCurrentValue(dailyGoal)
+      const dailyGoal =
+        goalSettingOptions.find(item => item.time * 60 === profile?.goalSeconds)
+          ?.value || '';
+
+      setCurrentValue(dailyGoal);
     }
-  }, [profile?.goalSeconds])
+  }, [profile?.goalSeconds]);
 
   if (isLoading)
     return (
-      <FillParent className='fixed bg-black/70'>
+      <FillParent className="fixed bg-black/70">
         <Loading />
       </FillParent>
     );
 
   return (
     <div>
-      <h3 className="text-xl font-medium uppercase mb-4">Learning</h3>
+      <h3 className="mb-4 text-xl font-medium uppercase">Learning</h3>
       <div className="flex gap-10">
         <div className="vh-flex-column w-32">
           <label className="font-medium" htmlFor="">
             Daily goal
           </label>
-          <dl className="text-slate-500 text-sm">
+          <dl className="text-sm text-slate-500">
             Embrace consistent progress in English learning by dedicating
             focused time each day in the app.
           </dl>
         </div>
-        <div className='flex-1'>
+        <div className="flex-1">
           <DailyGoalSelection
             options={goalSettingOptions}
-            onChange={setCurrentValue}
+            onChange={handleChangeGoal}
             value={currentValue}
           />
         </div>

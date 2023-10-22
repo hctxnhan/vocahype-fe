@@ -12,21 +12,21 @@ import { WordList } from '@/pages/WordList/WordList';
 
 export function MainLayout () {
   return (
-    <div className="flex h-screen w-full flex-col px-8 pb-4 text-neutral-950">
+    <div className="flex h-screen w-full flex-col px-8 pb-4 text-neutral-950 max-sm:px-4">
       <div className="absolute inset-0 -z-50 bg-white" />
       <div>
         <Navbar />
       </div>
-      <div className="mt-8 grid flex-1 grid-cols-mainLayout">
+      <div className="mt-8 grid flex-1 grid-cols-mainLayout max-lg:flex max-lg:mt-2 min-h-0">
         <Sidebar />
         <BreadcrumbProvider>
-          <div className="relative flex flex-col overflow-x-hidden">
+          <div className="relative flex flex-col overflow-x-hidden flex-1">
             <Breadcrumb />
             <Route component={KnowledgeCheck} path="/knowledge-check" />
             <Route component={SearchResult} path="/search" />
             <Route component={Learn} path="/words/:wordId" />
             <Route component={ProfileSettings} path="/profile" />
-            <Route component={WordList} path="/learn" />
+            <Route component={WordList} path="/" />
           </div>
         </BreadcrumbProvider>
       </div>
