@@ -1,45 +1,57 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import useSWR from 'swr';
+
+import { getUserprofile } from '@/api/words/profile';
+import { FillParent } from '@/components/layout/FillParent/FillParent';
+import { Loading } from '@/components/layout/Loading/Loading';
+import { DAILY_GOAL_LEVEL } from '@/lib/enums/level';
 
 import { DailyGoalSelection } from './components/DailyGoalSelection';
 
 const goalSettingOptions = [
   {
-    value: 0,
+    id: 0,
+    value: DAILY_GOAL_LEVEL.BASIC,
     label: 'BASIC 💤',
     time: 5,
     description:
       'The Basic setting is perfect for beginners or individuals with limited time to spare.',
   },
   {
-    value: 1,
+    id: 1,
+    value: DAILY_GOAL_LEVEL.CASUAL,
     label: 'CASUAL 💗',
     time: 10,
     description:
       'The Casual setting is designed for learners who prefer a relaxed pace but still want to make consistent progress.',
   },
   {
-    value: 2,
+    id: 2,
+    value: DAILY_GOAL_LEVEL.REGULAR,
     label: 'REGULAR 💦',
     time: 15,
     description:
       'The Regular setting is suitable for learners looking for a balanced approach to English language learning.',
   },
   {
-    value: 3,
+    id: 3,
+    value: DAILY_GOAL_LEVEL.SERIOUS,
     label: 'SERIOUS 🔥',
     time: 20,
     description:
       'The Serious setting is ideal for learners committed to making substantial progress in a shorter time frame.',
   },
   {
-    value: 4,
+    id: 4,
+    value: DAILY_GOAL_LEVEL.CHALLENGE,
     label: 'CHALLENGE 💢',
     time: 25,
     description:
       'The Challenge setting is designed for learners seeking a more intensive learning experience.',
   },
   {
-    value: 5,
+    id: 5,
+    value: DAILY_GOAL_LEVEL.HARDCORE,
     label: 'EXTREME 🌊',
     time: 30,
     description:
@@ -47,8 +59,30 @@ const goalSettingOptions = [
   },
 ];
 
-export function DailyGoalSetting() {
-  const [currentValue, setCurrentValue] = useState(0);
+export function DailyGoalSetting () {
+  const [currentValue, setCurrentValue] = useState('basic');
+
+  const { data, isLoading } = useSWR(
+    'profile',
+    getUserprofile
+  );
+
+  const profile = data?.data?.[0]?.attributes
+
+  useEffect(() => {
+    if (!isLoading && profile) {
+      const dailyGoal = goalSettingOptions.find(item => item.time * 60 === profile?.goalSeconds)?.value || ''
+      setCurrentValue(dailyGoal)
+    }
+  }, [profile?.goalSeconds])
+
+  if (isLoading)
+    return (
+      <FillParent className='fixed bg-black/70'>
+        <Loading />
+      </FillParent>
+    );
+
   return (
     <div>
       <h3 className="text-xl font-medium uppercase mb-4">Learning</h3>

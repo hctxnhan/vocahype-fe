@@ -1,4 +1,4 @@
-import * as dayjs from 'dayjs';
+import dayjs from 'dayjs';
 import { useLocation } from 'wouter';
 
 import { Word } from '@/api/model/Word';

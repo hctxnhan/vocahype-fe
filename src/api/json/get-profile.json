@@ -1,0 +1,16 @@
+{
+  "description": "API for get user profile",
+  "response": {
+    "data": {
+      "type": "User",
+      "name": "User",
+      "relationships": {
+        "Role": {
+          "type": "Role",
+          "name": "role",
+          "included": true
+        }
+      }
+    }
+  }
+}
