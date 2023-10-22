@@ -4,7 +4,7 @@ import {
   GearIcon,
   ExitIcon,
 } from '@radix-ui/react-icons';
-import { useLocation } from 'wouter';
+import { Link, useLocation } from 'wouter';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -16,16 +16,16 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { logOutUser } from '@/lib/configs/firebaseAuth';
-import { useAuthState } from '@/lib/hooks/firebase/auth/useAuthState';
 import { useAsyncAction } from '@/lib/hooks/useAsyncAction';
 import { useToast } from '@/lib/hooks/useToast';
 
 import { Searchbar } from '../Searchbar/Searchbar';
 
+import { MobileNavbar } from './MobileNavbar';
+
 export function Navbar() {
   const [_, navigate] = useLocation();
   const toast = useToast('Log out');
-  const { user } = useAuthState();
 
   const menuConfig = [
     {
@@ -53,20 +53,20 @@ export function Navbar() {
   });
 
   return (
-    <div className="flex">
-      <div className="w-[300px]">
-        <div className="w-fit py-4 pl-8 font-display text-xl font-bold">
+    <div className="flex max-lg:justify-between items-center">
+      <div className="w-[300px] max-lg:w-fit">
+        <Link
+          href="/"
+          className="mr-4 flex items-center gap-2 py-4 pl-8 font-display text-xl font-bold max-lg:pl-0"
+        >
           VocaHype
-        </div>
+        </Link>
       </div>
-      <div className="flex flex-1 justify-between gap-8">
+      <div className="flex flex-1 justify-between gap-8 max-lg:hidden">
         <div className="w-full max-w-[600px] py-4">
           <Searchbar />
         </div>
         <div className="flex items-center gap-6 py-4 text-lg">
-          <div className="">
-            Hello, <span className="font-bold">{user?.displayName}</span>
-          </div>
           <div className="flex items-center gap-2">
             <DropdownMenu>
               <DropdownMenuTrigger>
@@ -107,6 +107,7 @@ export function Navbar() {
           </div>
         </div>
       </div>
+      <MobileNavbar />
     </div>
   );
 }

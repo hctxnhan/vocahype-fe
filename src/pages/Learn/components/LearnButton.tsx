@@ -18,7 +18,9 @@ export function LearnButton({
     (level: 'easy' | 'hard' | 'normal' | 'mastered' | 'ignore') => () => {
       start([wordId, level], {
         onSuccess: () => {
-          toast.success({ title: `Word "${word}" is added to ${level.toUpperCase()} list` });
+          toast.success({
+            title: `Word "${word}" is added to ${level.toUpperCase()} list`,
+          });
         },
         onError: () => {
           toast.error({ title: `Failed to add "${word}" to ${level} list` });
@@ -29,17 +31,15 @@ export function LearnButton({
   return (
     <>
       {isLoading && (
-        <FillParent
-          className='bg-black/70 z-[9998] rounded-md'
-        >
+        <FillParent className="z-[9998] rounded-md bg-black/70">
           <Loading />
         </FillParent>
       )}
 
-      <div className="flex justify-between gap-4">
+      <div className="flex justify-between gap-4 max-md:gap-2">
         <Button
           onClick={handleClickLearn('ignore')}
-          className="w-full"
+          className="w-full max-md:py-1 max-md:px-2"
           variant={'secondary'}
           size={'lg'}
         >
@@ -47,7 +47,7 @@ export function LearnButton({
         </Button>
         <Button
           onClick={handleClickLearn('hard')}
-          className="w-full"
+          className="w-full max-md:py-1 max-md:px-2"
           variant={'destructive'}
           size={'lg'}
         >
@@ -55,23 +55,23 @@ export function LearnButton({
         </Button>
         <Button
           onClick={handleClickLearn('normal')}
-          className="w-full"
-          color='orange'
+          className="w-full max-md:py-1 max-md:px-2"
+          color="orange"
           size={'lg'}
         >
           Normal
         </Button>
         <Button
           onClick={handleClickLearn('easy')}
-          className="w-full"
+          className="w-full max-md:py-1 max-md:px-2"
           size={'lg'}
         >
           Easy
         </Button>
         <Button
-          color='green'
+          color="green"
           onClick={handleClickLearn('mastered')}
-          className="w-full"
+          className="w-full max-md:py-1 max-md:px-2"
           size={'lg'}
         >
           Mastered
