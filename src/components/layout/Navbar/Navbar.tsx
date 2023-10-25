@@ -22,6 +22,7 @@ import { useToast } from '@/lib/hooks/useToast';
 import { Searchbar } from '../Searchbar/Searchbar';
 
 import { MobileNavbar } from './MobileNavbar';
+import { ToggleThemeButton } from './ToggleThemeButton';
 
 export function Navbar() {
   const [_, navigate] = useLocation();
@@ -53,23 +54,23 @@ export function Navbar() {
   });
 
   return (
-    <div className="flex max-lg:justify-between items-center">
-      <div className="w-[300px] max-lg:w-fit">
+    <div className="navbar-height sticky top-0 z-50 flex w-full items-center backdrop-blur max-lg:justify-between">
+      <div className="w-sidebar max-lg:w-fit">
         <Link
           href="/"
-          className="mr-4 flex items-center gap-2 py-4 pl-8 font-display text-xl font-bold max-lg:pl-0"
+          className="mr-4 flex w-sidebar items-center gap-2 font-display text-xl font-bold max-lg:pl-0 max-sm:w-fit"
         >
           VocaHype
         </Link>
       </div>
-      <div className="flex flex-1 justify-between gap-8 max-lg:hidden">
-        <div className="w-full max-w-[600px] py-4">
+      <div className="ml-6 flex flex-1 justify-between gap-8 max-md:hidden">
+        <div className="w-full max-w-[600px]">
           <Searchbar />
         </div>
-        <div className="flex items-center gap-6 py-4 text-lg">
+        <div className="flex items-center gap-6 text-lg">
           <div className="flex items-center gap-2">
             <DropdownMenu>
-              <DropdownMenuTrigger>
+              <DropdownMenuTrigger asChild>
                 <Button variant={'ghost'} size="icon">
                   <PersonIcon width={20} height={20} />
                 </Button>
@@ -78,7 +79,7 @@ export function Navbar() {
                 <DropdownMenuLabel>My Account</DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 {menuConfig.map(menu => (
-                  <DropdownMenuItem onClick={menu.action}>
+                  <DropdownMenuItem key={menu.label} onClick={menu.action}>
                     <div className="flex items-center gap-2">
                       {menu.icon}
                       {menu.label}
@@ -101,13 +102,13 @@ export function Navbar() {
             <Button variant={'ghost'} size="icon">
               <BellIcon width={20} height={20} />
             </Button>
-            <Button variant={'ghost'} size="icon">
-              <GearIcon width={20} height={20} />
-            </Button>
           </div>
         </div>
       </div>
-      <MobileNavbar />
+      <div className='center'>
+        <ToggleThemeButton />
+        <MobileNavbar />
+      </div>
     </div>
   );
 }

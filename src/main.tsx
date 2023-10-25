@@ -4,6 +4,7 @@ import { SWRConfig } from 'swr/_internal';
 
 import { App } from './App.tsx';
 import './index.css';
+import { ThemeProvider } from './lib/context/theme.context.tsx';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -16,7 +17,9 @@ const app = (
         revalidateOnFocus: false,
       }}
     >
-      <App />
+      <ThemeProvider defaultTheme="system">
+        <App />
+      </ThemeProvider>
     </SWRConfig>
   </React.StrictMode>
 );

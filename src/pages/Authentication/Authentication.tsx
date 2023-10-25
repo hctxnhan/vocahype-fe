@@ -21,9 +21,9 @@ export function Authentication() {
 
   return (
     <FillParent>
-      <div className="absolute inset-0 -z-50 bg-brand-500/80" />
-      <div className="w-[450px]">
-        <div className="flex flex-col items-center gap-1 pb-8 text-sky-50">
+      <div className="absolute inset-0 -z-50 bg-primary" />
+      <div className="w-[min(100%,400px)] mx-auto">
+        <div className="flex flex-col items-center gap-1 pb-8 text-primary-foreground">
           <div className="w-fit font-display text-4xl font-bold ">VocaHype</div>
           <div className="text-lg">
             The only English learning app that you’ve ever need

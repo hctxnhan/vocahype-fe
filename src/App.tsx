@@ -9,7 +9,7 @@ import { EnterEmail } from './pages/ResetPassword/components/EnterEmail';
 
 function App() {
   return (
-    <div className="text-slate-900">
+    <div className="text-foreground">
       <Switch>
         <Route path="/auth" component={Authentication} />
         <Route path="/auth/reset-password" component={EnterEmail} />

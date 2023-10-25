@@ -103,7 +103,7 @@ export function ProfileInfo () {
     <Form {...form}>
       <form className="vh-flex-column gap-4" onSubmit={form.handleSubmit(onSubmit) as VoidFunction}>
         <span className='text-slate-800 text-2xl font-bold'>PROFILE</span>
-        <div className='flex gap-8'>
+        <div className='flex gap-8 max-lg:flex-col'>
           <Card className='flex-1'>
             <CardHeader className="p-8 center mx-auto max-w-[350px] h-full gap-2 center">
               <FormField
@@ -117,7 +117,7 @@ export function ProfileInfo () {
                         <AvatarFallback>
                           {getFirstNLetter(user?.displayName || '', 2)}
                         </AvatarFallback>
-                        <div className="absolute flex h-full w-full items-center justify-center bg-slate-900/50 text-white opacity-0 transition-opacity hover:cursor-pointer hover:opacity-100">
+                        <div className="absolute flex h-full w-full items-center justify-center bg-background/50 text-foreground opacity-0 transition-opacity hover:cursor-pointer hover:opacity-100">
                           Change
                         </div>
                       </Avatar>
@@ -136,8 +136,6 @@ export function ProfileInfo () {
                 )}
               />
               <span className='text-2xl mt-0 font-bold'>{user?.displayName}</span>
-              <span className="text-center mt-0 text-slate-500 text-sm">
-              </span>
             </CardHeader>
           </Card>
           <div className='flex-1'>
@@ -223,11 +221,11 @@ export function ProfileInfo () {
               />
             </div>
             <div className="vh-flex-column flex-1 items-center gap-1">
-              <div className="text-sm text-red-700 hover:cursor-pointer">
+              <div className="text-sm text-destructive hover:cursor-pointer">
                 Delete account
               </div>
               <LoadingButton
-                className="w-full bg-brand-600 py-3 text-sm leading-6 font-medium"
+                className="w-full"
                 type="submit"
                 isLoading={updateProfileAction.isLoading}
               >

@@ -68,19 +68,19 @@ export function WordItem({
   };
 
   return (
-    <div className="mb-2 flex h-[350px] w-[350px] flex-shrink-0 flex-grow-0 basis-auto flex-col justify-between rounded-lg border-2 border-slate-300 p-4 max-sm:my-0 max-sm:h-[200px] max-sm:w-full">
+    <div className="mb-2 flex h-[350px] w-[350px] flex-shrink-0 flex-grow-0 basis-auto flex-col justify-between rounded-lg border border-border p-4 max-sm:my-0 max-sm:h-[200px] max-sm:w-full">
       <div className="flex flex-col gap-2">
-        <div className="text-2xl font-bold text-brand-700">{word}</div>
+        <div className="text-2xl font-bold text-primary">{word}</div>
         <div
           className={cn('text-base font-bold', {
-            'text-rose-600': status === WORD_STATUS_LEARN.LEARNING,
+            'text-destructive': status === WORD_STATUS_LEARN.LEARNING,
             'text-green-600': status === WORD_STATUS_LEARN.TO_LEARN,
           })}
         >
           {status.toUpperCase()}
         </div>
         {dueDate && (
-          <div className="text-sm font-medium text-slate-400">
+          <div className="text-sm font-medium text-foreground/50">
             {renderDueDate()}
           </div>
         )}
@@ -89,7 +89,7 @@ export function WordItem({
         <Button
           variant={'link'}
           onClick={handleIgnore}
-          className="text-sm font-bold text-rose-600"
+          className="text-sm font-bold text-destructive"
         >
           IGNORE
         </Button>
@@ -98,14 +98,14 @@ export function WordItem({
             <Button
               variant={'link'}
               onClick={handleDelayWord(7)}
-              className="text-sm font-bold text-slate-500"
+              className="text-sm font-bold text-muted-foreground"
             >
               NEXT WEEK
             </Button>
             <Button
               variant={'link'}
               onClick={handleDelayWord(1)}
-              className="text-sm font-bold text-slate-500"
+              className="text-sm font-bold text-muted-foreground"
             >
               TOMORROW
             </Button>
@@ -114,7 +114,7 @@ export function WordItem({
         <Button
           variant={'link'}
           onClick={handleClickLearnWord}
-          className="text-sm font-bold text-brand-600"
+          className="text-sm font-bold text-primary"
         >
           LEARN
         </Button>

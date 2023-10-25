@@ -120,7 +120,7 @@ export function Learn() {
           style={{
             backgroundImage: `url("https://static.theprint.in/wp-content/uploads/2022/04/Web_Photo_Editor-71-1024x576.jpg?compress=true")`,
           }}
-          className="relative h-[160] overflow-hidden rounded-lg bg-cover bg-no-repeat px-16 py-8 text-white transition duration-500"
+          className="relative h-[160] overflow-hidden rounded-lg bg-cover bg-no-repeat px-16 py-8 text-foreground transition duration-500"
         >
           <div className=" relative z-50">
             <div className="flex items-center gap-4">
@@ -154,7 +154,7 @@ export function Learn() {
               </TooltipProvider>
             </div>
           </div>
-          <FillParent className="z-[9] bg-slate-800/50 transition" />
+          <FillParent className="z-[9] bg-muted/70 transition" />
           <motion.div
             variants={variants.arrow}
             animate={isOpen ? 'open' : 'close'}
@@ -227,12 +227,9 @@ export function Learn() {
             />
           ))}
         </div>
-        <div>
-          <div className="vh-flex-column mb-2 gap-2">
-            <Synonym title="Synonyms" synonymsList={synonymsList} />
-            <Synonym title="Antonyms" synonymsList={antonymsList} />
-          </div>
-
+        <div className="space-y-4 relative">
+          <Synonym title="Synonyms" synonymsList={synonymsList} />
+          <Synonym title="Antonyms" synonymsList={antonymsList} />
           <LearnButton wordId={wordData.id} word={wordData.word} />
         </div>
       </div>

@@ -89,14 +89,14 @@ export function SearchResult() {
       <p className="mb-6 text-lg">
         Search suggestion for <b>"{word}"</b>
       </p>
-      <div className="relative h-full flex-1 basis-0 overflow-auto">
+      <div className="relative h-full flex-1 basis-0 pb-12">
         {!isLoading && wordList?.length ? (
           <div className="flex w-full flex-col">
             {wordList.map(word => (
               <Button
                 variant={'ghost'}
                 onClick={() => selectWord(word.id)}
-                className="my-1 ml-1 mr-2 flex h-fit cursor-pointer flex-col gap-2 rounded-md border-b-[6px] border-b-transparent bg-neutral-100 px-8 py-4 transition hover:border-b-brand-600 hover:bg-brand-500 hover:text-sky-50"
+                className="my-1 ml-1 mr-2 flex h-fit cursor-pointer flex-col gap-2 rounded-md bg-accent px-8 py-4 transition hover:bg-primary hover:text-primary-foreground"
                 key={word.id}
               >
                 <div className="center gap-4">
@@ -132,7 +132,7 @@ export function SearchResult() {
           </FillParent>
         )}
       </div>
-      <div className="pt-6">
+      <div className="fixed bottom-4 left-1/2 -translate-x-1/2">
         <Pagination
           key={word?.concat(params?.exact ?? 'false')}
           defaultValue={{

@@ -19,6 +19,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from './select';
+import { useMediaQuery } from '@/lib/hooks/useMediaQuery';
 
 export interface PaginationState {
   page: number;
@@ -119,6 +120,7 @@ function PaginationPageNumber({
   value?: number;
   onChange?: (value: number) => void;
 }) {
+  const isSmallScreen = useMediaQuery('(max-width: 640px)');
   const [state, dispatch] = usePaginationContext()!;
   const voidItem = '...';
 
@@ -158,14 +160,16 @@ function PaginationPageNumber({
     };
   }
 
+  const showPageItems = isSmallScreen ? [state.page] : calculateShowPageItems();
+
   return (
     <div className="center gap-2">
-      {calculateShowPageItems().map((item, index) => (
+      {showPageItems.map((item, index) => (
         <Button
           key={index}
           variant={'outline'}
-          className={cn('w-[50px] flex-1 text-neutral-400', {
-            'border-brand-500 bg-brand-400 text-white hover:bg-brand-600 hover:text-white':
+          className={cn('w-[50px] flex-1 text-foreground', {
+            'border-primary bg-primary text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground':
               item === state.page,
           })}
           onClick={

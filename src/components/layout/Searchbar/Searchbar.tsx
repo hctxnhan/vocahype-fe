@@ -79,7 +79,9 @@ export function Searchbar() {
 
   return (
     <>
-      {isFocus && <FillParent className="z-[9998] bg-black/70"></FillParent>}
+      {isFocus && (
+        <FillParent className="z-[9998] h-screen w-full overflow-hidden bg-secondary/90"></FillParent>
+      )}
       <form
         onSubmit={handleSearch}
         className={cn('relative flex h-auto w-full gap-2', {
@@ -91,16 +93,17 @@ export function Searchbar() {
             <Input
               ref={inputRef}
               placeholder="Find definition for..."
-              className="border-neutral-200 bg-white font-dinRound font-medium placeholder:font-medium placeholder:text-neutral-400"
+              className="font-dinRound"
             />
             <div className="center absolute right-4 top-1/2 -translate-y-1/2">
               <TooltipProvider>
                 <Tooltip>
-                  <TooltipTrigger>
+                  <TooltipTrigger asChild>
                     <Toggle
                       pressed={isExact}
                       onPressedChange={setIsExact}
                       className="uppercase"
+                      variant={'none'}
                       size={'sm'}
                     >
                       Exact
@@ -115,14 +118,12 @@ export function Searchbar() {
               </TooltipProvider>
             </div>
           </div>
-          <div className="absolute top-12 w-full rounded-lg bg-white">
-            <RecentSearch
-              isOpen={isFocus}
-              history={history}
-              onRemoveAll={onRemoveAll}
-              onClickWord={onClickWord}
-            />
-          </div>
+          <RecentSearch
+            isOpen={isFocus}
+            history={history}
+            onRemoveAll={onRemoveAll}
+            onClickWord={onClickWord}
+          />
         </div>
         <Button variant={'outline'} type="submit">
           Search

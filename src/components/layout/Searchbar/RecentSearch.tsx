@@ -12,13 +12,13 @@ export function RecentSearch({
   onClickWord,
 }: RecentSearchProps) {
   return isOpen ? (
-    <div>
-      <div className="flex items-center justify-between border-b border-solid border-gray-200 px-8 py-4 text-sm last:border-b-0">
-        <div className="font-semibold text-slate-400">RECENT SEARCH</div>
+    <div className="absolute top-12 w-full rounded-lg border border-border bg-background shadow-2xl">
+      <div className="flex items-center justify-between border-b border-border px-8 py-4 text-sm last:border-b-0">
+        <div className="font-semibold">RECENT SEARCH</div>
         {!!history.length && (
           <div
             onClick={onRemoveAll}
-            className="font-dinRound text-red-700 hover:cursor-pointer"
+            className="font-dinRound text-destructive hover:cursor-pointer"
           >
             Remove all
           </div>
@@ -28,8 +28,9 @@ export function RecentSearch({
         <div className="max-h-[500px] overflow-auto">
           {history?.map(history => (
             <div
+              key={history}
               onClick={onClickWord.bind(null, history)}
-              className=" border-b border-solid border-gray-200 px-[32px]  py-4 text-sm text-slate-800 last:border-b-0 hover:cursor-pointer hover:bg-slate-100 hover:last:rounded-b-lg"
+              className=" border-b border-solid border-border px-8 py-4 text-sm last:border-b-0 hover:cursor-pointer hover:bg-accent hover:last:rounded-b-lg"
             >
               {history}
             </div>

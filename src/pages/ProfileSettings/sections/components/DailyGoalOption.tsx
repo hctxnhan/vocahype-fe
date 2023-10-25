@@ -27,17 +27,17 @@ export function DailyGoalOption ({
       <label
         htmlFor={id}
         className={cn(
-          'vh-flex-column h-full cursor-pointer rounded-md bg-white p-3 transition-colors hover:bg-slate-200 border-2',
+          'vh-flex-column h-full cursor-pointer rounded-md bg-background p-3 transition-colors hover:bg-background/90 border-2',
           {
-            'bg-brand-600 text-white hover:bg-brand-700': selected,
+            'bg-primary hover:bg-primary/90 text-primary-foreground': selected,
           }
         )}
       >
         <span className="font-medium">{label}</span>
         <span className="text-sm font-medium">{time} mins per day</span>
         <span
-          className={cn('text-sm text-slate-500 mt-2', {
-            'text-slate-200': selected,
+          className={cn('text-sm text-muted-foreground mt-2', {
+            'text-primary-foreground': selected,
           })}
         >
           {description}

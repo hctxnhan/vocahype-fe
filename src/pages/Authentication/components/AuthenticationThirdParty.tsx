@@ -7,7 +7,7 @@ export function AuthenticationThirdParty() {
 
   return (
     <div className='vh-flex-col'>
-      <div className="relative mt-3 text-center text-sm text-slate-500/60">
+      <div className="relative mt-3 text-center text-sm text-foreground/70">
         Or continue with
       </div>
 

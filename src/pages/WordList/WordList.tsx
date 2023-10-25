@@ -108,14 +108,14 @@ export function WordList() {
 
   return (
     <div className="flex flex-1 flex-col overflow-hidden">
-      <div className="mb-4 flex flex-col gap-2">
-        <div className="text-4xl font-bold leading-normal text-brand-600 max-sm:text-2xl">
+      <div className="mb-16 flex flex-col gap-2 max-sm:mb-4">
+        <p className="text-4xl font-bold leading-normal text-primary max-sm:text-2xl">
           Keep up the good work, {user?.displayName}!
-        </div>
-        <div className="text-lg font-medium text-slate-600 max-sm:text-base">
+        </p>
+        <p className="text-lg font-medium text-foreground max-sm:text-base">
           You have {countWordStatus.progress} words in progress today,{' '}
           {countWordStatus.due} words have due
-        </div>
+        </p>
       </div>
       <div
         onWheel={handleScroll}

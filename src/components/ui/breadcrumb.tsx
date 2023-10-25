@@ -15,24 +15,22 @@ export function Breadcrumb({ children, className }: BreadCrumbProps) {
 
   return (
     <div className={cn('flex', className)}>
-      {getValidChildren.map((child, index) => {
-        return (
-          <div className="flex items-center" key={index}>
-            {cloneElement(child, { key: index })}
-            {index !== length - 1 && (
-              <div className="px-0.5 font-medium">
-                <SlashIcon width={16} height={16} />
-              </div>
-            )}
-          </div>
-        );
-      })}
+      {getValidChildren.map((child, index) => (
+        <div className="flex items-center" key={index}>
+          {cloneElement(child, { key: index })}
+          {index !== length - 1 && (
+            <div className="px-0.5 font-medium">
+              <SlashIcon width={16} height={16} />
+            </div>
+          )}
+        </div>
+      ))}
     </div>
   );
 }
 
 export function BreadcrumbItem({ children }: { children: React.ReactNode }) {
   return (
-    <div className="font-bold uppercase text-neutral-950/70">{children}</div>
+    <div className="font-bold uppercase text-accent-foreground/50">{children}</div>
   );
 }

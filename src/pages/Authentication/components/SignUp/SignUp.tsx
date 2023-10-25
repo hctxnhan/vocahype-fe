@@ -67,7 +67,7 @@ export function SignUp(props: { goToSignIn: VoidFunction }) {
       stepCount={2}
       className="vh-flex-column gap-4"
     >
-      <Card className="bg-white">
+      <Card className="bg-background">
         <Form {...form}>
           <CardHeader>
             <CardDescription className="flex flex-col gap-2">
@@ -181,7 +181,7 @@ export function SignUp(props: { goToSignIn: VoidFunction }) {
               <MultiStepPage.NextButton
                 lastStepText="Sign up"
                 nextStepText="Next"
-                className="w-full bg-brand-600 font-medium"
+                className="w-full bg-primary font-medium"
                 isLoading={isLoading}
                 type="submit"
               />

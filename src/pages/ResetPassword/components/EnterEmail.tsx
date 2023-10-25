@@ -81,7 +81,7 @@ export function EnterEmail() {
             </CardContent>
             <CardFooter>
               <LoadingButton
-                className="w-full bg-brand-600 font-medium text-white"
+                className="w-full bg-primary font-medium text-white"
                 type="submit"
                 isLoading={isLoading}
               >

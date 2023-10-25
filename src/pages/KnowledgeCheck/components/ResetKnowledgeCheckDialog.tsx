@@ -2,7 +2,6 @@ import { ExclamationTriangleIcon } from '@radix-ui/react-icons';
 
 import { Button } from '@/components/ui/button';
 import {
-  DialogBody,
   DialogClose,
   DialogContent,
   DialogFooter,
@@ -24,22 +23,23 @@ export function ResetKnowledgeCheckDialog({
           Are you sure that you want to reset current test?
         </DialogTitle>
       </DialogHeader>
-      <DialogBody>
-        <div className="flex items-center gap-8">
-          <ExclamationTriangleIcon color="red" width={80} height={80} />
-          <div>
-            Please make sure that you want to reset current test. All progress
-            will be lost.
-          </div>
+      <div className="flex items-center gap-8">
+        <ExclamationTriangleIcon color="red" width={80} height={80} />
+        <div>
+          Please make sure that you want to reset current test. All progress
+          will be lost.
         </div>
-      </DialogBody>
+      </div>
       <DialogFooter>
-        <DialogClose>
-          <Button variant={'ghost'}>Cancel</Button>
+        <DialogClose asChild>
+          <Button
+            className="w-full"
+            onClick={onConfirm}
+            variant={'destructive'}
+          >
+            Go ahead
+          </Button>
         </DialogClose>
-        <Button onClick={onConfirm} variant={'destructive'} type="submit">
-          Go ahead
-        </Button>
       </DialogFooter>
     </DialogContent>
   );

@@ -74,7 +74,7 @@ export function SignIn(props: { goToSignUp: VoidFunction }) {
   }
 
   return (
-    <Card className="bg-white">
+    <Card className="bg-background">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit) as VoidFunction}>
           <CardHeader>
@@ -119,7 +119,7 @@ export function SignIn(props: { goToSignUp: VoidFunction }) {
                   <FormItem>
                     <div className="flex items-center justify-between">
                       <FormLabel>Password</FormLabel>
-                      <div className="text-center text-sm text-slate-600">
+                      <div className="text-center text-sm text-foreground/70">
                         Forgot password?{' '}
                         <Link href="/auth/reset-password">Here</Link>
                       </div>
