@@ -1,6 +1,4 @@
 import { learnWord } from '@/api/words/learnWord';
-import { FillParent } from '@/components/layout/FillParent/FillParent';
-import { Loading } from '@/components/layout/Loading/Loading';
 import { Button } from '@/components/ui/button';
 import { useAsyncAction } from '@/lib/hooks/useAsyncAction';
 import { useToast } from '@/lib/hooks/useToast';

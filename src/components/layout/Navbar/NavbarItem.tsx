@@ -1,5 +1,5 @@
 import { PropsWithChildren } from 'react';
-import { Link, useLocation, useRoute } from 'wouter';
+import { useLocation, useRoute } from 'wouter';
 
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils/utils';

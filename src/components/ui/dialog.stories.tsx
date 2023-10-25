@@ -2,7 +2,6 @@ import type { Story } from '@ladle/react';
 import '@/index.css';
 import {
   Dialog,
-  DialogBody,
   DialogClose,
   DialogContent,
   DialogFooter,
@@ -19,16 +18,14 @@ export const DialogStory: Story = () => (
       <DialogHeader>
         <DialogTitle>Are you sure absolutely sure?</DialogTitle>
       </DialogHeader>
-      <DialogBody>
-        <div className="flex gap-8">
-          <ExclamationTriangleIcon color="red" width={80} height={80} />
-          <div>
-            Just another confirmation dialog popup library used to confirm user
-            intentions on the web app. Just another confirmation dialog popup
-            library used to confirm user intentions on the web app.
-          </div>
+      <div className="flex gap-8">
+        <ExclamationTriangleIcon color="red" width={80} height={80} />
+        <div>
+          Just another confirmation dialog popup library used to confirm user
+          intentions on the web app. Just another confirmation dialog popup
+          library used to confirm user intentions on the web app.
         </div>
-      </DialogBody>
+      </div>
       <DialogFooter>
         <Button variant={'destructive'} type="submit">
           Cancel
