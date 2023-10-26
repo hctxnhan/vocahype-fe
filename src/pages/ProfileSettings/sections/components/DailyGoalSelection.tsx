@@ -14,7 +14,7 @@ export function DailyGoalSelection({
   };
 
   return (
-    <div className="grid grid-flow-row grid-cols-3 gap-4 max-md:grid-cols-2">
+    <div className="grid grid-flow-row gap-4 grid-cols-[repeat(auto-fill,minmax(250px,1fr))]">
       {options.map(option => (
         <DailyGoalOption
           key={option.value}

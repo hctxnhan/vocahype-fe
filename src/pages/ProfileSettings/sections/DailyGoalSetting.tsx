@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import useSWR from 'swr';
 
-
 import { getUserprofile, postDailyGoal } from '@/api/words/profile';
 import { FillParent } from '@/components/layout/FillParent/FillParent';
 import { Loading } from '@/components/layout/Loading/Loading';
@@ -63,9 +62,12 @@ const goalSettingOptions = [
 ];
 
 export function DailyGoalSetting() {
-  const [currentValue, setCurrentValue] = useState('basic');
+  const [currentValue, setCurrentValue] = useState('');
 
-  const { data, isLoading: isFetchingProfile } = useSWR('profile', getUserprofile);
+  const { data, isLoading: isFetchingProfile } = useSWR(
+    'profile',
+    getUserprofile
+  );
 
   const toast = useToast();
   const { start, isLoading: isSettingGoal } = useAsyncAction(postDailyGoal);
@@ -99,27 +101,25 @@ export function DailyGoalSetting() {
     }
   }, [profile?.goalSeconds]);
 
-  if (isLoading)
-    return (
-      <FillParent className="fixed bg-black/70">
-        <Loading />
-      </FillParent>
-    );
-
   return (
     <div>
       <h3 className="mb-4 text-xl font-medium uppercase">Learning</h3>
-      <div className="flex gap-10">
-        <div className="vh-flex-column w-32">
+      <div className="flex gap-10 max-md:flex-col max-md:gap-4">
+        <div className="vh-flex-column w-32 max-md:w-full">
           <label className="font-medium" htmlFor="">
             Daily goal
           </label>
-          <dl className="text-sm text-slate-500">
+          <dl className="text-sm text-foreground/70">
             Embrace consistent progress in English learning by dedicating
             focused time each day in the app.
           </dl>
         </div>
         <div className="flex-1">
+          {isLoading && (
+            <FillParent className="fixed z-[9999] bg-secondary/90">
+              <Loading />
+            </FillParent>
+          )}
           <DailyGoalSelection
             options={goalSettingOptions}
             onChange={handleChangeGoal}

@@ -6,21 +6,21 @@ import { Sidebar } from '@/components/layout/Sidebar/Sidebar';
 import { BreadcrumbProvider } from '@/lib/context/breadcrumb.context';
 import { KnowledgeCheck } from '@/pages/KnowledgeCheck/KnowledgeCheck';
 import { Learn } from '@/pages/Learn/Learn';
-import { ProfileSettings } from '@/pages/ProfileSettings/sections/ProfileSettings';
+import { ProfileSettings } from '@/pages/ProfileSettings/ProfileSettings';
 import { SearchResult } from '@/pages/Search/SearchResult';
 import { WordList } from '@/pages/WordList/WordList';
 
-export function MainLayout () {
+export function MainLayout() {
   return (
-    <div className="flex h-screen w-full flex-col px-8 pb-4 text-neutral-950 max-sm:px-4">
-      <div className="absolute inset-0 -z-50 bg-white" />
-      <div>
-        <Navbar />
-      </div>
-      <div className="mt-8 grid flex-1 grid-cols-mainLayout max-lg:flex max-lg:mt-2 min-h-0">
+    <div className="container h-screen w-full text-foreground">
+      <Navbar />
+      <div
+        className="relative grid min-h-0 flex-1 grid-cols-main-layout
+      gap-6 max-md:grid-cols-1"
+      >
         <Sidebar />
         <BreadcrumbProvider>
-          <div className="relative flex flex-col overflow-x-hidden flex-1">
+          <div className="main-min-height relative mt-8 flex flex-1 flex-col overflow-x-hidden max-md:mt-0 pb-4">
             <Breadcrumb />
             <Route component={KnowledgeCheck} path="/knowledge-check" />
             <Route component={SearchResult} path="/search" />

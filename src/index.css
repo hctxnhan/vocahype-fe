@@ -1,9 +1,65 @@
-@import url('https://fonts.googleapis.com/css2?family=Krona+One&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;0,700;1,400;1,700&display=swap');
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+    --primary: 221.2 83.2% 53.3%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 221.2 83.2% 53.3%;
+    --radius: 0.75rem;
+  }
+
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 217.2 91.2% 59.8%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 224.3 76.3% 48%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Krona+One&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;0,700;1,400;1,700&display=swap');
 
 @font-face {
   font-family: 'Panchang';
@@ -18,14 +74,6 @@
   font-weight: 900;
   font-style: normal;
 }
-
-/* @font-face {
-    font-family: 'DINRoundPro-Medi';
-    src: local('DINRoundPro-Medi'),
-        url('./assets/fonts/DINRoundPro-Medi.ttf') format('truetype');
-    font-weight: 500;
-    font-style: normal;
-} */
 
 @font-face {
   font-family: 'DINRoundPro';
@@ -61,34 +109,56 @@ input::placeholder {
   font-family: 'DINRoundPro', sans-serif;
 }
 
-.global-background {
-  background: no-repeat url('./assets/images/background.webp');
-  background-position: center;
-  background-size: cover;
-  filter: blur(80px) grayscale(1) brightness(1.05);
-}
-
 @layer components {
   .text-outline-transparent {
     text-shadow:
-      2px 2px 0px rgba(224, 242, 254, 1),
-      2px -2px 0px rgba(224, 242, 254, 1),
-      -2px 2px 0px rgba(224, 242, 254, 1),
-      -2px -2px 0px rgba(224, 242, 254, 1);
-    color: white;
+      1px 1px 0px hsl(var(--primary) / 0.1),
+      1px -1px 0px hsl(var(--primary) / 0.1),
+      -1px 1px 0px hsl(var(--primary) / 0.1),
+      -1px -1px 0px hsl(var(--primary) / 0.1);
+    color: hsl(var(--background));
   }
 }
 
-.center {
-  @apply flex items-center justify-center;
-}
+@layer utilities {
+  .center {
+    @apply flex items-center justify-center;
+  }
 
-.vh-flex-column {
-  @apply flex flex-col;
-}
+  .vh-flex-column {
+    @apply flex flex-col;
+  }
 
-.vh-flex-row {
-  @apply flex flex-row;
+  .vh-flex-row {
+    @apply flex flex-row;
+  }
+
+  .sidebar-height {
+    height: calc(100vh - theme('spacing.navbar') - theme('spacing.8'));
+    width: calc(theme('spacing.sidebar'));
+  }
+
+  .main-min-height {
+    min-height: calc(100vh - theme('spacing.navbar') - theme('spacing.8'));
+  }
+
+  .navbar-height {
+    height: theme('spacing.navbar');
+  }
+
+  @media screen and (max-width: theme('screens.md')) {
+    .sidebar-height {
+      height: calc(100vh - theme('spacing.navbar-sm') - theme('spacing.4'));
+    }
+
+    .main-min-height {
+      min-height: calc(100vh - theme('spacing.navbar-sm') - theme('spacing.4'));
+    }
+
+    .navbar-height {
+      height: theme('spacing.navbar-sm');
+    }
+  }
 }
 
 ::-webkit-scrollbar-track {

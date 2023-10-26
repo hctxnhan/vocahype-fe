@@ -20,7 +20,7 @@ export function VerifiedEmail({ oobCode }: VerifiedEmailProps) {
   }, []);
 
   return (
-    <div className="center h-screen w-screen bg-brand-600 text-center text-white">
+    <div className="center h-screen w-screen bg-primary text-center text-white">
       {isLoading ? (
         <FillParent>
           <Loading />
@@ -28,7 +28,7 @@ export function VerifiedEmail({ oobCode }: VerifiedEmailProps) {
       ) : (
         <AutoRedirectPage redirectPath="/auth/signin">
           {(timeLeft, navigate) => (
-            <div className="vh-flex-column max-w-[500px] gap-2 rounded-md bg-brand-100/10 p-8 px-16">
+            <div className="vh-flex-column max-w-[500px] gap-2 rounded-md bg-primary p-8 px-16">
               <p className="mb-8 text-9xl">📫</p>
               <h1 className="text-center text-4xl font-semibold">
                 Email verified successfully!
@@ -37,12 +37,12 @@ export function VerifiedEmail({ oobCode }: VerifiedEmailProps) {
                 Your email has been verified successfully. You can now sign in
                 with your account.
               </p>
-              <p className="text-center text-brand-200">
+              <p className="text-center text-primary">
                 You will be redirected to sign in page in {timeLeft / 1000}s. Or
                 you can{' '}
                 <Button
                   variant={'link'}
-                  className="text-base text-brand-200"
+                  className="text-base text-primary"
                   onClick={navigate}
                 >
                   click here

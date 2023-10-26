@@ -12,12 +12,15 @@ import { Loading } from '@/components/layout/Loading/Loading';
 import { Button } from '@/components/ui/button';
 import { CarouselNumber } from '@/components/ui/carousel-number';
 import { DialogTrigger } from '@/components/ui/dialog';
+import { useMediaQuery } from '@/lib/hooks/useMediaQuery';
 import { useSetBreadcrumb } from '@/lib/hooks/useSetBreadcrumb';
 
 import { ResetKnowledgeCheckDialog } from './components/ResetKnowledgeCheckDialog';
 import { WordBackground } from './components/WordBackground';
 
-export function KnowledgeCheck () {
+export function KnowledgeCheck() {
+  const isLessThanLarge = useMediaQuery('(max-width: 1024px)');
+
   const { data, isLoading, mutate, isValidating } = useSWR(
     'words/knowledge-test',
     getKnowledgeCheck
@@ -54,7 +57,7 @@ export function KnowledgeCheck () {
   const currentWord = words[currentIndex]?.attributes ?? '';
   const isLastWord = currentIndex === words.length - 1;
 
-  async function onFinished () {
+  async function onFinished() {
     await trigger([
       ...known.map(word => ({
         wordId: word,
@@ -68,7 +71,7 @@ export function KnowledgeCheck () {
     handleRestart();
   }
 
-  function handleRestart () {
+  function handleRestart() {
     setCurrentIndex(0);
     setKnownUnknown({
       known: [],
@@ -100,44 +103,42 @@ export function KnowledgeCheck () {
   if (!currentWord) return null;
 
   return (
-    <>
-      <div className="relative h-full gap-16">
-        <div className="flex h-full flex-col">
-          <div className="flex h-full">
-            <div className="relative flex flex-1 justify-center overflow-hidden">
-              <div className="vh-flex-column z-10 mt-[200px] w-full items-center gap-12">
-                <h1 className="font-dinRound text-8xl font-black text-brand-600">
-                  {currentWord.word.toUpperCase()}
-                </h1>
-                <div className="flex gap-6">
-                  <Dialog>
-                    <DialogTrigger>
-                      <Button variant={'ghost'} size={'lg'}>
-                        Restart
-                      </Button>
-                    </DialogTrigger>
-                    <ResetKnowledgeCheckDialog onConfirm={handleRestart} />
-                  </Dialog>
-                  <Button
-                    variant={'destructive'}
-                    onClick={handleClick.bind(null, false)}
-                    size={'lg'}
-                  >
-                    I don’t know
-                  </Button>
-                  <Button onClick={handleClick.bind(null, true)} size={'lg'}>
-                    Known already
-                  </Button>
-                </div>
-              </div>
-              <WordBackground word={currentWord.word} />
-            </div>
-            <div className="relative flex-[0.2] overflow-hidden">
-              <CarouselNumber total={words.length} current={currentIndex + 1} />
-            </div>
+    <div className="relative flex h-full justify-center max-lg:flex-col items-center">
+      <div className="relative flex flex-1 items-center justify-center">
+        <div className="vh-flex-column z-10 -mt-16 w-full items-center gap-12">
+          <h1 className="text-primary font-dinRound text-8xl font-black">
+            {currentWord.word.toUpperCase()}
+          </h1>
+          <div className="flex gap-6 max-sm:flex-col-reverse">
+            <Dialog>
+              <DialogTrigger>
+                <Button variant={'outline'} size={'lg'}>
+                  Restart
+                </Button>
+              </DialogTrigger>
+              <ResetKnowledgeCheckDialog onConfirm={handleRestart} />
+            </Dialog>
+            <Button
+              variant={'destructive'}
+              onClick={handleClick.bind(null, false)}
+              size={'lg'}
+            >
+              I don’t know
+            </Button>
+            <Button onClick={handleClick.bind(null, true)} size={'lg'}>
+              Known already
+            </Button>
           </div>
         </div>
       </div>
-    </>
+      <div className="relative flex-[0.2] w-full h-full">
+        <CarouselNumber
+          direction={isLessThanLarge ? 'horizontal' : 'vertical'}
+          total={words.length}
+          current={currentIndex + 1}
+        />
+      </div>
+      <WordBackground word={currentWord.word} />
+    </div>
   );
 }

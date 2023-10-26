@@ -6,7 +6,7 @@ export function Link(
   return (
     <WouterLink
       {...props}
-      className={`text-brand-500 underline-offset-2 hover:underline font-medium ${props?.className ?? ''}`}
+      className={`text-primary underline-offset-2 hover:underline font-medium ${props?.className ?? ''}`}
     />
   );
 }

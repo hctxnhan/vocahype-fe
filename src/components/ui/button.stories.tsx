@@ -3,19 +3,19 @@ import type { Story } from '@ladle/react';
 import '@/index.css';
 export const ButtonStory: Story = () => (
   <div className="flex gap-4">
-    <Button variant={'default'} size={'xl'}>
+    <Button variant={'default'} size={'lg'}>
       Default
     </Button>
-    <Button variant={'destructive'} size={'xl'}>
+    <Button variant={'destructive'} size={'lg'}>
       Destroy
     </Button>
-    <Button variant={'link'} size={'xl'}>
+    <Button variant={'link'} size={'lg'}>
       Link
     </Button>
     <Button variant={'link'}>
       Link
     </Button>
-    <Button variant={'outline'} size={'xl'}>
+    <Button variant={'outline'} size={'lg'}>
       Outline
     </Button>
     <Button
