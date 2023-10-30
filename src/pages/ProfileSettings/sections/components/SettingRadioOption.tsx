@@ -2,23 +2,23 @@ import { useId } from 'react';
 
 import { cn } from '@/lib/utils/utils';
 
-export interface DailyGoalOptionProps {
+export interface SettingRadioOptionProps {
   value: string;
-  time: number;
+  subtitle?: string;
   description: string;
   label: string;
   currentValue: string;
   onChange: (value: string) => void;
 }
 
-export function DailyGoalOption ({
+export function SettingRadioOption({
   value,
   currentValue,
   label,
-  time,
+  subtitle,
   description,
   onChange,
-}: DailyGoalOptionProps) {
+}: SettingRadioOptionProps) {
   const id = useId();
   const selected = currentValue === value;
 
@@ -27,16 +27,16 @@ export function DailyGoalOption ({
       <label
         htmlFor={id}
         className={cn(
-          'vh-flex-column h-full cursor-pointer rounded-md bg-background p-3 transition-colors hover:bg-background/90 border-2',
+          'vh-flex-column h-full cursor-pointer rounded-md border-2 bg-background p-3 transition-colors hover:bg-background/90',
           {
-            'bg-primary hover:bg-primary/90 text-primary-foreground': selected,
+            'bg-primary text-primary-foreground hover:bg-primary/90': selected,
           }
         )}
       >
-        <span className="font-medium">{label}</span>
-        <span className="text-sm font-medium">{time} mins per day</span>
+        <span className="font-medium uppercase">{label}</span>
+        {subtitle && <span className="text-sm font-medium">{subtitle}</span>}
         <span
-          className={cn('text-sm text-muted-foreground mt-2', {
+          className={cn('mt-2 text-sm text-muted-foreground', {
             'text-primary-foreground': selected,
           })}
         >

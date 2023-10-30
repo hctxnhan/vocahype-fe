@@ -1,14 +1,18 @@
-import { PropsWithChildren } from 'react';
 import { useLocation, useRoute } from 'wouter';
 
-import { Button } from '@/components/ui/button';
+import { Button, ButtonProps } from '@/components/ui/button';
 import { cn } from '@/lib/utils/utils';
 
-interface NavbarItemProps extends PropsWithChildren {
+interface NavbarItemProps extends ButtonProps {
   href: string;
 }
 
-export function NavbarItem({ children, href }: NavbarItemProps) {
+export function NavbarItem({
+  href,
+  className,
+  onClick,
+  ...rest
+}: NavbarItemProps) {
   const [match] = useRoute(href);
   const [_, navigate] = useLocation();
 
@@ -22,13 +26,13 @@ export function NavbarItem({ children, href }: NavbarItemProps) {
       className={cn(
         'w-full text-accent-foreground/50 hover:bg-accent hover:text-accent-foreground/70',
         {
-          'border-primary bg-primary text-primary-foreground hover:bg-primary/90':
+          'border-primary bg-primary text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground':
             match,
-        }
+        },
+        className
       )}
       onClick={handleClick}
-    >
-      {children}
-    </Button>
+      {...rest}
+    />
   );
 }

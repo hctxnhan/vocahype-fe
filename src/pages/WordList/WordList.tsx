@@ -2,10 +2,10 @@ import dayjs from 'dayjs';
 import { WheelEvent, useMemo } from 'react';
 import useSWRInfinite from 'swr/infinite';
 
-import { APIResponse } from '@/api/api-definition/get-word-list';
 import { getLearnWordList } from '@/api/words/learnWord';
 import { FillParent } from '@/components/layout/FillParent/FillParent';
 import { Loading } from '@/components/layout/Loading/Loading';
+import { TOUR_STEPS } from '@/lib/configs/tour';
 import { WORD_STATUS_LEARN } from '@/lib/enums/word';
 import { useAuthState } from '@/lib/hooks/firebase/auth/useAuthState';
 import { useMediaQuery } from '@/lib/hooks/useMediaQuery';
@@ -19,33 +19,42 @@ export function WordList() {
   const isSmallScreen = useMediaQuery('(max-width: 640px)');
 
   const { user } = useAuthState();
-  const { data, mutate, size, setSize, isLoading } =
-    useSWRInfinite<APIResponse>(index => {
-      return `/words/learn?page%5Boffset%5D=${index + 1}&page%5Blimit%5D=10`;
-    }, getLearnWordList);
+  const { data, mutate, size, setSize, isLoading } = useSWRInfinite(index => {
+    return `/words/learn?page%5Boffset%5D=${index + 1}&page%5Blimit%5D=10`;
+  }, getLearnWordList);
 
-  const words = data?.flatMap(item => item?.data) ?? [];
+  const words = data?.[0].data;
 
-  const countWordStatus = useMemo(() => {
-    const comprehensionList = data?.flatMap(item =>
-      item.includedByType('comprehension')
-    );
-    return {
-      progress: comprehensionList?.length || 0,
-      due:
-        comprehensionList?.filter(item =>
-          dayjs().diff(dayjs(item.attributes.dueDate), 'd')
-        ).length || 0,
-    };
-  }, [data]);
+  const countWordStatus = useMemo(
+    () =>
+      words?.reduce(
+        (acc, word) => {
+          const comprehension = word.comprehension;
+          if (comprehension?.status === WORD_STATUS_LEARN.LEARNING) {
+            acc.inProgress++;
+            if (dayjs().diff(dayjs(comprehension.dueDate), 'd') > 0) {
+              acc.due++;
+            }
+          }
+          return acc;
+        },
+        {
+          inProgress: 0,
+          due: 0,
+        }
+      ),
+    [words]
+  );
 
   const isLoadingMore =
     isLoading || (size > 0 && data && typeof data[size - 1] === 'undefined');
-  const isEmpty = data?.length;
+  const isEmpty = data?.length === 0;
   const isReachingEnd =
     isEmpty || (data && data[data.length - 1].data?.length < 5);
 
   const handleScroll = (event: WheelEvent) => {
+    if(isLoading) return;
+
     const onReachEnd = () => {
       void setSize(size + 1);
     };
@@ -113,27 +122,28 @@ export function WordList() {
           Keep up the good work, {user?.displayName}!
         </p>
         <p className="text-lg font-medium text-foreground max-sm:text-base">
-          You have {countWordStatus.progress} words in progress today,{' '}
-          {countWordStatus.due} words have due
+          Today you have {countWordStatus?.inProgress} words in progress and{' '}
+          {countWordStatus?.due && (
+            <span className="text-destructive">
+              {countWordStatus?.due} word overdue. Pay attention!
+            </span>
+          )}
         </p>
       </div>
       <div
         onWheel={handleScroll}
         className="flex gap-2 overflow-auto max-sm:h-full max-sm:flex-col"
+        data-tour={TOUR_STEPS.WORD_LIST.LIST}
       >
         {words.length ? (
           words.map((word, index) => {
-            const comprehensionId = word.relationships.comprehension?.data.id;
-            const comprehension = data?.[0].getIncludedByTypeAndId(
-              'comprehension',
-              comprehensionId
-            );
+            const comprehension = word.comprehension;
             return (
               <WordItem
-                status={comprehension?.attributes.status as WORD_STATUS_LEARN}
-                dueDate={comprehension?.attributes.dueDate || ''}
+                status={comprehension?.status as WORD_STATUS_LEARN}
+                dueDate={comprehension?.dueDate || ''}
                 onLearnWord={handleLearnWord.bind(null, word.id, index)}
-                data={word.attributes}
+                data={word}
                 key={word.id}
               />
             );
