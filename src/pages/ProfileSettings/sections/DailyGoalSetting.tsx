@@ -1,65 +1,16 @@
 import { useEffect, useState } from 'react';
 import useSWR from 'swr';
 
-import { getUserprofile, postDailyGoal } from '@/api/words/profile';
+import { postDailyGoal } from '@/api/profile/learningTime';
+import { getUserprofile } from '@/api/profile/profile';
 import { FillParent } from '@/components/layout/FillParent/FillParent';
 import { Loading } from '@/components/layout/Loading/Loading';
-import { DAILY_GOAL_LEVEL } from '@/lib/enums/level';
+import { DAILY_GOAL_LEVEL } from '@/lib/enums/settings';
 import { useAsyncAction } from '@/lib/hooks/useAsyncAction';
 import { useToast } from '@/lib/hooks/useToast';
+import { goalSettingOptions } from '@/lib/utils/constant';
 
-import { DailyGoalSelection } from './components/DailyGoalSelection';
-
-const goalSettingOptions = [
-  {
-    id: 0,
-    value: DAILY_GOAL_LEVEL.BASIC,
-    label: 'BASIC 💤',
-    time: 5,
-    description:
-      'The Basic setting is perfect for beginners or individuals with limited time to spare.',
-  },
-  {
-    id: 1,
-    value: DAILY_GOAL_LEVEL.CASUAL,
-    label: 'CASUAL 💗',
-    time: 10,
-    description:
-      'The Casual setting is designed for learners who prefer a relaxed pace but still want to make consistent progress.',
-  },
-  {
-    id: 2,
-    value: DAILY_GOAL_LEVEL.REGULAR,
-    label: 'REGULAR 💦',
-    time: 15,
-    description:
-      'The Regular setting is suitable for learners looking for a balanced approach to English language learning.',
-  },
-  {
-    id: 3,
-    value: DAILY_GOAL_LEVEL.SERIOUS,
-    label: 'SERIOUS 🔥',
-    time: 20,
-    description:
-      'The Serious setting is ideal for learners committed to making substantial progress in a shorter time frame.',
-  },
-  {
-    id: 4,
-    value: DAILY_GOAL_LEVEL.CHALLENGE,
-    label: 'CHALLENGE 💢',
-    time: 25,
-    description:
-      'The Challenge setting is designed for learners seeking a more intensive learning experience.',
-  },
-  {
-    id: 5,
-    value: DAILY_GOAL_LEVEL.HARDCORE,
-    label: 'EXTREME 🌊',
-    time: 30,
-    description:
-      'The Hardcore setting is for highly motivated learners who are ready to immerse themselves fully in English language learning.',
-  },
-];
+import { SettingRadioGroup } from './components/SettingRadioGroup';
 
 export function DailyGoalSetting() {
   const [currentValue, setCurrentValue] = useState('');
@@ -88,7 +39,8 @@ export function DailyGoalSetting() {
     handleUpdateDailyGoal(value as DAILY_GOAL_LEVEL);
   }
 
-  const profile = data?.data?.[0]?.attributes;
+  const profile = data?.data?.[0];
+
   const isLoading = isFetchingProfile || isSettingGoal;
 
   useEffect(() => {
@@ -120,7 +72,7 @@ export function DailyGoalSetting() {
               <Loading />
             </FillParent>
           )}
-          <DailyGoalSelection
+          <SettingRadioGroup
             options={goalSettingOptions}
             onChange={handleChangeGoal}
             value={currentValue}

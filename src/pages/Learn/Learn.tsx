@@ -21,6 +21,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui/tooltip';
+import { TOUR_STEPS } from '@/lib/configs/tour';
 import { useSetBreadcrumb } from '@/lib/hooks/useSetBreadcrumb';
 import { cn, playAudio } from '@/lib/utils/utils';
 
@@ -59,7 +60,7 @@ export function Learn() {
     getWord.bind(null, { wordId: params?.wordId as string } ?? '')
   );
 
-  const wordData = wordDetail?.data[0].attributes;
+  const wordData = wordDetail?.data[0];
 
   useSetBreadcrumb(['Learn', wordData?.word ?? '']);
 
@@ -72,40 +73,19 @@ export function Learn() {
 
   if (!wordData) return null;
 
-  const definitionList = wordDetail.relationships.definitions;
-  const partOfSpeech = wordDetail.firstIncludedByType('pos')?.attributes;
-  const exampleList = wordDetail.includedByType('example');
-
+  const definitionList = wordData.meanings[0].definitions ?? [];
+  const definitionListLength = definitionList?.length ?? 0;
+  const currentDefData = definitionList?.[currentDef];
+  const exampleList = currentDefData?.examples ?? [];
   const synonymsList =
-    wordDetail
-      .includedByType('synonym')
-      ?.filter(synonym => synonym.attributes.isSynonym)
-      .map(synonym => synonym.attributes) ?? [];
+    wordData.meanings[0].synonyms?.filter(synonym => synonym.isSynonym) ?? [];
   const antonymsList =
-    wordDetail
-      .includedByType('synonym')
-      ?.filter(synonym => !synonym.attributes.isSynonym)
-      .map(synonym => synonym.attributes) ?? [];
-
-  const definitionListLength = definitionList?.data?.length ?? 0;
-
-  const currentDefData =
-    definitionListLength > 0
-      ? {
-          id: definitionList.data[currentDef]?.id,
-          data: wordDetail.getIncludedByTypeAndId(
-            'definition',
-            definitionList.data[currentDef]?.id
-          )?.attributes.definition,
-        }
-      : {
-          id: '',
-          data: '',
-        };
+    wordData.meanings[0].synonyms?.filter(synonym => !synonym.isSynonym) ?? [];
+  const partOfSpeech = wordData.meanings[0].pos;
 
   const handleClick = (next: number) => {
     const current = currentDef + next;
-    if (current >= 0 && current < definitionList.data.length) {
+    if (current >= 0 && current < definitionListLength) {
       nextDef.current = current - currentDef;
       setCurrentDef(current);
     }
@@ -115,6 +95,7 @@ export function Learn() {
     <TrackLearningTime>
       <div className="relative flex h-full flex-col gap-4">
         <motion.div
+          data-tour={TOUR_STEPS.WORD.DETAIL}
           variants={variants.cardImage}
           animate={isOpen ? 'open' : 'close'}
           style={{
@@ -122,7 +103,7 @@ export function Learn() {
           }}
           className="relative h-[160] overflow-hidden rounded-lg bg-cover bg-no-repeat px-16 py-8 text-foreground transition duration-500"
         >
-          <div className=" relative z-50">
+          <div className="relative z-30">
             <div className="flex items-center gap-4">
               <div className="text-4xl font-black">{wordData.word}</div>
               <Button
@@ -164,72 +145,79 @@ export function Learn() {
             <ChevronDownIcon width={30} height={30} />
           </motion.div>
         </motion.div>
-        {definitionListLength > 1 && (
-          <div className="flex items-center justify-center gap-16 font-display text-sm font-semibold">
-            <div
-              onClick={handleClick.bind(null, -1)}
-              className={cn(
-                'flex items-center hover:cursor-pointer',
-                currentDef == 0 && 'pointer-events-none text-slate-500'
-              )}
-            >
-              <TriangleLeftIcon width={40} height={40} />
-              <div>previous</div>
+        <div data-tour={TOUR_STEPS.WORD.DEFINITION}>
+          {definitionListLength > 1 && (
+            <div className="flex items-center justify-center gap-16 font-display text-sm font-semibold">
+              <div
+                onClick={handleClick.bind(null, -1)}
+                className={cn(
+                  'flex items-center hover:cursor-pointer',
+                  currentDef == 0 && 'pointer-events-none text-slate-500'
+                )}
+              >
+                <TriangleLeftIcon width={40} height={40} />
+                <div>previous</div>
+              </div>
+              <div
+                onClick={handleClick.bind(null, 1)}
+                className={cn(
+                  'flex items-center hover:cursor-pointer',
+                  currentDef >= definitionListLength - 1 &&
+                    'pointer-events-none text-slate-500'
+                )}
+              >
+                <div>next</div>
+                <TriangleRightIcon width={40} height={40} />
+              </div>
             </div>
-            <div
-              onClick={handleClick.bind(null, 1)}
-              className={cn(
-                'flex items-center hover:cursor-pointer',
-                currentDef >= definitionList.data.length - 1 &&
-                  'pointer-events-none text-slate-500'
-              )}
-            >
-              <div>next</div>
-              <TriangleRightIcon width={40} height={40} />
-            </div>
-          </div>
-        )}
+          )}
 
-        {/* TODO: Extract to a component */}
-        <div className="relative flex items-center justify-center overflow-hidden text-lg font-bold transition-all">
-          <AnimatePresence>
-            <motion.div
-              className="transition-all duration-1000"
-              key={currentDef}
-              initial={{
-                transform: `translateX(${nextDef.current * 100}px)`,
-                opacity: 0,
-              }}
-              animate={{
-                transform: 'translateX(0)',
-                opacity: 1,
-              }}
-              exit={{
-                position: 'absolute',
-                transform: `translateX(${-nextDef.current * 100}px)`,
-                opacity: 0,
-              }}
-              transition={{
-                duration: 0.2,
-              }}
-            >
-              {currentDefData.data}
-            </motion.div>
-          </AnimatePresence>
+          {/* TODO: Extract to a component */}
+          <div className="relative flex items-center justify-center overflow-hidden text-lg font-bold transition-all">
+            <AnimatePresence>
+              <motion.div
+                className="transition-all duration-1000"
+                key={currentDef}
+                initial={{
+                  transform: `translateX(${nextDef.current * 100}px)`,
+                  opacity: 0,
+                }}
+                animate={{
+                  transform: 'translateX(0)',
+                  opacity: 1,
+                }}
+                exit={{
+                  position: 'absolute',
+                  transform: `translateX(${-nextDef.current * 100}px)`,
+                  opacity: 0,
+                }}
+                transition={{
+                  duration: 0.2,
+                }}
+              >
+                {currentDefData?.definition}
+              </motion.div>
+            </AnimatePresence>
+          </div>
         </div>
-        <div className="flex-1 basis-0 overflow-auto pb-8">
+        <div
+          className="flex-1 basis-0 overflow-auto pb-8"
+          data-tour={TOUR_STEPS.WORD.EXAMPLE}
+        >
           {exampleList?.map((example, index) => (
             <Example
               key={index}
               className="[&:not(:last-child)]:border-b [&:not(:last-child)]:border-slate-300 [&:not(:last-child)]:border-opacity-50"
-              example={`“${example.attributes.example}”`}
+              example={`“${example.example}”`}
               word={wordData.word}
             />
           ))}
         </div>
-        <div className="space-y-4 relative">
-          <Synonym title="Synonyms" synonymsList={synonymsList} />
-          <Synonym title="Antonyms" synonymsList={antonymsList} />
+        <div className="relative space-y-4">
+          <div className="space-y-4" data-tour={TOUR_STEPS.WORD.SYNONYM}>
+            <Synonym title="Synonyms" synonymsList={synonymsList} />
+            <Synonym title="Antonyms" synonymsList={antonymsList} />
+          </div>
           <LearnButton wordId={wordData.id} word={wordData.word} />
         </div>
       </div>

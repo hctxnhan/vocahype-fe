@@ -18,9 +18,9 @@ export function SearchResult() {
     'page[offset]': string;
     'page[limit]': string;
   }>();
-  
+
   const [totalPage, setTotalPage] = useState(1);
-  const [, navigate, ] = useLocation();
+  const [, navigate] = useLocation();
 
   const word = params?.search;
   const { data: searchResult, isLoading } = useSWR(
@@ -32,18 +32,20 @@ export function SearchResult() {
       params?.['page[limit]'] ?? '10',
     ],
     ([, word]) => {
-      if(!word) return Promise.resolve(null);
+      if (!word) return Promise.resolve(null);
 
       return searchWord({
         word,
-        exact: params?.exact ?? 'false',
-        'page[limit]': params?.['page[limit]'] ?? '10',
-        'page[offset]': params?.['page[offset]'] ?? '1',
+        exact: params?.exact === 'true',
+        page: {
+          offset: params?.['page[offset]'] ?? '1',
+          limit: params?.['page[limit]'] ?? '10',
+        },
       });
     },
     {
       onSuccess: data => {
-        setTotalPage(data?.meta?.pagination.last ?? 1);
+        setTotalPage(data?.metadata?.pagination.last ?? 1);
       },
     }
   );
@@ -101,21 +103,15 @@ export function SearchResult() {
               >
                 <div className="center gap-4">
                   <p className="text-2xl font-semibold">
-                    {word.attributes.word}
+                    {word.word}
                   </p>
-                  {
-                    searchResult?.getIncludedByTypeAndId(
-                      'pos',
-                      word.relationships.pos?.data.id
-                    )?.attributes.description
-                  }
                 </div>
                 <div className="center gap-2">
-                  {word.attributes.phonetic ? (
-                    <p>[{word.attributes.phonetic}]</p>
+                  {word.phonetic ? (
+                    <p>[{word.phonetic}]</p>
                   ) : null}
                   <Button
-                    onClick={playPronunciation(word.attributes.word)}
+                    onClick={playPronunciation(word.word)}
                     size={'icon'}
                     variant={'ghost'}
                     className="flex items-center gap-4 transition-none"

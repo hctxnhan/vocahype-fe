@@ -9,6 +9,7 @@ import {
 } from '@/components/ui/sheet';
 
 import { Searchbar } from '../Searchbar/Searchbar';
+import { LearningTimeProgress } from '../Sidebar/components/LearningTimeProgress';
 
 import { NavbarItem } from './NavbarItem';
 
@@ -24,8 +25,9 @@ export function MobileNavbar() {
           <MenuIcon width={20} height={20} />
         </Button>
       </SheetTrigger>
-      <SheetContent className="max-sm:w-full">
-        <div className='vh-flex-column mt-8 gap-4 px-2'>
+      <SheetContent className="min-w-[min(500px, 100%)] max-sm:w-full max-sm:p-1">
+        <div className="vh-flex-column mt-8 gap-4 px-2">
+          <LearningTimeProgress />
           <SheetClose>
             <NavbarItem href="/">Learn</NavbarItem>
           </SheetClose>
@@ -38,6 +40,7 @@ export function MobileNavbar() {
           <SheetClose>
             <NavbarItem href="/notifications">Notifications</NavbarItem>
           </SheetClose>
+
           <Searchbar />
         </div>
       </SheetContent>

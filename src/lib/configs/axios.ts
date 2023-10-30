@@ -5,18 +5,17 @@ import { auth } from './firebase';
 
 const axiosInstance = axios.create({
   baseURL: environment.api.baseURL,
-  headers: { 'X-Custom-Header': 'foobar', 'Access-Control-Allow-Origin': '*' },
 });
 
 axiosInstance.interceptors.request.use(
-  async (config) => {
-    const token = await auth.currentUser?.getIdToken() ?? '';
+  async config => {
+    const token = (await auth.currentUser?.getIdToken()) ?? '';
     config.headers.Authorization = `Bearer ${token}`;
     return config;
   },
   error => {
     return Promise.reject(error);
-  },
+  }
 );
 
 export { axiosInstance };

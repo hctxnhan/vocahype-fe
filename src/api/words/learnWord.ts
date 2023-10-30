@@ -1,6 +1,10 @@
+import { deserialize } from 'deserialize-json-api';
+
 import { axiosInstance } from '@/lib/configs/axios';
-import { WordLevel } from '@/lib/interfaces/word';
-import { APIResponse, Response } from '../api-definition/get-word-list';
+import { APIResponse, PaginationMeta, WordLevel } from '@/lib/interfaces/type';
+
+import { Comprehension } from '../model/Comprehension';
+import { Word } from '../model/Word';
 
 export function learnWord(wordId: string, level: WordLevel) {
   return axiosInstance.post(`/words/${wordId}/${level}`);
@@ -11,6 +15,13 @@ export function delayLearnWord(wordId: string, day: number) {
 }
 
 export async function getLearnWordList(url: string) {
-  const reponse = await axiosInstance.get<Response>(url);
-  return new APIResponse(reponse.data);
+  const response = await axiosInstance.get(url);
+  return deserialize<
+    APIResponse<
+      Word & {
+        comprehension?: Comprehension;
+      },
+      PaginationMeta
+    >
+  >(response.data as string);
 }

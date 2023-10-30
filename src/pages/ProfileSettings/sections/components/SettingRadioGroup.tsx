@@ -1,26 +1,23 @@
-import { DailyGoalOption, DailyGoalOptionProps } from './DailyGoalOption';
+import { SettingRadioOption, SettingRadioOptionProps } from './SettingRadioOption';
 
-export function DailyGoalSelection({
+export function SettingRadioGroup({
   value,
   onChange,
   options,
 }: {
   value: string;
   onChange: (value: string) => void;
-  options: Omit<DailyGoalOptionProps, 'currentValue' | 'onChange'>[];
+  options: Omit<SettingRadioOptionProps, 'currentValue' | 'onChange'>[];
 }) {
-  const handleOnChange = (value: string) => {
-    onChange(value);
-  };
 
   return (
     <div className="grid grid-flow-row gap-4 grid-cols-[repeat(auto-fill,minmax(250px,1fr))]">
       {options.map(option => (
-        <DailyGoalOption
+        <SettingRadioOption
           key={option.value}
           currentValue={value}
           {...option}
-          onChange={handleOnChange}
+          onChange={onChange}
         />
       ))}
     </div>

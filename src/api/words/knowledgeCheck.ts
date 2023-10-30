@@ -1,9 +1,9 @@
-import { axiosInstance } from '@/lib/configs/axios';
+import { deserialize } from 'deserialize-json-api';
 
-import {
-  APIResponse,
-  Response,
-} from '../api-definition/knowledge-check';
+import { axiosInstance } from '@/lib/configs/axios';
+import { APIResponse } from '@/lib/interfaces/type';
+
+import { WordKnowledgeCheck } from '../model/WordKnowledgeCheck';
 
 type KnowledgeCheckBody = Array<{
   wordId: string;
@@ -11,8 +11,8 @@ type KnowledgeCheckBody = Array<{
 }>;
 
 export async function getKnowledgeCheck() {
-  const reponse = await axiosInstance.get<Response>('/words/knowledge-test');
-  return new APIResponse(reponse.data);
+  const response = await axiosInstance.get('/words/knowledge-test');
+  return deserialize<APIResponse<WordKnowledgeCheck>>(response.data as string);
 }
 
 export function postKnowledgeCheck(

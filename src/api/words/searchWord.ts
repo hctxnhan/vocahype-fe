@@ -1,18 +1,38 @@
+import { deserialize } from 'deserialize-json-api';
+
 import { axiosInstance } from '@/lib/configs/axios';
+import { paginationSchema } from '@/lib/formScheme/paginationSchema';
+import { APIResponse, PaginationMeta } from '@/lib/interfaces/type';
 
-import { APIResponse, Params, Response } from '../api-definition/search-word';
+import { Word } from '../model/Word';
 
-export async function searchWord(params: Params) {
-  const searchParams = new URLSearchParams({
-    search: params.word.trim(),
-    exact: params.exact,
-    'page[offset]': params['page[offset]'],
-    'page[limit]': params['page[limit]'],
+export async function searchWord({
+  word,
+  exact,
+  page = { offset: 0, limit: 10 },
+}: {
+  word: string;
+  exact?: boolean;
+  page?: {
+    offset: number | string;
+    limit: number | string;
+  };
+}) {
+  const parsedParams = paginationSchema.parse({
+    page: page.offset,
+    size: page.limit,
   });
 
-  const response = await axiosInstance.get<Response>(
-    `/words?${searchParams.toString()}`
-  );
+  const searchParams = new URLSearchParams({
+    search: word.trim(),
+    exact: exact ? 'true' : 'false',
+    'page[offset]': parsedParams.page.toString(),
+    'page[limit]': parsedParams.size.toString(),
+  });
 
-  return new APIResponse(response.data);
+  const response = await axiosInstance.get(`/words?${searchParams.toString()}`);
+
+  return deserialize<APIResponse<Word, PaginationMeta>>(
+    response.data as string
+  );
 }

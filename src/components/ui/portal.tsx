@@ -7,6 +7,8 @@ interface PortalProps extends PropsWithChildren {
 
 export function Portal({ children, selector = '#portal' }: PortalProps) {
   const portalRoot: HTMLDivElement | null = document.querySelector(selector);
+
   if (!portalRoot) return null;
+  
   return createPortal(children, portalRoot);
 }

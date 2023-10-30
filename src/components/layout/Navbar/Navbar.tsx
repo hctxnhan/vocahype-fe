@@ -16,8 +16,10 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { logOutUser } from '@/lib/configs/firebaseAuth';
+import { TOUR_STEPS } from '@/lib/configs/tour';
 import { useAsyncAction } from '@/lib/hooks/useAsyncAction';
 import { useToast } from '@/lib/hooks/useToast';
+import { Tour } from '@/pages/Tour/Tour';
 
 import { Searchbar } from '../Searchbar/Searchbar';
 
@@ -54,7 +56,7 @@ export function Navbar() {
   });
 
   return (
-    <div className="navbar-height sticky top-0 z-50 flex w-full items-center backdrop-blur max-lg:justify-between">
+    <div className="navbar-height container fixed left-0 right-0 top-0 z-50 flex w-full items-center backdrop-blur max-lg:justify-between">
       <div className="w-sidebar max-lg:w-fit">
         <Link
           href="/"
@@ -69,9 +71,14 @@ export function Navbar() {
         </div>
         <div className="flex items-center gap-6 text-lg">
           <div className="flex items-center gap-2">
+            <Tour />
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant={'ghost'} size="icon">
+                <Button
+                  variant={'ghost'}
+                  size="icon"
+                  data-tour={TOUR_STEPS.NAVBAR.PROFILE}
+                >
                   <PersonIcon width={20} height={20} />
                 </Button>
               </DropdownMenuTrigger>
@@ -105,7 +112,10 @@ export function Navbar() {
           </div>
         </div>
       </div>
-      <div className='center'>
+      <div className="center ml-2">
+        <div className='md:hidden'>
+          <Tour />
+        </div>
         <ToggleThemeButton />
         <MobileNavbar />
       </div>

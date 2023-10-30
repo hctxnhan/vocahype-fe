@@ -4,6 +4,7 @@ import { useLocation } from 'wouter';
 import { Word } from '@/api/model/Word';
 import { delayLearnWord, learnWord } from '@/api/words/learnWord';
 import { Button } from '@/components/ui/button';
+import { TOUR_STEPS } from '@/lib/configs/tour';
 import { WORD_STATUS_LEARN } from '@/lib/enums/word';
 import { useAsyncAction } from '@/lib/hooks/useAsyncAction';
 import { useToast } from '@/lib/hooks/useToast';
@@ -68,10 +69,14 @@ export function WordItem({
   };
 
   return (
-    <div className="mb-2 flex h-[350px] w-[350px] flex-shrink-0 flex-grow-0 basis-auto flex-col justify-between rounded-lg border border-border p-4 max-sm:my-0 max-sm:h-[200px] max-sm:w-full">
+    <div
+      className="mb-2 flex h-[350px] w-[350px] flex-shrink-0 flex-grow-0 basis-auto flex-col justify-between rounded-lg border border-border bg-muted/70 p-4 max-sm:my-0 max-sm:h-[200px] max-sm:w-full"
+      data-tour={TOUR_STEPS.WORD_LIST.CARD.CONTAINER}
+    >
       <div className="flex flex-col gap-2">
         <div className="text-2xl font-bold text-primary">{word}</div>
         <div
+          data-tour={TOUR_STEPS.WORD_LIST.CARD.STATUS}
           className={cn('text-base font-bold', {
             'text-destructive': status === WORD_STATUS_LEARN.LEARNING,
             'text-green-600': status === WORD_STATUS_LEARN.TO_LEARN,
@@ -90,11 +95,15 @@ export function WordItem({
           variant={'link'}
           onClick={handleIgnore}
           className="text-sm font-bold text-destructive"
+          data-tour={TOUR_STEPS.WORD_LIST.CARD.IGNORE}
         >
           IGNORE
         </Button>
         {status === WORD_STATUS_LEARN.LEARNING && (
-          <>
+          <div
+            className="flex gap-2"
+            data-tour={TOUR_STEPS.WORD_LIST.CARD.DELAY}
+          >
             <Button
               variant={'link'}
               onClick={handleDelayWord(7)}
@@ -109,12 +118,13 @@ export function WordItem({
             >
               TOMORROW
             </Button>
-          </>
+          </div>
         )}
         <Button
           variant={'link'}
           onClick={handleClickLearnWord}
           className="text-sm font-bold text-primary"
+          data-tour={TOUR_STEPS.WORD_LIST.CARD.LEARN}
         >
           LEARN
         </Button>

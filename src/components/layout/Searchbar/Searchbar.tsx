@@ -1,3 +1,4 @@
+import { SearchIcon } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { useLocation } from 'wouter';
 
@@ -10,6 +11,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui/tooltip';
+import { TOUR_STEPS } from '@/lib/configs/tour';
 import { useClickOutside } from '@/lib/hooks/useClickOutside';
 import {
   getLocalStorageItem,
@@ -80,11 +82,12 @@ export function Searchbar() {
   return (
     <>
       {isFocus && (
-        <FillParent className="z-[9998] h-screen w-full overflow-hidden bg-secondary/90"></FillParent>
+        <FillParent className="left-1/2 z-[9998] h-screen w-screen -translate-x-1/2 bg-secondary/90"></FillParent>
       )}
       <form
+        data-tour={TOUR_STEPS.NAVBAR.SEARCHBAR.INPUT}
         onSubmit={handleSearch}
-        className={cn('relative flex h-auto w-full gap-2', {
+        className={cn('relative flex h-auto w-full gap-2 max-md:gap-1', {
           'z-[9999]': isFocus,
         })}
       >
@@ -98,13 +101,15 @@ export function Searchbar() {
             <div className="center absolute right-4 top-1/2 -translate-y-1/2">
               <TooltipProvider>
                 <Tooltip>
-                  <TooltipTrigger asChild>
+                  <TooltipTrigger>
                     <Toggle
                       pressed={isExact}
                       onPressedChange={setIsExact}
                       className="uppercase"
                       variant={'none'}
                       size={'sm'}
+                      type="button"
+                      data-tour={TOUR_STEPS.NAVBAR.SEARCHBAR.TOGGLE}
                     >
                       Exact
                     </Toggle>
@@ -126,7 +131,8 @@ export function Searchbar() {
           />
         </div>
         <Button variant={'outline'} type="submit">
-          Search
+          <p className="max-md:hidden">Search</p>
+          <SearchIcon width={20} height={20} className="md:hidden" />
         </Button>
       </form>
     </>
