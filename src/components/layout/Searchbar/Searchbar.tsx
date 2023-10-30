@@ -101,7 +101,7 @@ export function Searchbar() {
             <div className="center absolute right-4 top-1/2 -translate-y-1/2">
               <TooltipProvider>
                 <Tooltip>
-                  <TooltipTrigger>
+                  <TooltipTrigger asChild>
                     <Toggle
                       pressed={isExact}
                       onPressedChange={setIsExact}

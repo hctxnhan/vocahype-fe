@@ -40,7 +40,6 @@ export function MobileNavbar() {
           <SheetClose>
             <NavbarItem href="/notifications">Notifications</NavbarItem>
           </SheetClose>
-
           <Searchbar />
         </div>
       </SheetContent>
