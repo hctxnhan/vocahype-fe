@@ -13,7 +13,7 @@ const animate = [
 
 export function WordBackground({ word }: WordBackgroundProps) {
   return (
-    <div className="mx-auto center absolute -z-20 h-full flex-col gap-6">
+    <div className="mx-auto center absolute -z-20 h-full flex-col gap-6 overflow-hidden">
       {animate.map(([initial, animate], i) => (
         <motion.div
           initial={{

@@ -1,24 +1,32 @@
+import { Link } from 'wouter';
 import { Progress } from '@/components/ui/progress';
 import { TOUR_STEPS } from '@/lib/configs/tour';
 import { cn } from '@/lib/utils/utils';
 
-interface TopicItemProps {
+type TopicItemProps = {
   topicName: string;
   topicDescription: string;
   topicHref: string;
   topicTotalWords: number;
   topicCurrentWords: number;
-}
+  isNone?: boolean;
+};
 
 export function TopicItem({
-  topicCurrentWords,
   topicDescription,
   topicName,
+  topicCurrentWords,
   topicTotalWords,
+  isNone,
+  topicHref,
 }: TopicItemProps) {
+  if (isNone) return null;
+
   const progress = (topicCurrentWords / topicTotalWords) * 100;
+
   return (
-    <div
+    <Link
+      href={topicHref}
       data-tour={TOUR_STEPS.EXPLORATION.TOPIC}
       className={cn(
         'vh-flex-column h-full cursor-pointer space-y-2 rounded-md border-2 bg-muted/70 p-3 transition-colors hover:bg-primary hover:text-primary-foreground'
@@ -35,6 +43,6 @@ export function TopicItem({
           {topicCurrentWords} / {topicTotalWords}
         </p>
       </div>
-    </div>
+    </Link>
   );
 }

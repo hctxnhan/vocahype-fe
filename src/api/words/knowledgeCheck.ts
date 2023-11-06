@@ -19,5 +19,7 @@ export function postKnowledgeCheck(
   url: string,
   { arg }: { arg: KnowledgeCheckBody }
 ) {
-  return axiosInstance.post(url, arg);
+  return axiosInstance.post<{
+    estimate: number;
+  }>(url, arg);
 }

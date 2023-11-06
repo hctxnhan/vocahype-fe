@@ -18,4 +18,11 @@ axiosInstance.interceptors.request.use(
   }
 );
 
-export { axiosInstance };
+const axiosPexels = axios.create({
+  baseURL: environment.api.pexels.baseURL,
+  headers: {
+    Authorization: environment.api.pexels.APIKey,
+  },
+});
+
+export { axiosInstance, axiosPexels };

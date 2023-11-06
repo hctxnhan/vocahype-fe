@@ -3,6 +3,7 @@ import { TOUR_STEPS } from '@/lib/configs/tour';
 import { NavbarItem } from '../Navbar/NavbarItem';
 
 import { LearningTimeProgress } from './components/LearningTimeProgress';
+import { KnowledgeCheckNavbarItem } from '../Navbar/KnowledgeCheckNavbarItem';
 
 export function Sidebar() {
   return (
@@ -13,12 +14,7 @@ export function Sidebar() {
           <NavbarItem href="/" data-tour={TOUR_STEPS.SIDEBAR.LEARN}>
             Learn
           </NavbarItem>
-          <NavbarItem
-            href="/knowledge-check"
-            data-tour={TOUR_STEPS.SIDEBAR.KNOWLEDGE_CHECK}
-          >
-            Knowledge Check
-          </NavbarItem>
+          <KnowledgeCheckNavbarItem />
           <NavbarItem
             href="/exploration"
             data-tour={TOUR_STEPS.SIDEBAR.EXPLORATION}
