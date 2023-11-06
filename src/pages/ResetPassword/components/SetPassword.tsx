@@ -90,7 +90,7 @@ export function SetPassword({ apiKey, oobCode }: SetPasswordProps) {
 
   return (
     <ResetPasswordLayout>
-      <Card className="bg-white">
+      <Card className="bg-background">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit) as VoidFunction}>
             <CardHeader>
