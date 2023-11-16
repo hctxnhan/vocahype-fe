@@ -10,7 +10,12 @@ export function Breadcrumb() {
   return (
     <BreadcrumbComponent className="mb-4">
       {items.map((item, index) => (
-        <BreadcrumbItem key={index}>{item}</BreadcrumbItem>
+        <BreadcrumbItem
+          key={index}
+          href={typeof item === 'string' ? undefined : item.href}
+        >
+          {typeof item === 'string' ? item : item.label}
+        </BreadcrumbItem>
       ))}
     </BreadcrumbComponent>
   );

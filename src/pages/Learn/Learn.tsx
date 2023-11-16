@@ -10,6 +10,7 @@ import { useRef, useState } from 'react';
 import useSWR from 'swr';
 import { useRoute } from 'wouter';
 
+import { getImage } from '@/api/pexels/pexels';
 import { getWord } from '@/api/words/getWord';
 import { FillParent } from '@/components/layout/FillParent/FillParent';
 import { Loading } from '@/components/layout/Loading/Loading';
@@ -62,7 +63,20 @@ export function Learn() {
 
   const wordData = wordDetail?.data[0];
 
-  useSetBreadcrumb(['Learn', wordData?.word ?? '']);
+  const { data: wordImage } = useSWR(
+    ['pexels', wordData?.word],
+    getImage.bind(null, {
+      search: wordData?.word ?? '',
+    })
+  );
+
+  useSetBreadcrumb([
+    {
+      label: 'Learn',
+      href: '/',
+    },
+    wordData?.word ?? '',
+  ]);
 
   if (isLoading)
     return (
@@ -99,9 +113,11 @@ export function Learn() {
           variants={variants.cardImage}
           animate={isOpen ? 'open' : 'close'}
           style={{
-            backgroundImage: `url("https://static.theprint.in/wp-content/uploads/2022/04/Web_Photo_Editor-71-1024x576.jpg?compress=true")`,
+            backgroundImage: `url("${
+              wordImage?.data.photos[0].src.original ?? ''
+            }")`,
           }}
-          className="relative h-[160] overflow-hidden rounded-lg bg-cover bg-no-repeat px-16 py-8 text-foreground transition duration-500"
+          className="relative h-[160] overflow-hidden rounded-lg bg-cover bg-no-repeat px-16 py-8 text-foreground transition duration-500 bg-center"
         >
           <div className="relative z-30">
             <div className="flex items-center gap-4">

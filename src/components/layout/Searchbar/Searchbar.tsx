@@ -18,7 +18,7 @@ import {
   removeLocalStorageItem,
   setLocalStorageItem,
 } from '@/lib/utils/localStorage';
-import { cn } from '@/lib/utils/utils';
+import { cn, preventPropagation } from '@/lib/utils/utils';
 
 import { FillParent } from '../FillParent/FillParent';
 
@@ -101,9 +101,10 @@ export function Searchbar() {
             <div className="center absolute right-4 top-1/2 -translate-y-1/2">
               <TooltipProvider>
                 <Tooltip>
-                  <TooltipTrigger asChild>
+                  <TooltipTrigger>
                     <Toggle
                       pressed={isExact}
+                      onClick={preventPropagation.onClick}
                       onPressedChange={setIsExact}
                       className="uppercase"
                       variant={'none'}

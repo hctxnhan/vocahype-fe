@@ -12,12 +12,12 @@ import { Loading } from '@/components/layout/Loading/Loading';
 import { Button } from '@/components/ui/button';
 import { CarouselNumber } from '@/components/ui/carousel-number';
 import { DialogTrigger } from '@/components/ui/dialog';
+import { Link } from '@/components/ui/link';
 import { useMediaQuery } from '@/lib/hooks/useMediaQuery';
 import { useSetBreadcrumb } from '@/lib/hooks/useSetBreadcrumb';
 
 import { ResetKnowledgeCheckDialog } from './components/ResetKnowledgeCheckDialog';
 import { WordBackground } from './components/WordBackground';
-import { Link } from '@/components/ui/link';
 
 export function KnowledgeCheck() {
   const isLessThanLarge = useMediaQuery('(max-width: 1024px)');
@@ -51,7 +51,7 @@ export function KnowledgeCheck() {
   if (isLoading || isMutating || isValidating)
     return (
       <FillParent>
-        <Loading />
+        <Loading loadingText="Getting words..." />
       </FillParent>
     );
 
@@ -133,7 +133,7 @@ export function KnowledgeCheck() {
   if (!currentWord) return null;
 
   return (
-    <div className="relative flex h-full items-center justify-center max-lg:flex-col">
+    <div className="relative flex h-full items-center justify-center overflow-hidden max-lg:flex-col">
       {estimateData && isFinished ? (
         <div className="max-w-[500px] space-y-6 text-2xl">
           <p className="font-display text-3xl">Congratulations!</p>
@@ -143,14 +143,16 @@ export function KnowledgeCheck() {
             words based on test result built from top 1000 most popular words.
           </p>
           <Link href="/">
-            <Button className='text-base' variant={'outline'}>Go to learn page</Button>
+            <Button className="text-base" variant={'outline'}>
+              Go to learn page
+            </Button>
           </Link>
         </div>
       ) : (
         <>
           <div className="relative flex flex-1 items-center justify-center">
             <div className="vh-flex-column z-10 -mt-16 w-full items-center gap-12">
-              <h1 className="font-dinRound text-8xl font-black text-primary">
+              <h1 className="font-dinRound text-8xl font-black text-primary max-md:text-5xl">
                 {currentWord.word.toUpperCase()}
               </h1>
               <div className="flex gap-6 max-sm:flex-col-reverse">

@@ -1,11 +1,10 @@
 import { SpeakerLoudIcon } from '@radix-ui/react-icons';
+import { FileSearch } from 'lucide-react';
 import { useState } from 'react';
 import useSWR from 'swr';
 import { useLocation } from 'wouter';
 
 import { searchWord } from '@/api/words/searchWord';
-import { FillParent } from '@/components/layout/FillParent/FillParent';
-import { Loading } from '@/components/layout/Loading/Loading';
 import { Button } from '@/components/ui/button';
 import { Pagination, PaginationState } from '@/components/ui/pagination';
 import { useSearchParams } from '@/lib/hooks/useSearchParams';
@@ -23,6 +22,7 @@ export function SearchResult() {
   const [, navigate] = useLocation();
 
   const word = params?.search;
+
   const { data: searchResult, isLoading } = useSWR(
     [
       'search',
@@ -78,21 +78,21 @@ export function SearchResult() {
 
   if (!wordList?.length && !isLoading)
     return (
-      <div>
-        <p className="mb-2 text-lg">
-          Search suggestion for <b>"{word}"</b>
+      <div className="center flex-col gap-3 flex-1">
+        <FileSearch width={128} height={128} />
+        <p className="text-2xl">
+          Sorry! We can't find any word that match your search <b>"{word}"</b>
         </p>
-        <div>Not found</div>
       </div>
     );
 
   return (
     <div className="flex h-full flex-col">
       <p className="mb-6 text-lg">
-        Search suggestion for <b>"{word}"</b>
+        Search result for <b>"{word}"</b>
       </p>
       <div className="relative h-full flex-1 basis-0 pb-12">
-        {!isLoading && wordList?.length ? (
+        {!isLoading && !!wordList?.length && (
           <div className="flex w-full flex-col">
             {wordList.map(word => (
               <Button
@@ -102,14 +102,10 @@ export function SearchResult() {
                 key={word.id}
               >
                 <div className="center gap-4">
-                  <p className="text-2xl font-semibold">
-                    {word.word}
-                  </p>
+                  <p className="text-2xl font-semibold">{word.word}</p>
                 </div>
                 <div className="center gap-2">
-                  {word.phonetic ? (
-                    <p>[{word.phonetic}]</p>
-                  ) : null}
+                  {word.phonetic ? <p>[{word.phonetic}]</p> : null}
                   <Button
                     onClick={playPronunciation(word.word)}
                     size={'icon'}
@@ -122,10 +118,6 @@ export function SearchResult() {
               </Button>
             ))}
           </div>
-        ) : (
-          <FillParent>
-            <Loading />
-          </FillParent>
         )}
       </div>
       <div className="fixed bottom-4 left-1/2 -translate-x-1/2">

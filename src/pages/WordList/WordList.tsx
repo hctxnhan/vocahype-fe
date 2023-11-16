@@ -6,6 +6,7 @@ import { getLearnWordList } from '@/api/words/learnWord';
 import { FillParent } from '@/components/layout/FillParent/FillParent';
 import { Loading } from '@/components/layout/Loading/Loading';
 import { TOUR_STEPS } from '@/lib/configs/tour';
+import { BreadcrumbItem } from '@/lib/context/breadcrumb.context';
 import { WORD_STATUS_LEARN } from '@/lib/enums/word';
 import { useAuthState } from '@/lib/hooks/firebase/auth/useAuthState';
 import { useMediaQuery } from '@/lib/hooks/useMediaQuery';
@@ -13,14 +14,31 @@ import { useSetBreadcrumb } from '@/lib/hooks/useSetBreadcrumb';
 
 import { WordItem } from './components/WordItem';
 
-export function WordList() {
-  useSetBreadcrumb(['Learning']);
+interface WordListProps {
+  breadcrumb: BreadcrumbItem[];
+  topicFilter?: string;
+  loadingText?: string;
+}
+
+export function WordList({
+  breadcrumb,
+  topicFilter,
+  loadingText,
+}: WordListProps) {
+  useSetBreadcrumb(breadcrumb ?? ['Learn']);
 
   const isSmallScreen = useMediaQuery('(max-width: 640px)');
 
   const { user } = useAuthState();
+
   const { data, mutate, size, setSize, isLoading } = useSWRInfinite(index => {
-    return `/words/learn?page%5Boffset%5D=${index + 1}&page%5Blimit%5D=10`;
+    const url = new URLSearchParams({
+      'filter[topicId]': topicFilter ?? '',
+      'page[offset]': (index + 1).toString(),
+      'page[limit]': '10',
+    });
+
+    return `/words/learn?${url.toString()}`;
   }, getLearnWordList);
 
   const words = data?.[0].data;
@@ -53,7 +71,7 @@ export function WordList() {
     isEmpty || (data && data[data.length - 1].data?.length < 5);
 
   const handleScroll = (event: WheelEvent) => {
-    if(isLoading) return;
+    if (isLoading) return;
 
     const onReachEnd = () => {
       void setSize(size + 1);
@@ -109,7 +127,7 @@ export function WordList() {
   if (isLoading && size === 1)
     return (
       <FillParent>
-        <Loading />
+        <Loading loadingText={loadingText} />
       </FillParent>
     );
 
@@ -117,18 +135,20 @@ export function WordList() {
 
   return (
     <div className="flex flex-1 flex-col overflow-hidden">
-      <div className="mb-16 flex flex-col gap-2 max-sm:mb-4">
+      <div className="mb-10 flex flex-col gap-2 max-sm:mb-4">
         <p className="text-4xl font-bold leading-normal text-primary max-sm:text-2xl">
           Keep up the good work, {user?.displayName}!
         </p>
-        <p className="text-lg font-medium text-foreground max-sm:text-base">
-          Today you have {countWordStatus?.inProgress} words in progress and{' '}
-          {countWordStatus?.due && (
-            <span className="text-destructive">
-              {countWordStatus?.due} word overdue. Pay attention!
-            </span>
-          )}
-        </p>
+        {!!countWordStatus?.inProgress && (
+          <p className="text-lg font-medium text-foreground max-sm:text-base">
+            Today you have {countWordStatus?.inProgress} words in progress and{' '}
+            {countWordStatus?.due && (
+              <span className="text-destructive">
+                {countWordStatus?.due} word overdue. Pay attention!
+              </span>
+            )}
+          </p>
+        )}
       </div>
       <div
         onWheel={handleScroll}

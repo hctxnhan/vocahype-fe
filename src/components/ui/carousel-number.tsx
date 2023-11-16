@@ -28,7 +28,7 @@ export function CarouselNumber({
               animate={{
                 fontSize: `${100 * (1 - Math.abs(index - current) / 3)}px`,
                 bottom:
-                  current === num ? '50%' : `${50 + (current - num) * 15}%`,
+                  current === num ? '50%' : `${50 + (current - num) * 20}%`,
                 opacity: 1 - diff / 3,
                 display: 1 - diff / 3 > 0.01 ? 'flex' : 'none',
               }}

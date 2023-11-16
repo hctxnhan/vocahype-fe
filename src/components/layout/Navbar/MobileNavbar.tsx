@@ -12,6 +12,7 @@ import { Searchbar } from '../Searchbar/Searchbar';
 import { LearningTimeProgress } from '../Sidebar/components/LearningTimeProgress';
 
 import { NavbarItem } from './NavbarItem';
+import { KnowledgeCheckNavbarItem } from './KnowledgeCheckNavbarItem';
 
 export function MobileNavbar() {
   return (
@@ -35,11 +36,14 @@ export function MobileNavbar() {
             <NavbarItem href="/profile">Profile</NavbarItem>
           </SheetClose>
           <SheetClose>
-            <NavbarItem href="/knowledge-check">Knowledge Check</NavbarItem>
+            <KnowledgeCheckNavbarItem />
           </SheetClose>
           <SheetClose>
-            <NavbarItem href="/notifications">Notifications</NavbarItem>
+            <NavbarItem href="/exploration">Exploration</NavbarItem>
           </SheetClose>
+          {/* <SheetClose>
+            <NavbarItem href="/notifications">Notifications</NavbarItem>
+          </SheetClose> */}
           <Searchbar />
         </div>
       </SheetContent>
