@@ -3,7 +3,7 @@ export type QuizAnswer = 'A' | 'B' | 'C' | 'D';
 
 export type APIResponse<T, M = any> = {
   data: T[];
-  metadata?: M;
+  meta?: M;
 };
 
 export type PaginationMeta = {

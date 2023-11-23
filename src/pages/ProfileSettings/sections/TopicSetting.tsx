@@ -54,7 +54,7 @@ export function TopicSetting() {
 
   return (
     <div className="flex gap-10 max-md:flex-col max-md:gap-4">
-      <div className="vh-flex-column w-32 max-md:w-full">
+      <div className="vh-flex-column w-44 max-md:w-full">
         <label className="font-medium" htmlFor="">
           Main topic
         </label>

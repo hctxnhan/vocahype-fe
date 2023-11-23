@@ -140,6 +140,11 @@ input::placeholder {
 
   .main-min-height {
     min-height: calc(100vh - theme('spacing.navbar') - theme('spacing.8'));
+    padding-bottom: 2rem;
+  }
+
+  .limit-content-to-min-height {
+    max-height: calc(100vh - theme('spacing.navbar') - theme('spacing.8'));
   }
 
   .navbar-height {
@@ -152,7 +157,7 @@ input::placeholder {
     }
 
     .main-min-height {
-      min-height: calc(100vh - theme('spacing.navbar-sm') - theme('spacing.4'));
+      min-height: calc(100vh - theme('spacing.navbar-sm') - theme('spacing.4') - theme('spacing.10'));
     }
 
     .navbar-height {

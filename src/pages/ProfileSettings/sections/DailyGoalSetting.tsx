@@ -57,7 +57,7 @@ export function DailyGoalSetting() {
     <div>
       <h3 className="mb-4 text-xl font-medium uppercase">Learning</h3>
       <div className="flex gap-10 max-md:flex-col max-md:gap-4">
-        <div className="vh-flex-column w-32 max-md:w-full">
+        <div className="vh-flex-column w-44 max-md:w-full">
           <label className="font-medium" htmlFor="">
             Daily goal
           </label>

@@ -45,7 +45,7 @@ export function SearchResult() {
     },
     {
       onSuccess: data => {
-        setTotalPage(data?.metadata?.pagination.last ?? 1);
+        setTotalPage(data?.meta?.pagination?.last ?? 1);
       },
     }
   );
@@ -126,7 +126,7 @@ export function SearchResult() {
           defaultValue={{
             page: Number(params?.['page[offset]'] ?? '1'),
             limit: Number(params?.['page[limit]'] ?? '10'),
-            total: 1,
+            total: totalPage,
           }}
           onChange={onChangePagination}
         >

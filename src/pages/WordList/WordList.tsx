@@ -41,7 +41,7 @@ export function WordList({
     return `/words/learn?${url.toString()}`;
   }, getLearnWordList);
 
-  const words = data?.[0].data;
+  const words = data ? data.flatMap(page => page.data) : [];
 
   const countWordStatus = useMemo(
     () =>
@@ -87,6 +87,7 @@ export function WordList({
   function handleScrollHorizontal(event: WheelEvent, onReachEnd: VoidFunction) {
     const container = event.currentTarget;
     const scrollAmount = event.deltaY;
+
     container.scrollTo({
       top: 0,
       left: container.scrollLeft + scrollAmount,
@@ -96,11 +97,12 @@ export function WordList({
       container.scrollLeft + container.clientWidth + 200 >=
         container.scrollWidth &&
       !isLoadingMore &&
-      isReachingEnd
+      !isReachingEnd
     ) {
       onReachEnd();
     }
   }
+
   function handleScrollVertical(event: WheelEvent, onReachEnd: VoidFunction) {
     const container = event.currentTarget;
     const scrollAmount = event.deltaY;
@@ -113,7 +115,7 @@ export function WordList({
       container.scrollTop + container.clientHeight + 200 >=
         container.scrollHeight &&
       !isLoadingMore &&
-      isReachingEnd
+      !isReachingEnd
     ) {
       onReachEnd();
     }
@@ -134,7 +136,7 @@ export function WordList({
   if (!words) return <div>Something went wrong</div>;
 
   return (
-    <div className="flex flex-1 flex-col overflow-hidden">
+    <div className="max-sm:limit-content-to-min-height flex flex-1 flex-col overflow-hidden">
       <div className="mb-10 flex flex-col gap-2 max-sm:mb-4">
         <p className="text-4xl font-bold leading-normal text-primary max-sm:text-2xl">
           Keep up the good work, {user?.displayName}!
@@ -152,7 +154,7 @@ export function WordList({
       </div>
       <div
         onWheel={handleScroll}
-        className="flex gap-2 overflow-auto max-sm:h-full max-sm:flex-col"
+        className="flex gap-2 overflow-auto max-sm:h-[calc(100%-5rem)] max-sm:flex-col"
         data-tour={TOUR_STEPS.WORD_LIST.LIST}
       >
         {words.length ? (
