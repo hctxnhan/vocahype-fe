@@ -2,8 +2,22 @@ import { Button } from '@/components/ui/button';
 import { signInWithGoogle } from '@/lib/configs/firebaseAuth';
 import { useAsyncAction } from '@/lib/hooks/useAsyncAction';
 
-export function AuthenticationThirdParty() {
-  const { start: login, isLoading } = useAsyncAction(signInWithGoogle);
+interface AuthenticationThirdPartyProps {
+  setIsLoading?: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+export function AuthenticationThirdParty(
+  { setIsLoading }: AuthenticationThirdPartyProps
+) {
+  const { start: login, isLoading } = useAsyncAction(signInWithGoogle, {
+    onError: () => setIsLoading?.(false),
+    onSuccess: () => setIsLoading?.(false),
+  });
+  
+  function handleLogin() {
+    setIsLoading?.(true);
+    login();
+  }
 
   return (
     <div className='vh-flex-col'>
@@ -18,7 +32,7 @@ export function AuthenticationThirdParty() {
             hover:bg-[#fa5a5a]
             border-b-[#a73131]
           text-white"
-          onClick={login.bind(null, []) as VoidFunction}
+          onClick={handleLogin}
         >
           Google
         </Button>

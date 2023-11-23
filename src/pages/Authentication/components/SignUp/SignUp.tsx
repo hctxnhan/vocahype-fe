@@ -1,6 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { updateProfile } from 'firebase/auth';
-import { Fragment } from 'react';
+import { Fragment, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useLocation } from 'wouter';
 import { z } from 'zod';
@@ -38,7 +38,11 @@ export function SignUp(props: { goToSignIn: VoidFunction }) {
   const toast = useToast();
   const [, navigate] = useLocation();
 
-  const { isLoading, start } = useAsyncAction<typeof signInUser>(signUpUser, {
+  const [isSignInWith3rdParty, setIsSignInWith3rdParty] = useState(false);
+
+  const { isLoading: isSignUpLoading, start } = useAsyncAction<
+    typeof signInUser
+  >(signUpUser, {
     onSuccess: async user => {
       await updateProfile(user.user, {
         displayName: form.getValues('name'),
@@ -56,6 +60,8 @@ export function SignUp(props: { goToSignIn: VoidFunction }) {
       });
     },
   });
+
+  const isLoading = isSignUpLoading || isSignInWith3rdParty;
 
   function onSubmit(data: z.infer<typeof signUpFormScheme>) {
     start([data.email, data.password]);
@@ -182,10 +188,13 @@ export function SignUp(props: { goToSignIn: VoidFunction }) {
                 lastStepText="Sign up"
                 nextStepText="Next"
                 className="w-full bg-primary font-medium"
-                isLoading={isLoading}
+                isLoading={isSignUpLoading}
+                disabled={isLoading}
                 type="submit"
               />
-              <AuthenticationThirdParty />
+              <AuthenticationThirdParty
+                setIsLoading={setIsSignInWith3rdParty}
+              />
             </div>
           </CardFooter>
         </Form>

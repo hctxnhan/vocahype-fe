@@ -1,5 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { AuthErrorCodes } from 'firebase/auth';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useLocation } from 'wouter';
 import { z } from 'zod';
@@ -34,10 +35,14 @@ export function SignIn(props: { goToSignUp: VoidFunction }) {
   const form = useForm<z.infer<typeof signInFormScheme>>({
     resolver: zodResolver(signInFormScheme),
   });
+
+  const [isSignInWith3rdParty, setIsSignInWith3rdParty] = useState(false);
+
   const toast = useToast('Error encountered while signing in');
   const [, navigate] = useLocation();
-  const isLoading = false;
-  const { start } = useAsyncAction<typeof signInUser>(signInUser, {
+  const { start, isLoading: isSignInLoading } = useAsyncAction<
+    typeof signInUser
+  >(signInUser, {
     onSuccess: () => {
       toast.success({
         title: 'Welcome back',
@@ -68,6 +73,8 @@ export function SignIn(props: { goToSignUp: VoidFunction }) {
       }
     },
   });
+
+  const isLoading = isSignInLoading || isSignInWith3rdParty;
 
   function onSubmit(data: z.infer<typeof signInFormScheme>) {
     start([data.email, data.password]);
@@ -138,11 +145,14 @@ export function SignIn(props: { goToSignUp: VoidFunction }) {
               <LoadingButton
                 className="w-full"
                 type="submit"
-                isLoading={isLoading}
+                isLoading={isSignInLoading}
+                disabled={isLoading}
               >
                 Sign in
               </LoadingButton>
-              <AuthenticationThirdParty />
+              <AuthenticationThirdParty
+                setIsLoading={setIsSignInWith3rdParty}
+              />
             </div>
           </CardFooter>
         </form>

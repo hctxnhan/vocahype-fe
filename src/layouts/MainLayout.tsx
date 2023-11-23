@@ -1,6 +1,7 @@
-import { Route } from 'wouter';
+import { Route, Switch } from 'wouter';
 
 import { Breadcrumb } from '@/components/layout/Breadcrumb/Breadcrumb';
+import { NotFoundError } from '@/components/layout/ErrorPage/NotFoundError';
 import { Navbar } from '@/components/layout/Navbar/Navbar';
 import { Sidebar } from '@/components/layout/Sidebar/Sidebar';
 import { BreadcrumbProvider } from '@/lib/context/breadcrumb.context';
@@ -22,18 +23,20 @@ export function MainLayout() {
         <BreadcrumbProvider>
           <div className="main-min-height relative mt-8 flex flex-1 flex-col overflow-x-hidden max-md:mt-0">
             <Breadcrumb />
-            <Route component={KnowledgeCheck} path="/knowledge-check" />
-            <Route component={SearchResult} path="/search" />
-            <Route component={Learn} path="/words/:wordId" />
-            <Route component={ProfileSettings} path="/profile" />
-            <Route component={LearnPage} path="/" />
-            <Route component={Exploration} path="/exploration" />
-            <Route component={TopicDetailPage} path="/topics/:topicId" />
-            <Route
-              component={InternalServerErrorPage}
-              path="/error/500-internal-server-error"
-            />
-            {/* <Route path="/:any*" component={NotFoundError} /> */}
+            <Switch>
+              <Route component={KnowledgeCheck} path="/knowledge-check" />
+              <Route component={SearchResult} path="/search" />
+              <Route component={Learn} path="/words/:wordId" />
+              <Route component={ProfileSettings} path="/profile" />
+              <Route component={LearnPage} path="/" />
+              <Route component={Exploration} path="/exploration" />
+              <Route component={TopicDetailPage} path="/topics/:topicId" />
+              <Route
+                component={InternalServerErrorPage}
+                path="/error/500-internal-server-error"
+              />
+              <Route path="/:any*" component={NotFoundError} />
+            </Switch>
           </div>
         </BreadcrumbProvider>
       </div>
