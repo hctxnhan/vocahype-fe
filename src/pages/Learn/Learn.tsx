@@ -217,7 +217,7 @@ export function Learn() {
           </div>
         </div>
         <div
-          className="flex-1 basis-0 overflow-auto pb-8"
+          className="flex-1 basis-0 overflow-auto"
           data-tour={TOUR_STEPS.WORD.EXAMPLE}
         >
           {exampleList?.map((example, index) => (

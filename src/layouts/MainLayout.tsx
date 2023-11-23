@@ -1,7 +1,6 @@
 import { Route } from 'wouter';
 
 import { Breadcrumb } from '@/components/layout/Breadcrumb/Breadcrumb';
-import { NotFoundError } from '@/components/layout/ErrorPage/NotFoundError';
 import { Navbar } from '@/components/layout/Navbar/Navbar';
 import { Sidebar } from '@/components/layout/Sidebar/Sidebar';
 import { BreadcrumbProvider } from '@/lib/context/breadcrumb.context';
@@ -21,7 +20,7 @@ export function MainLayout() {
       <div className="relative grid min-h-full flex-1 grid-cols-main-layout gap-6 pt-navbar max-md:grid-cols-1 max-md:pt-navbar-sm">
         <Sidebar />
         <BreadcrumbProvider>
-          <div className="main-min-height relative mt-8 flex flex-1 flex-col overflow-x-hidden pb-4 max-md:mt-0">
+          <div className="main-min-height relative mt-8 flex flex-1 flex-col overflow-x-hidden max-md:mt-0">
             <Breadcrumb />
             <Route component={KnowledgeCheck} path="/knowledge-check" />
             <Route component={SearchResult} path="/search" />
@@ -34,7 +33,7 @@ export function MainLayout() {
               component={InternalServerErrorPage}
               path="/error/500-internal-server-error"
             />
-            <Route path="*" component={NotFoundError} />
+            {/* <Route path="/:any*" component={NotFoundError} /> */}
           </div>
         </BreadcrumbProvider>
       </div>

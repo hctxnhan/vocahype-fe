@@ -36,8 +36,8 @@ export function SignIn(props: { goToSignUp: VoidFunction }) {
   });
   const toast = useToast('Error encountered while signing in');
   const [, navigate] = useLocation();
-
-  const { start, isLoading } = useAsyncAction<typeof signInUser>(signInUser, {
+  const isLoading = false;
+  const { start } = useAsyncAction<typeof signInUser>(signInUser, {
     onSuccess: () => {
       toast.success({
         title: 'Welcome back',
