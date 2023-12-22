@@ -1,5 +1,4 @@
-import dayjs from 'dayjs';
-import { WheelEvent, useMemo } from 'react';
+import { WheelEvent } from 'react';
 import useSWRInfinite from 'swr/infinite';
 
 import { getLearnWordList } from '@/api/words/learnWord';
@@ -43,26 +42,26 @@ export function WordList({
 
   const words = data ? data.flatMap(page => page.data) : [];
 
-  const countWordStatus = useMemo(
-    () =>
-      words?.reduce(
-        (acc, word) => {
-          const comprehension = word.comprehension;
-          if (comprehension?.status === WORD_STATUS_LEARN.LEARNING) {
-            acc.inProgress++;
-            if (dayjs().diff(dayjs(comprehension.dueDate), 'd') > 0) {
-              acc.due++;
-            }
-          }
-          return acc;
-        },
-        {
-          inProgress: 0,
-          due: 0,
-        }
-      ),
-    [words]
-  );
+  // const countWordStatus = useMemo(
+  //   () =>
+  //     words?.reduce(
+  //       (acc, word) => {
+  //         const comprehension = word.comprehension;
+  //         if (comprehension?.status === WORD_STATUS_LEARN.LEARNING) {
+  //           acc.inProgress++;
+  //           if (dayjs().diff(dayjs(comprehension.dueDate), 'd') > 0) {
+  //             acc.due++;
+  //           }
+  //         }
+  //         return acc;
+  //       },
+  //       {
+  //         inProgress: 0,
+  //         due: 0,
+  //       }
+  //     ),
+  //   [words]
+  // );
 
   const isLoadingMore =
     isLoading || (size > 0 && data && typeof data[size - 1] === 'undefined');
@@ -141,16 +140,16 @@ export function WordList({
         <p className="text-4xl font-bold leading-normal text-primary max-sm:text-2xl">
           Keep up the good work, {user?.displayName}!
         </p>
-        {!!countWordStatus?.inProgress && (
+        {/* {!!countWordStatus?.inProgress && (
           <p className="text-lg font-medium text-foreground max-sm:text-base">
-            Today you have {countWordStatus?.inProgress} words in progress and{' '}
-            {countWordStatus?.due && (
+            Today you have {countWordStatus?.inProgress} words in progress {' '}
+            {countWordStatus?.due > 0 && (
               <span className="text-destructive">
-                {countWordStatus?.due} word overdue. Pay attention!
+                and {countWordStatus?.due} word overdue. Pay attention!
               </span>
             )}
           </p>
-        )}
+        )} */}
       </div>
       <div
         onWheel={handleScroll}

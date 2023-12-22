@@ -1,9 +1,8 @@
 import {
-  PersonIcon,
-  BellIcon,
-  GearIcon,
   ExitIcon,
+  PersonIcon
 } from '@radix-ui/react-icons';
+import { useSWRConfig } from 'swr';
 import { Link, useLocation } from 'wouter';
 
 import { Button } from '@/components/ui/button';
@@ -29,6 +28,7 @@ import { ToggleThemeButton } from './ToggleThemeButton';
 export function Navbar() {
   const [_, navigate] = useLocation();
   const toast = useToast('Log out');
+  const { mutate } = useSWRConfig();
 
   const menuConfig = [
     {
@@ -38,7 +38,7 @@ export function Navbar() {
         navigate('/profile');
       },
     },
-    { label: 'Setting', icon: <GearIcon width={16} height={16} /> },
+    // { label: 'Setting', icon: <GearIcon width={16} height={16} /> },
   ];
 
   const { start } = useAsyncAction<typeof logOutUser>(logOutUser, {
@@ -46,6 +46,9 @@ export function Navbar() {
       toast.success({
         msg: 'Successfully log out',
       });
+
+      void mutate(() => true, undefined, { revalidate: false });
+
       navigate('/');
     },
     onError: error => {
@@ -106,14 +109,14 @@ export function Navbar() {
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
-            <Button variant={'ghost'} size="icon">
+            {/* <Button variant={'ghost'} size="icon">
               <BellIcon width={20} height={20} />
-            </Button>
+            </Button> */}
           </div>
         </div>
       </div>
       <div className="center ml-2">
-        <div className='md:hidden'>
+        <div className="md:hidden">
           <Tour />
         </div>
         <ToggleThemeButton />

@@ -2,24 +2,35 @@ import { QuizItem } from './components/QuizItem';
 
 export const mockData = {
   question: 'What is the meaning of word "learn"?',
-  answers: [
+  options: [
     'To teach someone else',
     'To acquire knowledge or skill through study, experience, or teaching',
     'To forget what you once knew',
     'To dance skillfully',
   ],
-  correctAnswer: 'B' as const,
+  answer: '0' as const,
 };
 
-export function Quiz() {
-  return (
-    <div>
-      <QuizItem
-        onChoose={answer => {
-          console.log('answer', answer);
-        }}
-        {...mockData}
-      />
-    </div>
-  );
+interface QuizProps {
+  word: string;
+  difficulty: 'easy' | 'normal' | 'hard' | 'mastered';
+  onCorrectAnswer: () => void;
+  onWrongAnswer: () => void;
+}
+
+export function Quiz({
+  // word,
+  // difficulty,
+  onCorrectAnswer,
+  onWrongAnswer,
+}: QuizProps) {
+  function handleChoose(answer: string) {
+    if (answer === mockData.answer) {
+      onCorrectAnswer();
+    } else {
+      onWrongAnswer();
+    }
+  }
+
+  return <QuizItem onChoose={handleChoose} {...mockData} />;
 }

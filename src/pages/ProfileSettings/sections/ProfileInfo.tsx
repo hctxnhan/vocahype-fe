@@ -20,7 +20,6 @@ import {
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { LoadingButton } from '@/components/ui/loading-button';
-import { TextArea } from '@/components/ui/textarea';
 import {
   sendVerificationEmail,
   updateProfileUser,
@@ -138,7 +137,7 @@ export function ProfileInfo () {
               <span className='text-2xl mt-0 font-bold'>{user?.displayName}</span>
             </CardHeader>
           </Card>
-          <div className='flex-1'>
+          <div className='flex-1 vh-flex-column justify-between'>
             <div className='vh-flex-column gap-4 mb-6'>
               <FormField
                 control={form.control}
@@ -184,7 +183,7 @@ export function ProfileInfo () {
                 )}
               />
 
-              <FormField
+              {/* <FormField
                 control={form.control}
                 name="phoneNumber"
                 render={({ field }) => (
@@ -217,10 +216,10 @@ export function ProfileInfo () {
                     </FormControl>
                     <FormMessage />
                   </FormItem>
-                )}
-              />
+                )} 
+              />*/}
             </div>
-            <div className="vh-flex-column flex-1 items-center gap-1">
+            <div className="vh-flex-column items-center gap-1">
               <div className="text-sm text-destructive hover:cursor-pointer">
                 Delete account
               </div>

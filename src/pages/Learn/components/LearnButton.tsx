@@ -11,9 +11,8 @@ import {
 import { TOUR_STEPS } from '@/lib/configs/tour';
 import { useAsyncAction } from '@/lib/hooks/useAsyncAction';
 import { useToast } from '@/lib/hooks/useToast';
-import { QuizAnswer, WordLevel } from '@/lib/interfaces/type';
-import { mockData } from '@/pages/Quiz/Quiz';
-import { QuizItem } from '@/pages/Quiz/components/QuizItem';
+import { WordLevel } from '@/lib/interfaces/type';
+import { Quiz } from '@/pages/Quiz/Quiz';
 
 export function LearnButton({
   wordId,
@@ -52,18 +51,19 @@ export function LearnButton({
     });
   }
 
-  function handleQuizAnswer(answer: QuizAnswer) {
-    if (!quizLevel) return;
-
+  function handleWrongAnswer() {
     setShowQuiz(false);
     setQuizLevel(undefined);
+    toast.error({ title: `Wrong answer` });
+  }
 
-    if (answer !== mockData.correctAnswer) {
-      toast.error({ title: `Wrong answer` });
-    } else {
-      toast.success({ title: `Correct answer` });
-      handleLearn(quizLevel);
-    }
+  function handleCorrectAnswer() {
+    setShowQuiz(false);
+    setQuizLevel(undefined);
+    if (!quizLevel) return;
+
+    toast.success({ title: `Correct answer` });
+    handleLearn(quizLevel);
   }
 
   return (
@@ -130,7 +130,12 @@ export function LearnButton({
               Choose the correct answer to add this word to {quizLevel} list
             </DialogTitle>
           </DialogHeader>
-          <QuizItem onChoose={handleQuizAnswer} {...mockData} />
+          <Quiz
+            word={word}
+            difficulty={quizLevel ?? 'easy'}
+            onCorrectAnswer={handleCorrectAnswer}
+            onWrongAnswer={handleWrongAnswer}
+          />
         </DialogContent>
       </Dialog>
     </div>

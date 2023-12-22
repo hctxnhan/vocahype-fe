@@ -9,7 +9,7 @@ export function KnowledgeCheckNavbarItem() {
   const { isLoading } = useSWR('profile', getUserprofile);
 
   if (isLoading) return null;
-  // if (userProfile?.data[0].score !== null) return null;
+  // if (!userProfile?.data[0].score) return null;
 
   return (
     <NavbarItem

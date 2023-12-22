@@ -20,12 +20,12 @@ export function Authentication() {
   if (authState === AuthState.SIGNED_IN) return <Redirect to="/" />;
 
   return (
-    <FillParent>
+    <FillParent className='px-4'>
       <div className="absolute inset-0 -z-50 bg-primary" />
       <div className="w-[min(100%,400px)] mx-auto">
         <div className="flex flex-col items-center gap-1 pb-8 text-primary-foreground">
           <div className="w-fit font-display text-4xl font-bold ">VocaHype</div>
-          <div className="text-lg">
+          <div className="text-lg text-center max-w-[270px]">
             The only English learning app that you’ve ever need
           </div>
         </div>

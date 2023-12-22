@@ -1,16 +1,15 @@
 import { TOUR_STEPS } from '@/lib/configs/tour';
 
+import { KnowledgeCheckNavbarItem } from '../Navbar/KnowledgeCheckNavbarItem';
 import { NavbarItem } from '../Navbar/NavbarItem';
 
 import { LearningTimeProgress } from './components/LearningTimeProgress';
-import { KnowledgeCheckNavbarItem } from '../Navbar/KnowledgeCheckNavbarItem';
 
 export function Sidebar() {
   return (
     <div className="flex flex-col justify-between">
       <div className="sidebar-height fixed top-navbar z-[30] mt-8 flex flex-col justify-between pb-8 max-md:hidden">
         <div className="flex flex-col gap-2">
-          {/* <NavbarItem href="/">Home</NavbarItem> */}
           <NavbarItem href="/" data-tour={TOUR_STEPS.SIDEBAR.LEARN}>
             Learn
           </NavbarItem>
@@ -21,7 +20,9 @@ export function Sidebar() {
           >
             Exploration
           </NavbarItem>
-          {/* <NavbarItem href="/practice">Practice</NavbarItem> */}
+          <NavbarItem href="/report" data-tour={TOUR_STEPS.SIDEBAR.REPORT}>
+            Report
+          </NavbarItem>
         </div>
         <LearningTimeProgress
           className="mt-auto"

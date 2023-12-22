@@ -8,4 +8,8 @@ export interface User {
   createdOn: string;
   goalSeconds: number;
   score?: number;
+  topic?: {
+    id: string;
+    name: string;
+  };
 }

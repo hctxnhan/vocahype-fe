@@ -14,14 +14,12 @@ import { QuizAnswer } from '@/lib/interfaces/type';
 
 interface QuizItemProps {
   question: string;
-  answers: string[];
+  options: string[];
   onChoose: (answer: QuizAnswer) => void;
 }
 
-export function QuizItem({ question, answers, onChoose }: QuizItemProps) {
-  const [selectedAnswer, setSelectedAnswer] = useState<QuizAnswer>(
-    '' as QuizAnswer
-  );
+export function QuizItem({ question, options, onChoose }: QuizItemProps) {
+  const [selectedAnswer, setSelectedAnswer] = useState<QuizAnswer>();
 
   return (
     <Card>
@@ -35,11 +33,11 @@ export function QuizItem({ question, answers, onChoose }: QuizItemProps) {
             setSelectedAnswer(value as QuizAnswer);
           }}
         >
-          {answers.map((answer, index) => (
+          {options.map((answer, index) => (
             <div key={index} className="flex items-center space-x-2">
               <RadioGroupItem
                 id={`option-${index}`}
-                value={String.fromCharCode(65 + index)}
+                value={index.toString()}
               />
               <Label htmlFor={`option-${index}`}>{answer}</Label>
             </div>
@@ -49,6 +47,8 @@ export function QuizItem({ question, answers, onChoose }: QuizItemProps) {
       <CardFooter>
         <Button
           onClick={() => {
+            if (!selectedAnswer) return;
+
             onChoose(selectedAnswer);
           }}
           disabled={!selectedAnswer}

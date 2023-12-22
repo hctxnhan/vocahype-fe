@@ -1,56 +1,50 @@
-import { useState } from 'react';
-// import useSWR from 'swr';
+import { useEffect, useState } from 'react';
+import useSWR from 'swr';
 
-// import { postDailyGoal } from '@/api/profile/learningTime';
-// import { getUserprofile } from '@/api/profile/profile';
-// import { FillParent } from '@/components/layout/FillParent/FillParent';
-// import { Loading } from '@/components/layout/Loading/Loading';
-// import { DAILY_GOAL_LEVEL } from '@/lib/enums/settings';
-// import { useAsyncAction } from '@/lib/hooks/useAsyncAction';
+import { postTargetTopic } from '@/api/profile/learningTopic';
+import { getUserprofile } from '@/api/profile/profile';
+import { useAsyncAction } from '@/lib/hooks/useAsyncAction';
+import { useToast } from '@/lib/hooks/useToast';
 import { topicOptions } from '@/lib/utils/constant';
 
+import { FillParent } from '@/components/layout/FillParent/FillParent';
+import { Loading } from '@/components/layout/Loading/Loading';
 import { SettingRadioGroup } from './components/SettingRadioGroup';
 
 export function TopicSetting() {
   const [currentValue, setCurrentValue] = useState('');
 
-  // const { data, isLoading: isFetchingProfile } = useSWR(
-  //   'profile',
-  //   getUserprofile
-  // );
+  const { data: profile, isLoading: isFetchingProfile } = useSWR(
+    'profile',
+    getUserprofile
+  );
 
-  // const toast = useToast();
-  // const { start, isLoading: isSettingGoal } = useAsyncAction(postDailyGoal);
+  const toast = useToast();
+  const { start, isLoading: isSettingTopic } = useAsyncAction(postTargetTopic);
 
-  // function handleUpdateDailyGoal(level: DAILY_GOAL_LEVEL) {
-  //   start([level], {
-  //     onSuccess: () => {
-  //       toast.success({ title: 'Updated daily goal successfully' });
-  //     },
-  //     onError: () => {
-  //       toast.error({ title: 'Daily goal update failed' });
-  //     },
-  //   });
-  // }
+  useEffect(() => {
+    if (profile?.data.length) {
+      setCurrentValue(profile?.data[0].topic?.id.toString() ?? '');
+    }
 
-  function handleChangeGoal(value: string) {
-    setCurrentValue(value);
-    // handleUpdateDailyGoal(value as DAILY_GOAL_LEVEL);
+    return () => {
+      setCurrentValue('');
+    };
+  }, [profile]);
+
+  function handleUpdateDailyGoal(level: string) {
+    start([level], {
+      onSuccess: () => {
+        toast.success({ title: 'Updated daily goal successfully' });
+        setCurrentValue(level);
+      },
+      onError: () => {
+        toast.error({ title: 'Daily goal update failed' });
+      },
+    });
   }
 
-  // const profile = data?.data[0];
-
-  // const isLoading = isFetchingProfile || isSettingGoal;
-
-  // useEffect(() => {
-  //   if (!isLoading && profile) {
-  //     const dailyGoal =
-  //       goalSettingOptions.find(item => item.time * 60 === profile?.goalSeconds)
-  //         ?.value || '';
-
-  //     setCurrentValue(dailyGoal);
-  //   }
-  // }, [profile?.goalSeconds]);
+  const isLoading = isFetchingProfile || isSettingTopic;
 
   return (
     <div className="flex gap-10 max-md:flex-col max-md:gap-4">
@@ -65,18 +59,19 @@ export function TopicSetting() {
         </dl>
       </div>
       <div className="flex-1">
-        {/* {isLoading && (
+        {isLoading && (
           <FillParent className="fixed z-[9999] bg-secondary/90">
             <Loading />
           </FillParent>
-        )} */}
+        )}
         <SettingRadioGroup
+          disabled={isLoading}
           options={topicOptions.map(item => ({
             label: `${item.labelString} ${item.labelEmoji}`,
-            value: item.value,
+            value: item.id.toString(),
             description: item.description,
           }))}
-          onChange={handleChangeGoal}
+          onChange={handleUpdateDailyGoal}
           value={currentValue}
         />
       </div>
