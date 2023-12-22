@@ -8,6 +8,7 @@ export const TOUR_STEPS = {
     KNOWLEDGE_CHECK: 'tour-step-sidebar-knowledge-check',
     EXPLORATION: 'tour-step-sidebar-exploration',
     LEARN_TIME: 'tour-step-sidebar-learn-time',
+    REPORT: 'tour-step-sidebar-report',
   },
   NAVBAR: {
     SEARCHBAR: {

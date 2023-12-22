@@ -1,4 +1,5 @@
 import { Link } from 'wouter';
+
 import { Progress } from '@/components/ui/progress';
 import { TOUR_STEPS } from '@/lib/configs/tour';
 import { cn } from '@/lib/utils/utils';

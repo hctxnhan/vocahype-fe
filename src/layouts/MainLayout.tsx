@@ -12,6 +12,7 @@ import { ProfileSettings } from '@/pages/ProfileSettings/ProfileSettings';
 import { SearchResult } from '@/pages/Search/SearchResult';
 import { LearnPage } from '@/pages/WordList/LearnPage';
 import { TopicDetailPage } from '@/pages/WordList/TopicDetailPage';
+import { ReportPage } from '@/pages/Report/ReportPage';
 
 export function MainLayout() {
   return (
@@ -29,6 +30,7 @@ export function MainLayout() {
             <Route component={LearnPage} path="/" />
             <Route component={Exploration} path="/exploration" />
             <Route component={TopicDetailPage} path="/topics/:topicId" />
+            <Route component={ReportPage} path="/report" />
             <Route
               component={InternalServerErrorPage}
               path="/error/500-internal-server-error"

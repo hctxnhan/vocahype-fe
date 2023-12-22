@@ -9,6 +9,7 @@ export interface SettingRadioOptionProps {
   label: string;
   currentValue: string;
   onChange: (value: string) => void;
+  disabled?: boolean;
 }
 
 export function SettingRadioOption({
@@ -18,6 +19,7 @@ export function SettingRadioOption({
   subtitle,
   description,
   onChange,
+  disabled = false,
 }: SettingRadioOptionProps) {
   const id = useId();
   const selected = currentValue === value;
@@ -44,6 +46,7 @@ export function SettingRadioOption({
         </span>
       </label>
       <input
+        disabled={disabled}
         checked={selected}
         onChange={() => onChange(value)}
         className="sr-only"
