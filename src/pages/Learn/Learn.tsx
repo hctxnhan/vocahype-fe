@@ -1,10 +1,10 @@
 import {
   ChevronDownIcon,
-  QuestionMarkCircledIcon,
   SpeakerLoudIcon,
   TriangleLeftIcon,
   TriangleRightIcon,
 } from '@radix-ui/react-icons';
+import { ToggleGroup, ToggleGroupItem } from '@radix-ui/react-toggle-group';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useRef, useState } from 'react';
 import useSWR from 'swr';
@@ -50,7 +50,11 @@ const variants = {
 };
 
 export function Learn() {
-  const [currentDef, setCurrentDef] = useState(0);
+  const [currentIndex, setCurrentIndex] = useState({
+    meaning: 0,
+    definition: 0,
+  });
+
   const [isOpen, setIsOpen] = useState(false);
   const nextDef = useRef(1);
 
@@ -87,21 +91,40 @@ export function Learn() {
 
   if (!wordData) return null;
 
-  const definitionList = wordData.meanings[0].definitions ?? [];
-  const definitionListLength = definitionList?.length ?? 0;
-  const currentDefData = definitionList?.[currentDef];
-  const exampleList = currentDefData?.examples ?? [];
+  const meaningList =
+    wordData.meanings?.filter(meaning => !!meaning?.definitions) ?? [];
+
+  const definitionList =
+    meaningList?.[currentIndex.meaning]?.definitions?.filter(
+      definition => !!definition?.definition
+    ) ?? [];
+
+  const exampleList = definitionList?.[currentIndex.definition]?.examples ?? [];
+
   const synonymsList =
-    wordData.meanings[0].synonyms?.filter(synonym => synonym.isSynonym) ?? [];
+    wordData.meanings?.[0].synonyms?.filter(synonym => synonym.isSynonym) ?? [];
   const antonymsList =
-    wordData.meanings[0].synonyms?.filter(synonym => !synonym.isSynonym) ?? [];
-  const partOfSpeech = wordData.meanings[0].pos;
+    wordData.meanings?.[0].synonyms?.filter(synonym => !synonym.isSynonym) ??
+    [];
 
   const handleClick = (next: number) => {
-    const current = currentDef + next;
-    if (current >= 0 && current < definitionListLength) {
-      nextDef.current = current - currentDef;
-      setCurrentDef(current);
+    const current = currentIndex.definition + next;
+    if (current >= 0 && current < definitionList.length) {
+      nextDef.current = current - currentIndex.definition;
+      setCurrentIndex({
+        meaning: currentIndex.meaning,
+        definition: current,
+      });
+    }
+  };
+
+  const handleChangeMeaning = (value: string) => {
+    const current = parseInt(value);
+    if (current >= 0 && current < meaningList.length) {
+      setCurrentIndex({
+        meaning: current,
+        definition: 0,
+      });
     }
   };
 
@@ -117,7 +140,7 @@ export function Learn() {
               wordImage?.data.photos[0].src.original ?? ''
             }")`,
           }}
-          className="relative h-[160] overflow-hidden rounded-lg bg-cover bg-no-repeat px-16 py-8 text-foreground transition duration-500 bg-center"
+          className="relative h-[160] overflow-hidden rounded-lg bg-cover bg-center bg-no-repeat px-16 py-8 text-foreground transition duration-500"
         >
           <div className="relative z-30">
             <div className="flex items-center gap-4">
@@ -131,25 +154,6 @@ export function Learn() {
               </Button>
             </div>
             <div className="font-sans font-normal">[{wordData.phonetic}]</div>
-            <div className="flex items-center gap-2">
-              <div className="font-display font-bold">
-                {partOfSpeech?.posTag}
-              </div>
-              <TooltipProvider>
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <QuestionMarkCircledIcon
-                      className="cursor-pointer"
-                      width={18}
-                      height={18}
-                    />
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <p className="text">{partOfSpeech?.description}</p>
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
-            </div>
           </div>
           <FillParent className="z-[9] bg-muted/70 transition" />
           <motion.div
@@ -161,14 +165,74 @@ export function Learn() {
             <ChevronDownIcon width={30} height={30} />
           </motion.div>
         </motion.div>
+        <ToggleGroup
+          value={currentIndex.meaning.toString()}
+          onValueChange={handleChangeMeaning}
+          type="single"
+          className="flex items-center justify-center gap-2"
+        >
+          {meaningList.map((meaning, index) => (
+            <ToggleGroupItem
+              key={index}
+              value={index.toString()}
+              className={cn('flex-center flex gap-1', {
+                'text-foreground': currentIndex.meaning != index,
+                'text-primary': currentIndex.meaning == index,
+              })}
+            >
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <p className="text-sm font-semibold">
+                      {meaning.pos.posTag}
+                    </p>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p className="text">{meaning.pos?.description}</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            </ToggleGroupItem>
+          ))}
+        </ToggleGroup>
+
+        {/* TODO: Extract to a component */}
+        <div className="relative flex items-center justify-center overflow-hidden text-lg font-bold transition-all">
+          <AnimatePresence>
+            <motion.div
+              className="text-center transition-all duration-1000 [text-wrap:balance]"
+              key={currentIndex.definition}
+              initial={{
+                transform: `translateX(${nextDef.current * 100}px)`,
+                opacity: 0,
+              }}
+              animate={{
+                transform: 'translateX(0)',
+                opacity: 1,
+              }}
+              exit={{
+                position: 'absolute',
+                transform: `translateX(${-nextDef.current * 100}px)`,
+                opacity: 0,
+              }}
+              transition={{
+                duration: 0.2,
+              }}
+            >
+              {definitionList?.[currentIndex.definition]?.definition}
+            </motion.div>
+          </AnimatePresence>
+        </div>
+
         <div data-tour={TOUR_STEPS.WORD.DEFINITION}>
-          {definitionListLength > 1 && (
+          {definitionList.length > 1 && (
             <div className="flex items-center justify-center gap-16 font-display text-sm font-semibold">
               <div
                 onClick={handleClick.bind(null, -1)}
                 className={cn(
                   'flex items-center hover:cursor-pointer',
-                  currentDef == 0 && 'pointer-events-none text-slate-500'
+                  currentIndex.definition == 0 &&
+                    'pointer-events-none text-slate-500'
                 )}
               >
                 <TriangleLeftIcon width={40} height={40} />
@@ -178,7 +242,7 @@ export function Learn() {
                 onClick={handleClick.bind(null, 1)}
                 className={cn(
                   'flex items-center hover:cursor-pointer',
-                  currentDef >= definitionListLength - 1 &&
+                  currentIndex.definition >= definitionList.length - 1 &&
                     'pointer-events-none text-slate-500'
                 )}
               >
@@ -187,35 +251,8 @@ export function Learn() {
               </div>
             </div>
           )}
-
-          {/* TODO: Extract to a component */}
-          <div className="relative flex items-center justify-center overflow-hidden text-lg font-bold transition-all">
-            <AnimatePresence>
-              <motion.div
-                className="transition-all duration-1000"
-                key={currentDef}
-                initial={{
-                  transform: `translateX(${nextDef.current * 100}px)`,
-                  opacity: 0,
-                }}
-                animate={{
-                  transform: 'translateX(0)',
-                  opacity: 1,
-                }}
-                exit={{
-                  position: 'absolute',
-                  transform: `translateX(${-nextDef.current * 100}px)`,
-                  opacity: 0,
-                }}
-                transition={{
-                  duration: 0.2,
-                }}
-              >
-                {currentDefData?.definition}
-              </motion.div>
-            </AnimatePresence>
-          </div>
         </div>
+
         <div
           className="flex-1 basis-0 overflow-auto"
           data-tour={TOUR_STEPS.WORD.EXAMPLE}

@@ -11,6 +11,7 @@ import { Word } from '../model/Word';
 
 export async function getWord({ wordId }: { wordId: string }) {
   const response = await axiosInstance.get(`/words/${wordId}`);
+  
   return deserialize<
     APIResponse<
       Word & {
