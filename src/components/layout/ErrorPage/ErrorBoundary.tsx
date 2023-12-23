@@ -34,7 +34,6 @@ export class ErrorBoundary extends Component<Props, State> {
             errorDescription="We encountered an error while loading this page."
             canRefresh={true}
           />
-          ;
         </div>
       );
     }
