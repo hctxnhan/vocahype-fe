@@ -1,15 +1,15 @@
 import { CalendarIcon } from '@radix-ui/react-icons';
 import {
-  Chart as ChartJS,
   CategoryScale,
+  Chart as ChartJS,
+  Legend,
+  LineElement,
   LinearScale,
   PointElement,
-  LineElement,
   Title,
   Tooltip,
-  Legend,
 } from 'chart.js';
-import { subDays, format } from 'date-fns';
+import { format, subDays } from 'date-fns';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import * as React from 'react';
@@ -27,9 +27,8 @@ import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
-  CardTitle,
+  CardTitle
 } from '@/components/ui/card';
 import {
   Popover,
@@ -38,6 +37,8 @@ import {
 } from '@/components/ui/popover';
 import { useSetBreadcrumb } from '@/lib/hooks/useSetBreadcrumb';
 import { cn } from '@/lib/utils/utils';
+
+import { ReportCard } from './components/ReportCard';
 
 dayjs.extend(utc);
 
@@ -107,9 +108,7 @@ export function ReportPage() {
   if (isLoading && !reportData)
     return (
       <FillParent>
-        <Loading
-          loadingText='Loading your learning report...'
-        />
+        <Loading loadingText="Loading your learning report..." />
       </FillParent>
     );
 
@@ -133,66 +132,22 @@ export function ReportPage() {
             </p>
           </CardDescription>
         </CardHeader>
-        <CardContent className="grid grid-cols-3 gap-3">
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-xl">Learning</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="font-display text-5xl">{learning}</p>
-            </CardContent>
-            <CardFooter>
-              <Link href="/search?search=&exact=false&status=learning&page%5Boffset%5D=1&page%5Blimit%5D=10">
-                <Button
-                  disabled={learning === 0}
-                  className="font-normal text-muted-foreground"
-                  variant="link"
-                >
-                  Show all
-                </Button>
-              </Link>
-            </CardFooter>
-          </Card>
-
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-xl">Mastered</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="font-display text-5xl">{mastered}</p>
-            </CardContent>
-            <CardFooter>
-              <Link href="/search?search=&exact=false&status=mastered&page%5Boffset%5D=1&page%5Blimit%5D=10">
-                <Button
-                  disabled={mastered === 0}
-                  className="font-normal text-muted-foreground"
-                  variant="link"
-                >
-                  Show all
-                </Button>
-              </Link>
-            </CardFooter>
-          </Card>
-
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-xl">Ignored</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="font-display text-5xl">{ignored}</p>
-            </CardContent>
-            <CardFooter>
-              <Link href="/search?search=&exact=false&status=ignore&page%5Boffset%5D=1&page%5Blimit%5D=10">
-                <Button
-                  disabled={ignored === 0}
-                  className="font-normal text-muted-foreground"
-                  variant="link"
-                >
-                  Show all
-                </Button>
-              </Link>
-            </CardFooter>
-          </Card>
+        <CardContent className="grid grid-cols-3 gap-3 max-sm:grid-cols-1">
+          <ReportCard
+            data={learning}
+            title="Learning"
+            showAllLink="/search?search=&exact=false&status=learning&page%5Boffset%5D=1&page%5Blimit%5D=10"
+          />
+          <ReportCard
+            data={mastered}
+            title="Mastered"
+            showAllLink="/search?search=&exact=false&status=mastered&page%5Boffset%5D=1&page%5Blimit%5D=10"
+          />
+          <ReportCard
+            data={ignored}
+            title="Ignored"
+            showAllLink="/search?search=&exact=false&status=ignore&page%5Boffset%5D=1&page%5Blimit%5D=10"
+          />
         </CardContent>
       </Card>
 
@@ -229,7 +184,7 @@ export function ReportPage() {
             defaultMonth={date?.from}
             selected={date}
             onSelect={onDateChange}
-            numberOfMonths={2}
+            numberOfMonths={1}
           />
         </PopoverContent>
       </Popover>

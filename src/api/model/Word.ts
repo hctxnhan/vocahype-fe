@@ -7,4 +7,5 @@ export interface Word {
   syllable: number;
   phoneticStart: string;
   phoneticEnd: string;
+  inSelectedTopic: boolean;
 }
