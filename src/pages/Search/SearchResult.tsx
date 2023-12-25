@@ -52,7 +52,7 @@ export function SearchResult() {
     }
   );
 
-  useSetBreadcrumb(['Search', word === '' ? params.status ?? '' : word]);
+  useSetBreadcrumb(['Search', (word === '' ? params.status : word) ?? '']);
 
   function selectWord(wordId: string) {
     navigate(`/words/${wordId}`);
