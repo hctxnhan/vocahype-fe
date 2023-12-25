@@ -108,7 +108,9 @@ export function ReportPage() {
   if (isLoading && !reportData)
     return (
       <FillParent>
-        <Loading loadingText="Loading your learning report..." />
+        <Loading
+          loadingText='Loading your learning report...'
+        />
       </FillParent>
     );
 
