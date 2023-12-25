@@ -114,6 +114,7 @@ export function ReportPage() {
     );
 
   if (!reportData) return null;
+
   const { ignored, learning, mastered } = reportData.data[0];
 
   return (
