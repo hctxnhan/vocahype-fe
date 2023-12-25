@@ -19,6 +19,8 @@ import useSWR from 'swr';
 import { Link } from 'wouter';
 
 import { getReport } from '@/api/profile/report';
+import { FillParent } from '@/components/layout/FillParent/FillParent';
+import { Loading } from '@/components/layout/Loading/Loading';
 import { Button } from '@/components/ui/button';
 import { Calendar } from '@/components/ui/calendar';
 import {
@@ -102,7 +104,16 @@ export function ReportPage() {
     ],
   };
 
-  if(!reportData) return null;
+  if (isLoading && !reportData)
+    return (
+      <FillParent>
+        <Loading
+          loadingText='Loading your learning report...'
+        />
+      </FillParent>
+    );
+
+  if (!reportData) return null;
   const { ignored, learning, mastered } = reportData.data[0];
 
   return (

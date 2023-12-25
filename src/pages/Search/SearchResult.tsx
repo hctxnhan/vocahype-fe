@@ -10,6 +10,8 @@ import { useSetBreadcrumb } from '@/lib/hooks/useSetBreadcrumb';
 
 import { SearchFilter } from './SearchFilter';
 import { SearchItem } from './SearchItem';
+import { FillParent } from '@/components/layout/FillParent/FillParent';
+import { Loading } from '@/components/layout/Loading/Loading';
 
 export function SearchResult() {
   const params = useSearchParams<{
@@ -97,6 +99,13 @@ export function SearchResult() {
         />
       </div>
       <div className="relative h-full flex-1 basis-0 pb-12">
+        {isLoading && (
+          <FillParent>
+            <Loading
+              loadingText="Searching..."
+            />
+          </FillParent>
+        )}
         {!isLoading && !wordList?.length && (
           <div className="center flex-1 flex-col gap-3">
             <FileSearch width={128} height={128} />
