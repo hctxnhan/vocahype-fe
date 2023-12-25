@@ -35,10 +35,8 @@ export function SearchResult() {
       params?.['page[limit]'] ?? '10',
     ],
     ([, word]) => {
-      if (!word) return Promise.resolve(null);
-
       return searchWord({
-        word,
+        word: word ?? '',
         exact: params?.exact === 'true',
         status: params?.status,
         page: {
@@ -54,7 +52,7 @@ export function SearchResult() {
     }
   );
 
-  useSetBreadcrumb(['Search', word ?? '']);
+  useSetBreadcrumb(['Search', word === '' ? params.status ?? '' : word]);
 
   function selectWord(wordId: string) {
     navigate(`/words/${wordId}`);
@@ -64,6 +62,7 @@ export function SearchResult() {
     const searchParams = new URLSearchParams({
       search: word ?? '',
       exact: params.exact ?? 'false',
+      status: params.status ?? '',
       'page[offset]': String(state.page),
       'page[limit]': String(state.limit),
     });
@@ -86,9 +85,11 @@ export function SearchResult() {
   return (
     <div className="flex h-full flex-col">
       <div className="mb-6 flex justify-between max-sm:flex-col">
-        <p className="text-lg">
-          Search result for <b>"{word}"</b>
-        </p>
+        {word !== '' && (
+          <p className="text-lg">
+            Search result for <b>"{word}"</b>
+          </p>
+        )}
         <SearchFilter
           value={params?.status ?? ''}
           onChange={onChangeFilter}

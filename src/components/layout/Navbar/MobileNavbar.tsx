@@ -41,6 +41,9 @@ export function MobileNavbar() {
           <SheetClose>
             <NavbarItem href="/exploration">Exploration</NavbarItem>
           </SheetClose>
+          <SheetClose>
+            <NavbarItem href="/report">Report</NavbarItem>
+          </SheetClose>
           {/* <SheetClose>
             <NavbarItem href="/notifications">Notifications</NavbarItem>
           </SheetClose> */}
