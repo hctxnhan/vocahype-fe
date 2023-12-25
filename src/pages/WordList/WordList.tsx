@@ -42,27 +42,6 @@ export function WordList({
 
   const words = data ? data.flatMap(page => page.data) : [];
 
-  // const countWordStatus = useMemo(
-  //   () =>
-  //     words?.reduce(
-  //       (acc, word) => {
-  //         const comprehension = word.comprehension;
-  //         if (comprehension?.status === WORD_STATUS_LEARN.LEARNING) {
-  //           acc.inProgress++;
-  //           if (dayjs().diff(dayjs(comprehension.dueDate), 'd') > 0) {
-  //             acc.due++;
-  //           }
-  //         }
-  //         return acc;
-  //       },
-  //       {
-  //         inProgress: 0,
-  //         due: 0,
-  //       }
-  //     ),
-  //   [words]
-  // );
-
   const isLoadingMore =
     isLoading || (size > 0 && data && typeof data[size - 1] === 'undefined');
   const isEmpty = data?.length === 0;
@@ -140,16 +119,6 @@ export function WordList({
         <p className="text-4xl font-bold leading-normal text-primary max-sm:text-2xl">
           Keep up the good work, {user?.displayName}!
         </p>
-        {/* {!!countWordStatus?.inProgress && (
-          <p className="text-lg font-medium text-foreground max-sm:text-base">
-            Today you have {countWordStatus?.inProgress} words in progress {' '}
-            {countWordStatus?.due > 0 && (
-              <span className="text-destructive">
-                and {countWordStatus?.due} word overdue. Pay attention!
-              </span>
-            )}
-          </p>
-        )} */}
       </div>
       <div
         onWheel={handleScroll}
@@ -162,6 +131,7 @@ export function WordList({
             return (
               <WordItem
                 status={comprehension?.status as WORD_STATUS_LEARN}
+                level={comprehension?.level || 0}
                 dueDate={comprehension?.dueDate || ''}
                 onLearnWord={handleLearnWord.bind(null, word.id, index)}
                 data={word}

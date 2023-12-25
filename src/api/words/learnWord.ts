@@ -25,3 +25,7 @@ export async function getLearnWordList(url: string) {
     >
   >(response.data as string);
 }
+
+export function resetLearnWord(wordId: string) {
+  return axiosInstance.delete(`/reset-learning-progression/word/${wordId}`);
+}

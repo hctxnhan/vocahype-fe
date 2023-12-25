@@ -9,6 +9,7 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog';
 import { TOUR_STEPS } from '@/lib/configs/tour';
+import { WORD_STATUS_LEARN } from '@/lib/enums/word';
 import { useAsyncAction } from '@/lib/hooks/useAsyncAction';
 import { useToast } from '@/lib/hooks/useToast';
 import { WordLevel } from '@/lib/interfaces/type';
@@ -17,9 +18,11 @@ import { Quiz } from '@/pages/Quiz/Quiz';
 export function LearnButton({
   wordId,
   word,
+  status,
 }: {
   wordId: string;
   word: string;
+  status: WORD_STATUS_LEARN;
 }) {
   const toast = useToast();
   const { start, isLoading } = useAsyncAction(learnWord);
@@ -66,62 +69,99 @@ export function LearnButton({
     handleLearn(quizLevel);
   }
 
+  const mastered = status === WORD_STATUS_LEARN.MASTERED && (
+    <Button
+      onClick={handleClickLearn('mastered')}
+      className="w-full uppercase max-md:px-2 max-md:py-1"
+      size={'lg'}
+      variant={'outline'}
+      data-tour={TOUR_STEPS.WORD.LEARN_BUTTON.MASTERED}
+      disabled={true}
+    >
+      Mastered
+    </Button>
+  );
+
+  const ignored = status === WORD_STATUS_LEARN.IGNORE && (
+    <Button
+      onClick={handleClickLearn('mastered')}
+      className="w-full uppercase max-md:px-2 max-md:py-1"
+      size={'lg'}
+      variant={'outline'}
+      data-tour={TOUR_STEPS.WORD.LEARN_BUTTON.IGNORE}
+      disabled={true}
+    >
+      Ignored
+    </Button>
+  );
+
+  const learning = [
+    WORD_STATUS_LEARN.LEARNING,
+    WORD_STATUS_LEARN.TO_LEARN,
+  ].includes(status) && (
+    <>
+      <Button
+        onClick={handleClickLearn('ignore')}
+        className="w-full max-md:px-2 max-md:py-1"
+        variant={'secondary'}
+        disabled={isLoading}
+        size={'lg'}
+        data-tour={TOUR_STEPS.WORD.LEARN_BUTTON.IGNORE}
+      >
+        Ignore
+      </Button>
+      <Button
+        onClick={handleClickLearn('hard')}
+        className="w-full max-md:px-2 max-md:py-1"
+        variant={'destructive'}
+        disabled={isLoading}
+        size={'lg'}
+        data-tour={TOUR_STEPS.WORD.LEARN_BUTTON.HARD}
+      >
+        Hard
+      </Button>
+
+      <Button
+        onClick={handleClickLearn('normal')}
+        className="w-full max-md:px-2 max-md:py-1"
+        color="orange"
+        disabled={isLoading}
+        size={'lg'}
+      >
+        Normal
+      </Button>
+
+      <Button
+        onClick={handleClickLearn('easy')}
+        className="w-full max-md:px-2 max-md:py-1"
+        color="yellow"
+        size={'lg'}
+      >
+        Easy
+      </Button>
+
+      <Button
+        color="green"
+        onClick={handleClickLearn('mastered')}
+        className="w-full max-md:px-2 max-md:py-1"
+        disabled={isLoading}
+        size={'lg'}
+        data-tour={TOUR_STEPS.WORD.LEARN_BUTTON.MASTERED}
+      >
+        Mastered
+      </Button>
+    </>
+  );
+
   return (
     <div
-      className="relative"
+      className="relative flex flex-col gap-1"
       data-tour={TOUR_STEPS.WORD.LEARN_BUTTON.CONTAINER}
     >
       <div className="flex justify-between gap-4 max-md:gap-2">
-        <Button
-          onClick={handleClickLearn('ignore')}
-          className="w-full max-md:px-2 max-md:py-1"
-          variant={'secondary'}
-          disabled={isLoading}
-          size={'lg'}
-          data-tour={TOUR_STEPS.WORD.LEARN_BUTTON.IGNORE}
-        >
-          Ignore
-        </Button>
-        <Button
-          onClick={handleClickLearn('hard')}
-          className="w-full max-md:px-2 max-md:py-1"
-          variant={'destructive'}
-          disabled={isLoading}
-          size={'lg'}
-          data-tour={TOUR_STEPS.WORD.LEARN_BUTTON.HARD}
-        >
-          Hard
-        </Button>
-
-        <Button
-          onClick={handleClickLearn('normal')}
-          className="w-full max-md:px-2 max-md:py-1"
-          color="orange"
-          disabled={isLoading}
-          size={'lg'}
-        >
-          Normal
-        </Button>
-
-        <Button
-          onClick={handleClickLearn('easy')}
-          className="w-full max-md:px-2 max-md:py-1"
-          color="yellow"
-          size={'lg'}
-        >
-          Easy
-        </Button>
-
-        <Button
-          color="green"
-          onClick={handleClickLearn('mastered')}
-          className="w-full max-md:px-2 max-md:py-1"
-          disabled={isLoading}
-          size={'lg'}
-          data-tour={TOUR_STEPS.WORD.LEARN_BUTTON.MASTERED}
-        >
-          Mastered
-        </Button>
+        {mastered}
+        {ignored}
+        {learning}
       </div>
       <Dialog open={showQuiz} onOpenChange={setShowQuiz}>
         <DialogContent>

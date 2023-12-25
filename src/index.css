@@ -133,6 +133,10 @@ input::placeholder {
     @apply flex flex-row;
   }
 
+  .text-balance {
+    text-wrap: balance;
+  }
+
   .sidebar-height {
     height: calc(100vh - theme('spacing.navbar') - theme('spacing.8'));
     width: calc(theme('spacing.sidebar'));

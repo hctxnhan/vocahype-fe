@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import useSWR from 'swr';
+import useSWR, { useSWRConfig } from 'swr';
 
 import { postDailyGoal } from '@/api/profile/learningTime';
 import { getUserprofile } from '@/api/profile/profile';
@@ -14,6 +14,7 @@ import { SettingRadioGroup } from './components/SettingRadioGroup';
 
 export function DailyGoalSetting() {
   const [currentValue, setCurrentValue] = useState('');
+  const { mutate } = useSWRConfig()
 
   const { data, isLoading: isFetchingProfile } = useSWR(
     'profile',
@@ -27,6 +28,7 @@ export function DailyGoalSetting() {
     start([level], {
       onSuccess: () => {
         toast.success({ title: 'Updated daily goal successfully' });
+        void mutate('profile')
       },
       onError: () => {
         toast.error({ title: 'Daily goal update failed' });
@@ -55,7 +57,9 @@ export function DailyGoalSetting() {
 
   return (
     <div>
-      <h3 className="mb-4 text-xl font-medium uppercase">Learning</h3>
+      <h3 id="set" className="mb-4 text-xl font-medium uppercase">
+        Learning
+      </h3>
       <div className="flex gap-10 max-md:flex-col max-md:gap-4">
         <div className="vh-flex-column w-44 max-md:w-full">
           <label className="font-medium" htmlFor="">

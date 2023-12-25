@@ -8,10 +8,12 @@ import { ToggleGroup, ToggleGroupItem } from '@radix-ui/react-toggle-group';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useRef, useState } from 'react';
 import useSWR from 'swr';
+import useSWRMutation from 'swr/mutation';
 import { useRoute } from 'wouter';
 
 import { getImage } from '@/api/pexels/pexels';
 import { getWord } from '@/api/words/getWord';
+import { resetLearnWord } from '@/api/words/learnWord';
 import { FillParent } from '@/components/layout/FillParent/FillParent';
 import { Loading } from '@/components/layout/Loading/Loading';
 import { TrackLearningTime } from '@/components/layout/TrackLearningTime/TrackLearningTime';
@@ -23,11 +25,13 @@ import {
   TooltipTrigger,
 } from '@/components/ui/tooltip';
 import { TOUR_STEPS } from '@/lib/configs/tour';
+import { WORD_STATUS_LEARN } from '@/lib/enums/word';
 import { useSetBreadcrumb } from '@/lib/hooks/useSetBreadcrumb';
-import { cn, playAudio } from '@/lib/utils/utils';
+import { cn, getLearningPercentage, playAudio } from '@/lib/utils/utils';
 
 import { Example } from './components/Example';
 import { LearnButton } from './components/LearnButton';
+import { ResetWordProgression } from './components/ResetWordProgression';
 import { Synonym } from './components/Synonym';
 
 const variants = {
@@ -63,6 +67,11 @@ export function Learn() {
   const { data: wordDetail, isLoading } = useSWR(
     ['words/:wordId', params?.wordId ?? ''],
     getWord.bind(null, { wordId: params?.wordId as string } ?? '')
+  );
+
+  const { trigger, isMutating } = useSWRMutation(
+    ['words/:wordId', params?.wordId ?? ''],
+    resetLearnWord.bind(null, params!.wordId)
   );
 
   const wordData = wordDetail?.data[0];
@@ -143,6 +152,21 @@ export function Learn() {
           className="relative h-[160] overflow-hidden rounded-lg bg-cover bg-center bg-no-repeat px-16 py-8 text-foreground transition duration-500"
         >
           <div className="relative z-30">
+            <div className="font-sans text-xs font-normal">
+              {`${wordData.comprehension.status.toUpperCase()}${
+                wordData.comprehension.status === WORD_STATUS_LEARN.LEARNING
+                  ? ` - ${getLearningPercentage(
+                      wordData.comprehension.level ?? 0
+                    )}%`
+                  : ''
+              }`}{' '}
+              {wordData.comprehension.status !== WORD_STATUS_LEARN.TO_LEARN && (
+                <ResetWordProgression
+                  isMutating={isMutating}
+                  onConfirm={() => void trigger()}
+                />
+              )}
+            </div>
             <div className="flex items-center gap-4">
               <div className="text-4xl font-black">{wordData.word}</div>
               <Button
@@ -200,7 +224,7 @@ export function Learn() {
         <div className="relative flex items-center justify-center overflow-hidden text-lg font-bold transition-all">
           <AnimatePresence>
             <motion.div
-              className="text-center transition-all duration-1000 [text-wrap:balance]"
+              className="text-balance text-center transition-all duration-1000"
               key={currentIndex.definition}
               initial={{
                 transform: `translateX(${nextDef.current * 100}px)`,
@@ -271,7 +295,11 @@ export function Learn() {
             <Synonym title="Synonyms" synonymsList={synonymsList} />
             <Synonym title="Antonyms" synonymsList={antonymsList} />
           </div>
-          <LearnButton wordId={wordData.id} word={wordData.word} />
+          <LearnButton
+            status={wordData.comprehension.status}
+            wordId={wordData.id}
+            word={wordData.word}
+          />
         </div>
       </div>
     </TrackLearningTime>

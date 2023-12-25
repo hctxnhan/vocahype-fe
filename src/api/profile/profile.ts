@@ -9,3 +9,7 @@ export async function getUserprofile() {
   const response = await axiosInstance.get(`/profile`);
   return deserialize<APIResponse<User>>(response.data as string);
 }
+
+export function resetLearningProgression() {
+  return axiosInstance.delete('/reset-learning-progression');
+}
