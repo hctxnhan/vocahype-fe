@@ -57,3 +57,7 @@ export function whatIsCurrentPage(location: string) {
 export function testPathRegex(path: string) {
   return parse(path).pattern;
 }
+
+export function getLearningPercentage(level: number) {
+  return Math.floor((level / 12) * 100);
+}

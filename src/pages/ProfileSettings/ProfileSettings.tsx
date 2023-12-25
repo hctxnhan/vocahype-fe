@@ -2,6 +2,7 @@ import { useSetBreadcrumb } from '@/lib/hooks/useSetBreadcrumb';
 
 import { DailyGoalSetting } from './sections/DailyGoalSetting';
 import { ProfileInfo } from './sections/ProfileInfo';
+import { ResetLearningProgression } from './sections/ResetLearningProgression';
 import { TopicSetting } from './sections/TopicSetting';
 
 export function ProfileSettings() {
@@ -11,6 +12,7 @@ export function ProfileSettings() {
       <ProfileInfo />
       <DailyGoalSetting />
       <TopicSetting />
+      <ResetLearningProgression />
     </div>
   );
 }

@@ -9,14 +9,9 @@ import {
   updateProfile,
   sendEmailVerification,
 } from 'firebase/auth';
-import {
-  getDownloadURL,
-  ref,
-  uploadBytes,
-} from 'firebase/storage';
+import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 
 import { apiKey, auth, storage } from './firebase';
-
 
 export async function signUpUser(email: string, password: string) {
   return createUserWithEmailAndPassword(auth, email, password);
@@ -42,7 +37,7 @@ export function sendResetPassword(email: string) {
 }
 
 export function resetPassword(key: string, code: string, newPassword: string) {
-  if(key !== apiKey) throw new Error('Invalid API key');
+  if (key !== apiKey) throw new Error('Invalid API key');
   return confirmPasswordReset(auth, code, newPassword);
 }
 
@@ -68,6 +63,13 @@ export async function updateProfileUser(
       updateEmail(auth.currentUser, email),
     ]);
   return null;
+}
+
+export async function removeUser() {
+  if (auth.currentUser) {
+    return auth.currentUser.delete();
+  }
+  return Promise.reject('User are not signed in!');
 }
 
 export async function sendVerificationEmail() {

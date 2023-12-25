@@ -1,19 +1,21 @@
-import { SpeakerLoudIcon } from '@radix-ui/react-icons';
 import { FileSearch } from 'lucide-react';
 import { useState } from 'react';
 import useSWR from 'swr';
 import { useLocation } from 'wouter';
 
 import { searchWord } from '@/api/words/searchWord';
-import { Button } from '@/components/ui/button';
 import { Pagination, PaginationState } from '@/components/ui/pagination';
 import { useSearchParams } from '@/lib/hooks/useSearchParams';
 import { useSetBreadcrumb } from '@/lib/hooks/useSetBreadcrumb';
+
+import { SearchFilter } from './SearchFilter';
+import { SearchItem } from './SearchItem';
 
 export function SearchResult() {
   const params = useSearchParams<{
     search: string;
     exact: string;
+    status: string;
     'page[offset]': string;
     'page[limit]': string;
   }>();
@@ -28,6 +30,7 @@ export function SearchResult() {
       'search',
       word,
       params?.exact ?? 'false',
+      params?.status ?? '',
       params?.['page[offset]'] ?? '1',
       params?.['page[limit]'] ?? '10',
     ],
@@ -37,6 +40,7 @@ export function SearchResult() {
       return searchWord({
         word,
         exact: params?.exact === 'true',
+        status: params?.status,
         page: {
           offset: params?.['page[offset]'] ?? '1',
           limit: params?.['page[limit]'] ?? '10',
@@ -66,56 +70,45 @@ export function SearchResult() {
     navigate(`/search?${searchParams.toString()}`);
   }
 
-  function playPronunciation(word: string) {
-    return (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-      e.stopPropagation();
-      const utterance = new SpeechSynthesisUtterance(word);
-      speechSynthesis.speak(utterance);
-    };
+  function onChangeFilter(filter: string) {
+    const searchParams = new URLSearchParams({
+      search: word ?? '',
+      exact: params.exact ?? 'false',
+      status: filter,
+      'page[offset]': '1',
+      'page[limit]': '10',
+    });
+    navigate(`/search?${searchParams.toString()}`);
   }
 
   const wordList = searchResult?.data;
 
-  if (!wordList?.length && !isLoading)
-    return (
-      <div className="center flex-col gap-3 flex-1">
-        <FileSearch width={128} height={128} />
-        <p className="text-2xl">
-          Sorry! We can't find any word that match your search <b>"{word}"</b>
-        </p>
-      </div>
-    );
-
   return (
     <div className="flex h-full flex-col">
-      <p className="mb-6 text-lg">
-        Search result for <b>"{word}"</b>
-      </p>
+      <div className="mb-6 flex justify-between max-sm:flex-col">
+        <p className="text-lg">
+          Search result for <b>"{word}"</b>
+        </p>
+        <SearchFilter
+          value={params?.status ?? ''}
+          onChange={onChangeFilter}
+          className="ml-1 mr-2 w-[180px]"
+        />
+      </div>
       <div className="relative h-full flex-1 basis-0 pb-12">
+        {!isLoading && !wordList?.length && (
+          <div className="center flex-1 flex-col gap-3">
+            <FileSearch width={128} height={128} />
+            <p className="text-balance text-center text-2xl">
+              Sorry! We can't find any word that match your search{' '}
+              <b>"{word}"</b>
+            </p>
+          </div>
+        )}
         {!isLoading && !!wordList?.length && (
           <div className="flex w-full flex-col">
             {wordList.map(word => (
-              <Button
-                variant={'ghost'}
-                onClick={() => selectWord(word.id)}
-                className="my-1 ml-1 mr-2 flex h-fit cursor-pointer flex-col gap-2 rounded-md bg-accent px-8 py-4 transition hover:bg-primary hover:text-primary-foreground"
-                key={word.id}
-              >
-                <div className="center gap-4">
-                  <p className="text-2xl font-semibold">{word.word}</p>
-                </div>
-                <div className="center gap-2">
-                  {word.phonetic ? <p>[{word.phonetic}]</p> : null}
-                  <Button
-                    onClick={playPronunciation(word.word)}
-                    size={'icon'}
-                    variant={'ghost'}
-                    className="flex items-center gap-4 transition-none"
-                  >
-                    <SpeakerLoudIcon width={16} height={16} />
-                  </Button>
-                </div>
-              </Button>
+              <SearchItem key={word.id} word={word} selectWord={selectWord} />
             ))}
           </div>
         )}

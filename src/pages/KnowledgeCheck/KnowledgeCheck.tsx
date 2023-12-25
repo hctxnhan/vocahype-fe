@@ -73,31 +73,6 @@ export function KnowledgeCheck() {
     ]);
 
     setIsFinished(true);
-
-    // const largestPoint = Math.max(...words.map(word => word.point));
-    // const smallestPoint = Math.min(...words.map(word => word.point));
-    // const normalizedPoint = words.map(word => ({
-    //   ...word,
-    //   point: (word.point - smallestPoint) / (largestPoint - smallestPoint),
-    // }));
-
-    // const knownPoint = known.reduce((acc, curr) => {
-    //   const word = normalizedPoint?.find(word => word.id === curr);
-    //   if (!word) return acc;
-    //   return acc + (word.point);
-    // }, 0);
-    // const unknownPoint = unknown.reduce((acc, curr) => {
-    //   const word = normalizedPoint?.find(word => word.id === curr);
-    //   if (!word) return acc;
-    //   return acc + (1- word.point);
-    // }, 0);
-
-    // const totalPoint = knownPoint - unknownPoint;
-    // const totalWord = known.length + unknown.length;
-    // const point = totalPoint / totalWord;
-    // const final = point * 1000;
-
-    // console.log(totalPoint, totalWord, point, final)
   }
 
   function handleRestart() {

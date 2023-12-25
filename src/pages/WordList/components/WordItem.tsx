@@ -4,22 +4,25 @@ import { useLocation } from 'wouter';
 import { Word } from '@/api/model/Word';
 import { delayLearnWord, learnWord } from '@/api/words/learnWord';
 import { Button } from '@/components/ui/button';
+import { Progress } from '@/components/ui/progress';
 import { TOUR_STEPS } from '@/lib/configs/tour';
 import { WORD_STATUS_LEARN } from '@/lib/enums/word';
 import { useAsyncAction } from '@/lib/hooks/useAsyncAction';
 import { useToast } from '@/lib/hooks/useToast';
-import { cn } from '@/lib/utils/utils';
+import { cn, getLearningPercentage } from '@/lib/utils/utils';
 
 interface WordItemProps {
   data: Word;
   status: WORD_STATUS_LEARN;
   dueDate: string;
+  level?: number;
   onLearnWord: (id: string, index: number) => void;
 }
 
 export function WordItem({
   data,
   dueDate,
+  level,
   status = WORD_STATUS_LEARN.TO_LEARN,
   onLearnWord,
 }: WordItemProps) {
@@ -70,9 +73,13 @@ export function WordItem({
 
   return (
     <div
-      className="mb-2 flex h-[350px] w-[350px] flex-shrink-0 flex-grow-0 basis-auto flex-col justify-between rounded-lg border border-border bg-muted/70 p-4 max-sm:my-0 max-sm:h-[200px] max-sm:w-full"
+      className="relative mb-2 flex h-[350px] w-[350px] flex-shrink-0 flex-grow-0 basis-auto flex-col justify-between overflow-hidden rounded-lg border border-border bg-muted/70 p-4 max-sm:my-0 max-sm:h-[200px] max-sm:w-full"
       data-tour={TOUR_STEPS.WORD_LIST.CARD.CONTAINER}
     >
+      <Progress
+        className="absolute inset-x-0 top-0 h-1"
+        value={getLearningPercentage(level ?? 0)}
+      ></Progress>
       <div className="flex flex-col gap-2">
         <div className="text-2xl font-bold text-primary">{word}</div>
         <div

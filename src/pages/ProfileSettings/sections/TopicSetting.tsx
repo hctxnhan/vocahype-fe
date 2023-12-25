@@ -3,12 +3,12 @@ import useSWR from 'swr';
 
 import { postTargetTopic } from '@/api/profile/learningTopic';
 import { getUserprofile } from '@/api/profile/profile';
+import { FillParent } from '@/components/layout/FillParent/FillParent';
+import { Loading } from '@/components/layout/Loading/Loading';
 import { useAsyncAction } from '@/lib/hooks/useAsyncAction';
 import { useToast } from '@/lib/hooks/useToast';
 import { topicOptions } from '@/lib/utils/constant';
 
-import { FillParent } from '@/components/layout/FillParent/FillParent';
-import { Loading } from '@/components/layout/Loading/Loading';
 import { SettingRadioGroup } from './components/SettingRadioGroup';
 
 export function TopicSetting() {

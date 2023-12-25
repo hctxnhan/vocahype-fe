@@ -5,10 +5,8 @@ import { z } from 'zod';
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
-import {
-  Card,
-  CardHeader
-} from '@/components/ui/card';
+import { Card, CardHeader } from '@/components/ui/card';
+import { Dialog, DialogTrigger } from '@/components/ui/dialog';
 import {
   Form,
   FormControl,
@@ -21,6 +19,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { LoadingButton } from '@/components/ui/loading-button';
 import {
+  removeUser,
   sendVerificationEmail,
   updateProfileUser,
 } from '@/lib/configs/firebaseAuth';
@@ -30,8 +29,9 @@ import { useAsyncAction } from '@/lib/hooks/useAsyncAction';
 import { useToast } from '@/lib/hooks/useToast';
 import { cn, getFirstNLetter } from '@/lib/utils/utils';
 
+import { DeleteAccountDialog } from './components/DeleteAccountDialog';
 
-export function ProfileInfo () {
+export function ProfileInfo() {
   const { user } = useAuthState();
   const emailVerified = user?.emailVerified || false;
 
@@ -60,6 +60,15 @@ export function ProfileInfo () {
     }
   );
 
+  const removeUserAction = useAsyncAction<typeof removeUser>(removeUser, {
+    onError: error => {
+      toast.error({
+        title: 'Your account has not been deleted due to an error.',
+        msg: error.message,
+      });
+    },
+  });
+
   const sendEmailVerificationAction = useAsyncAction(sendVerificationEmail, {
     onSuccess: () => {
       toast.success({
@@ -75,18 +84,22 @@ export function ProfileInfo () {
     },
   });
 
-  function onSubmit (data: z.infer<typeof updateProfileFormScheme>) {
+  function onSubmit(data: z.infer<typeof updateProfileFormScheme>) {
     updateProfileAction.start([data.email, data.name, data.avatar || '']);
   }
 
   const onAvatarChange =
     (onChange: (...args: any[]) => void) =>
-      (e: React.ChangeEvent<HTMLInputElement>) => {
-        if (e?.target?.files?.[0]) {
-          onChange(e.target.files[0]);
-          setPreviewImg(URL.createObjectURL(e.target.files[0]));
-        }
-      };
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      if (e?.target?.files?.[0]) {
+        onChange(e.target.files[0]);
+        setPreviewImg(URL.createObjectURL(e.target.files[0]));
+      }
+    };
+
+  function handleConfirmDeleteAccount() {
+    removeUserAction.start();
+  }
 
   useEffect(() => {
     form.reset({
@@ -100,11 +113,14 @@ export function ProfileInfo () {
 
   return (
     <Form {...form}>
-      <form className="vh-flex-column gap-4" onSubmit={form.handleSubmit(onSubmit) as VoidFunction}>
-        <span className='text-slate-800 text-2xl font-bold'>PROFILE</span>
-        <div className='flex gap-8 max-lg:flex-col'>
-          <Card className='flex-1'>
-            <CardHeader className="p-8 center mx-auto max-w-[350px] h-full gap-2 center">
+      <form
+        className="vh-flex-column gap-4"
+        onSubmit={form.handleSubmit(onSubmit) as VoidFunction}
+      >
+        <span className="text-2xl font-bold text-slate-800">PROFILE</span>
+        <div className="flex gap-8 max-lg:flex-col">
+          <Card className="flex-1">
+            <CardHeader className="center center mx-auto h-full max-w-[350px] gap-2 p-8">
               <FormField
                 control={form.control}
                 name="avatar"
@@ -134,11 +150,13 @@ export function ProfileInfo () {
                   </FormItem>
                 )}
               />
-              <span className='text-2xl mt-0 font-bold'>{user?.displayName}</span>
+              <span className="mt-0 text-2xl font-bold">
+                {user?.displayName}
+              </span>
             </CardHeader>
           </Card>
-          <div className='flex-1 vh-flex-column justify-between'>
-            <div className='vh-flex-column gap-4 mb-6'>
+          <div className="vh-flex-column flex-1 justify-between">
+            <div className="vh-flex-column mb-6 gap-4">
               <FormField
                 control={form.control}
                 name="email"
@@ -176,24 +194,9 @@ export function ProfileInfo () {
                   <FormItem className="space-y-1">
                     <FormLabel>Name</FormLabel>
                     <FormControl>
-                      <Input className="h-9" placeholder="Lionel Messy" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              {/* <FormField
-                control={form.control}
-                name="phoneNumber"
-                render={({ field }) => (
-                  <FormItem className="space-y-1">
-                    <FormLabel>Phone number</FormLabel>
-                    <FormControl>
                       <Input
                         className="h-9"
-                        disabled
-                        placeholder="+84 123 123 123"
+                        placeholder="Lionel Messy"
                         {...field}
                       />
                     </FormControl>
@@ -201,28 +204,22 @@ export function ProfileInfo () {
                   </FormItem>
                 )}
               />
-              <FormField
-                control={form.control}
-                name="bio"
-                render={({ field }) => (
-                  <FormItem className="space-y-1">
-                    <FormLabel>Bio</FormLabel>
-                    <FormControl>
-                      <TextArea
-                        disabled
-                        rows={4}
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )} 
-              />*/}
             </div>
             <div className="vh-flex-column items-center gap-1">
-              <div className="text-sm text-destructive hover:cursor-pointer">
-                Delete account
-              </div>
+              <Dialog>
+                <DialogTrigger asChild>
+                  <LoadingButton
+                    isLoading={removeUserAction.isLoading}
+                    variant={'link'}
+                    className="w-full"
+                  >
+                    Delete account
+                  </LoadingButton>
+                </DialogTrigger>
+                <DeleteAccountDialog onConfirm={handleConfirmDeleteAccount} />
+              </Dialog>
+
+              <div className="text-sm text-destructive hover:cursor-pointer"></div>
               <LoadingButton
                 className="w-full"
                 type="submit"
