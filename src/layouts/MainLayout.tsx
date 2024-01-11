@@ -9,10 +9,10 @@ import { Exploration } from '@/pages/Exploration/Exploration';
 import { KnowledgeCheck } from '@/pages/KnowledgeCheck/KnowledgeCheck';
 import { Learn } from '@/pages/Learn/Learn';
 import { ProfileSettings } from '@/pages/ProfileSettings/ProfileSettings';
+import { ReportPage } from '@/pages/Report/ReportPage';
 import { SearchResult } from '@/pages/Search/SearchResult';
 import { LearnPage } from '@/pages/WordList/LearnPage';
 import { TopicDetailPage } from '@/pages/WordList/TopicDetailPage';
-import { ReportPage } from '@/pages/Report/ReportPage';
 
 export function MainLayout() {
   return (

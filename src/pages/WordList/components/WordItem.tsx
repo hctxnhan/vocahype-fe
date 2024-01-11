@@ -1,10 +1,18 @@
 import dayjs from 'dayjs';
+import { SparkleIcon } from 'lucide-react';
 import { useLocation } from 'wouter';
 
 import { Word } from '@/api/model/Word';
 import { delayLearnWord, learnWord } from '@/api/words/learnWord';
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/ui/tooltip';
 import { TOUR_STEPS } from '@/lib/configs/tour';
 import { WORD_STATUS_LEARN } from '@/lib/enums/word';
 import { useAsyncAction } from '@/lib/hooks/useAsyncAction';
@@ -40,7 +48,8 @@ export function WordItem({
   const renderDueDate = () => {
     const due = dayjs().diff(dayjs(dueDate), 'd');
     if (due > 0) return `${due} days overdue`;
-    else return 'Due today';
+    else if (due === 0) return 'Due today';
+    else return `${Math.abs(due)} days to next review`;
   };
 
   const handleIgnore = () => {
@@ -80,6 +89,28 @@ export function WordItem({
         className="absolute inset-x-0 top-0 h-1"
         value={getLearningPercentage(level ?? 0)}
       ></Progress>
+      {data.inSelectedTopic && (
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger className="absolute right-2 top-2">
+              <Badge
+                className="border-orange-500 bg-orange-500 text-xs font-normal uppercase text-background"
+                variant="outline"
+              >
+                Topic
+                <SparkleIcon className="ml-1 h-4 w-4" />
+              </Badge>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p className="text">
+                This word belongs to the topic that you have selected in profile
+                settings.
+              </p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+      )}
+
       <div className="flex flex-col gap-2">
         <div className="text-2xl font-bold text-primary">{word}</div>
         <div

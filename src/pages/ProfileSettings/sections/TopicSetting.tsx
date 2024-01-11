@@ -3,11 +3,11 @@ import useSWR from 'swr';
 
 import { postTargetTopic } from '@/api/profile/learningTopic';
 import { getUserprofile } from '@/api/profile/profile';
+import { getTopicsList } from '@/api/words/topics';
 import { FillParent } from '@/components/layout/FillParent/FillParent';
 import { Loading } from '@/components/layout/Loading/Loading';
 import { useAsyncAction } from '@/lib/hooks/useAsyncAction';
 import { useToast } from '@/lib/hooks/useToast';
-import { topicOptions } from '@/lib/utils/constant';
 
 import { SettingRadioGroup } from './components/SettingRadioGroup';
 
@@ -17,6 +17,10 @@ export function TopicSetting() {
   const { data: profile, isLoading: isFetchingProfile } = useSWR(
     'profile',
     getUserprofile
+  );
+  const { data: topicsList, isLoading: isFetchingTopics } = useSWR(
+    '/topics',
+    getTopicsList
   );
 
   const toast = useToast();
@@ -44,7 +48,7 @@ export function TopicSetting() {
     });
   }
 
-  const isLoading = isFetchingProfile || isSettingTopic;
+  const isLoading = isFetchingProfile || isSettingTopic || isFetchingTopics;
 
   return (
     <div className="flex gap-10 max-md:flex-col max-md:gap-4">
@@ -64,16 +68,20 @@ export function TopicSetting() {
             <Loading />
           </FillParent>
         )}
-        <SettingRadioGroup
-          disabled={isLoading}
-          options={topicOptions.map(item => ({
-            label: `${item.labelString} ${item.labelEmoji}`,
-            value: item.id.toString(),
-            description: item.description,
-          }))}
-          onChange={handleUpdateDailyGoal}
-          value={currentValue}
-        />
+        {!isLoading && (
+          <SettingRadioGroup
+            disabled={isLoading}
+            options={topicsList!.data
+              .sort((a, b) => a.id - b.id)
+              .map(item => ({
+                label: `${item?.name}${item.emoji ? ` ${item.emoji}` : ''}`,
+                value: item.id.toString(),
+                description: item.description,
+              }))}
+            onChange={handleUpdateDailyGoal}
+            value={currentValue}
+          />
+        )}
       </div>
     </div>
   );
