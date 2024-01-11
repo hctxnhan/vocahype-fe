@@ -39,7 +39,7 @@ export function QuizItem({ question, options, onChoose }: QuizItemProps) {
                 id={`option-${index}`}
                 value={index.toString()}
               />
-              <Label htmlFor={`option-${index}`}>{answer}</Label>
+              <Label htmlFor={`option-${index}`} className='text-base font-normal'>{answer}</Label>
             </div>
           ))}
         </RadioGroup>
