@@ -71,7 +71,7 @@ export function Learn() {
 
   const { trigger, isMutating } = useSWRMutation(
     ['words/:wordId', params?.wordId ?? ''],
-    resetLearnWord.bind(null, params!.wordId)
+    resetLearnWord.bind(null, params!.wordId),
   );
 
   const wordData = wordDetail?.data[0];
@@ -101,12 +101,9 @@ export function Learn() {
   if (!wordData) return null;
 
   const meaningList =
-    wordData.meanings?.filter(meaning => !!meaning?.definitions) ?? [];
+    wordData.meanings?.filter(meaning => !!meaning?.definitions?.length) ?? [];
 
-  const definitionList =
-    meaningList?.[currentIndex.meaning]?.definitions?.filter(
-      definition => !!definition?.definition
-    ) ?? [];
+  const definitionList = meaningList?.[currentIndex.meaning]?.definitions ?? [];
 
   const exampleList = definitionList?.[currentIndex.definition]?.examples ?? [];
 
@@ -139,7 +136,7 @@ export function Learn() {
 
   return (
     <TrackLearningTime>
-      <div className="relative flex h-full flex-col gap-4">
+      <div className="relative flex h-full flex-col gap-4 overflow-y-auto">
         <motion.div
           data-tour={TOUR_STEPS.WORD.DETAIL}
           variants={variants.cardImage}
@@ -156,8 +153,8 @@ export function Learn() {
               {`${wordData.comprehension.status.toUpperCase()}${
                 wordData.comprehension.status === WORD_STATUS_LEARN.LEARNING
                   ? ` - ${getLearningPercentage(
-                      wordData.comprehension.level ?? 0
-                    )}%`
+                    wordData.comprehension.level ?? 0
+                  )}%`
                   : ''
               }`}{' '}
               {wordData.comprehension.status !== WORD_STATUS_LEARN.TO_LEARN && (
@@ -277,15 +274,12 @@ export function Learn() {
           )}
         </div>
 
-        <div
-          className="flex-1 basis-0 overflow-auto"
-          data-tour={TOUR_STEPS.WORD.EXAMPLE}
-        >
+        <div className="flex-1 basis-0" data-tour={TOUR_STEPS.WORD.EXAMPLE}>
           {exampleList?.map((example, index) => (
             <Example
               key={index}
               className="[&:not(:last-child)]:border-b [&:not(:last-child)]:border-slate-300 [&:not(:last-child)]:border-opacity-50"
-              example={`“${example.example}”`}
+              example={example}
               word={wordData.word}
             />
           ))}

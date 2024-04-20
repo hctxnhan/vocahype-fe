@@ -30,7 +30,7 @@ export function RecentSearch({
             <div
               key={history}
               onClick={onClickWord.bind(null, history)}
-              className=" border-b border-solid border-border px-8 py-4 text-sm last:border-b-0 hover:cursor-pointer hover:bg-accent hover:last:rounded-b-lg"
+              className="border-b border-solid border-border px-8 py-4 text-sm last:border-b-0 hover:cursor-pointer hover:bg-accent hover:last:rounded-b-lg"
             >
               {history}
             </div>

@@ -1,7 +1,4 @@
-import {
-  ExitIcon,
-  PersonIcon
-} from '@radix-ui/react-icons';
+import { ExitIcon, PersonIcon } from '@radix-ui/react-icons';
 import { useSWRConfig } from 'swr';
 import { Link, useLocation } from 'wouter';
 
@@ -20,7 +17,7 @@ import { useAsyncAction } from '@/lib/hooks/useAsyncAction';
 import { useToast } from '@/lib/hooks/useToast';
 import { Tour } from '@/pages/Tour/Tour';
 
-import { Searchbar } from '../Searchbar/Searchbar';
+import { NavbarSearch } from '../Searchbar/NavbarSearch';
 
 import { MobileNavbar } from './MobileNavbar';
 import { ToggleThemeButton } from './ToggleThemeButton';
@@ -70,7 +67,7 @@ export function Navbar() {
       </div>
       <div className="ml-6 flex flex-1 justify-between gap-8 max-md:hidden">
         <div className="w-full max-w-[600px]">
-          <Searchbar />
+          <NavbarSearch />
         </div>
         <div className="flex items-center gap-6 text-lg">
           <div className="flex items-center gap-2">

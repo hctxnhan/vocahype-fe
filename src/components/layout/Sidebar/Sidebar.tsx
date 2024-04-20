@@ -23,6 +23,9 @@ export function Sidebar() {
           <NavbarItem href="/report" data-tour={TOUR_STEPS.SIDEBAR.REPORT}>
             Report
           </NavbarItem>
+          <NavbarItem href="/admin">
+            Admin
+          </NavbarItem>
         </div>
         <LearningTimeProgress
           className="mt-auto"

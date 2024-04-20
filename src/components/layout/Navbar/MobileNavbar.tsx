@@ -7,16 +7,21 @@ import {
   SheetContent,
   SheetTrigger,
 } from '@/components/ui/sheet';
+import { useSidebarMobile } from '@/lib/store';
 
 import { Searchbar } from '../Searchbar/Searchbar';
 import { LearningTimeProgress } from '../Sidebar/components/LearningTimeProgress';
 
-import { NavbarItem } from './NavbarItem';
 import { KnowledgeCheckNavbarItem } from './KnowledgeCheckNavbarItem';
+import { NavbarItem } from './NavbarItem';
 
 export function MobileNavbar() {
+  const isOpen = useSidebarMobile.use.isOpen();
+  const open = useSidebarMobile.use.open();
+  const close = useSidebarMobile.use.close();
+
   return (
-    <Sheet>
+    <Sheet open={isOpen} onOpenChange={next => (next ? open() : close())}>
       <SheetTrigger asChild>
         <Button
           variant="ghost"
