@@ -1,4 +1,1 @@
-export interface Example {
-  id: string;
-  example: string;
-}
+export type Example = string;

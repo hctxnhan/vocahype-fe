@@ -1,5 +1,5 @@
 import { FirebaseError } from 'firebase/app';
-import { Reducer, useCallback, useReducer } from 'react';
+import { useCallback, useEffect, useReducer } from 'react';
 
 export enum ActionState {
   IDLE = 'IDLE',
@@ -14,15 +14,12 @@ interface State<T, E> {
   data?: T;
 }
 
-interface Action<T> {
+interface Action<T, E = FirebaseError> {
   type: ActionState;
-  data?: T;
+  data?: T | E;
 }
 
-export const reducer: Reducer<State<any, Error>, Action<any>> = <T, E>(
-  state: State<T, E>,
-  action: Action<T>
-) => {
+export const reducer = <T, E>(state: State<T, E>, action: Action<T, E>) => {
   switch (action.type) {
     case ActionState.LOADING:
       return { state: ActionState.LOADING };
@@ -43,11 +40,12 @@ export function useAsyncAction<
   options?: {
     onSuccess?: (data: Awaited<ReturnType<T>>) => Promise<void> | void;
     onError?: (message: E) => void;
+    autoStart?: boolean;
   }
 ) {
   const [state, dispatchFn] = useReducer<typeof reducer>(reducer, {
     state: ActionState.IDLE,
-  });
+  }) as [State<Awaited<ReturnType<T>>, E>, (action: Action<T, E>) => void];
 
   const start = useCallback(
     (
@@ -57,8 +55,10 @@ export function useAsyncAction<
       dispatchFn({ type: ActionState.LOADING });
       dispatch(...((args || []) as Parameters<T>))
         .then(data => {
-          dispatchFn({ type: ActionState.SUCCESS, data });
-          void fetchOptions?.onSuccess?.(data as Awaited<ReturnType<T>>);
+          dispatchFn({
+            type: ActionState.SUCCESS,
+            data,
+          });
         })
         .catch(error => {
           dispatchFn({
@@ -70,6 +70,12 @@ export function useAsyncAction<
     },
     [dispatch, options]
   );
+
+  useEffect(() => {
+    if (options?.autoStart) {
+      start();
+    }
+  }, []);
 
   return {
     ...state,

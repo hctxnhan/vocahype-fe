@@ -15,6 +15,14 @@ import { useToast } from '@/lib/hooks/useToast';
 import { WordLevel } from '@/lib/interfaces/type';
 import { Quiz } from '@/pages/Quiz/Quiz';
 
+type QuizLevel = 'easy' | 'normal' | 'hard';
+
+const mapDifficultyToLevel: Partial<Record<WordLevel, QuizLevel>> = {
+  easy: 'normal',
+  normal: 'easy',
+  mastered: 'hard',
+};
+
 export function LearnButton({
   wordId,
   word,
@@ -27,14 +35,12 @@ export function LearnButton({
   const toast = useToast();
   const { start, isLoading } = useAsyncAction(learnWord);
   const [showQuiz, setShowQuiz] = useState(false);
-  const [quizLevel, setQuizLevel] = useState<
-    'easy' | 'normal' | 'hard' | 'mastered'
-  >();
+  const [quizLevel, setQuizLevel] = useState<QuizLevel | undefined>();
 
   const handleClickLearn = (level: WordLevel) => () => {
     if (level !== 'ignore' && level !== 'hard') {
       setShowQuiz(true);
-      setQuizLevel(level);
+      setQuizLevel(mapDifficultyToLevel[level] || undefined);
       return;
     }
 
@@ -155,7 +161,7 @@ export function LearnButton({
 
   return (
     <div
-      className="relative flex flex-col gap-1"
+      className="sticky flex flex-col gap-1"
       data-tour={TOUR_STEPS.WORD.LEARN_BUTTON.CONTAINER}
     >
       <div className="flex justify-between gap-4 max-md:gap-2">

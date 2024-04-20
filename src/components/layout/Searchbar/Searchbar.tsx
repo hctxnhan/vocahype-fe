@@ -1,6 +1,5 @@
 import { SearchIcon } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
-import { useLocation } from 'wouter';
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -24,48 +23,52 @@ import { FillParent } from '../FillParent/FillParent';
 
 import { RecentSearch } from './RecentSearch';
 
-export function Searchbar() {
+interface SearchbarProps {
+  search: (query: string) => void;
+  isExact?: boolean;
+  onToggleExact?: (isExact: boolean) => void;
+  noRecent?: boolean;
+  noFocusOverlay?: boolean;
+}
+
+export function Searchbar({
+  search,
+  isExact,
+  onToggleExact,
+  noFocusOverlay,
+  noRecent,
+}: SearchbarProps) {
   const inputRef = useRef<HTMLInputElement>(null);
   const containerInputRef = useRef<HTMLDivElement>(null);
   const [history, setHistory] = useState<string[]>([]);
   const [isFocus, setIsFocus] = useState(false);
-  const [isExact, setIsExact] = useState(false);
 
   useClickOutside(containerInputRef, isBlur => {
     setIsFocus(!isBlur);
   });
-  const [, navigate] = useLocation();
-
-  function search(word: string) {
-    if (!word) return;
-
-    const searchParams = new URLSearchParams({
-      search: word,
-      exact: isExact ? 'true' : 'false',
-      'page[offset]': '1',
-      'page[limit]': '10',
-    });
-
-    setIsFocus(false);
-    navigate(`/search?${searchParams.toString()}`);
-  }
 
   function handleSearch(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const query = inputRef.current?.value;
 
     if (query) {
-      const newHistoryList = [...new Set([query, ...history])];
-      setLocalStorageItem('historySearch', newHistoryList);
-      setHistory(newHistoryList);
+      if (!noRecent) {
+        const newHistoryList = [...new Set([query, ...history])];
+        setLocalStorageItem('historySearch', newHistoryList);
+        setHistory(newHistoryList);
+      }
+
       search(query);
+      setIsFocus(false);
     }
   }
 
   function onRemoveAll() {
     inputRef.current?.focus();
-    removeLocalStorageItem('historySearch');
-    setHistory([]);
+    if (!noRecent) {
+      removeLocalStorageItem('historySearch');
+      setHistory([]);
+    }
   }
 
   function onClickWord(word: string) {
@@ -76,12 +79,13 @@ export function Searchbar() {
   }
 
   useEffect(() => {
+    if (noRecent) return;
     setHistory(getLocalStorageItem<string[]>('historySearch') || []);
   }, []);
 
   return (
     <>
-      {isFocus && (
+      {isFocus && !noFocusOverlay && (
         <FillParent className="left-1/2 z-[9998] h-screen w-screen -translate-x-1/2 bg-secondary/90"></FillParent>
       )}
       <form
@@ -105,7 +109,7 @@ export function Searchbar() {
                     <Toggle
                       pressed={isExact}
                       onClick={preventPropagation.onClick}
-                      onPressedChange={setIsExact}
+                      onPressedChange={onToggleExact}
                       className="uppercase"
                       variant={'none'}
                       size={'sm'}
@@ -124,12 +128,14 @@ export function Searchbar() {
               </TooltipProvider>
             </div>
           </div>
-          <RecentSearch
-            isOpen={isFocus}
-            history={history}
-            onRemoveAll={onRemoveAll}
-            onClickWord={onClickWord}
-          />
+          {!noRecent && (
+            <RecentSearch
+              isOpen={isFocus}
+              history={history}
+              onRemoveAll={onRemoveAll}
+              onClickWord={onClickWord}
+            />
+          )}
         </div>
         <Button variant={'outline'} type="submit">
           <p className="max-md:hidden">Search</p>

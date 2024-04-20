@@ -1,15 +1,9 @@
-import { QuizItem } from './components/QuizItem';
+import { getQuiz } from '@/api/words/getQuiz';
+import { FillParent } from '@/components/layout/FillParent/FillParent';
+import { Loading } from '@/components/layout/Loading/Loading';
+import { useAsyncAction } from '@/lib/hooks/useAsyncAction';
 
-export const mockData = {
-  question: 'What is the meaning of word "learn"?',
-  options: [
-    'To teach someone else',
-    'To acquire knowledge or skill through study, experience, or teaching',
-    'To forget what you once knew',
-    'To dance skillfully',
-  ],
-  answer: '0' as const,
-};
+import { QuizItem } from './components/QuizItem';
 
 interface QuizProps {
   word: string;
@@ -19,18 +13,37 @@ interface QuizProps {
 }
 
 export function Quiz({
-  // word,
-  // difficulty,
+  word,
+  difficulty,
   onCorrectAnswer,
   onWrongAnswer,
 }: QuizProps) {
+  const { data: quiz, isLoading } = useAsyncAction(
+    getQuiz.bind(null, word, difficulty),
+    {
+      autoStart: true,
+    }
+  );
+
   function handleChoose(answer: string) {
-    if (answer === mockData.answer) {
+    if (answer === quiz?.data.answer) {
       onCorrectAnswer();
     } else {
       onWrongAnswer();
     }
   }
 
-  return <QuizItem onChoose={handleChoose} {...mockData} />;
+  if (isLoading) {
+    <FillParent>
+      <Loading loadingText="Loading quiz..." />
+    </FillParent>;
+  }
+
+  return (
+    <QuizItem
+      options={quiz?.data?.options ?? []}
+      question={quiz?.data?.question ?? ''}
+      onChoose={handleChoose}
+    />
+  );
 }

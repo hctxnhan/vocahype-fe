@@ -1,6 +1,6 @@
 import { createContext, useState } from 'react';
 
-export type BreadcrumbItem = string | { label: string; href: string };
+export type BreadcrumbItem = string | { label: string; href?: string };
 
 export const breadcrumbContext = createContext<{
   items: BreadcrumbItem[];

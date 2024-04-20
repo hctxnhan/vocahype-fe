@@ -4,14 +4,14 @@ import useSWR from 'swr';
 import { useLocation } from 'wouter';
 
 import { searchWord } from '@/api/words/searchWord';
+import { FillParent } from '@/components/layout/FillParent/FillParent';
+import { Loading } from '@/components/layout/Loading/Loading';
 import { Pagination, PaginationState } from '@/components/ui/pagination';
 import { useSearchParams } from '@/lib/hooks/useSearchParams';
 import { useSetBreadcrumb } from '@/lib/hooks/useSetBreadcrumb';
 
 import { SearchFilter } from './SearchFilter';
 import { SearchItem } from './SearchItem';
-import { FillParent } from '@/components/layout/FillParent/FillParent';
-import { Loading } from '@/components/layout/Loading/Loading';
 
 export function SearchResult() {
   const params = useSearchParams<{
