@@ -11,5 +11,9 @@ export function CreateNewWord() {
     'Create new word',
   ]);
 
-  return <WordForm />;
+  function handleSubmit(data) {
+    console.log('submit', data);
+  }
+
+  return <WordForm onSubmit={handleSubmit} />;
 }
