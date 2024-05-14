@@ -6,6 +6,7 @@ import useSWR from 'swr';
 import { searchWord } from '@/api/words/searchWord';
 import { FillParent } from '@/components/layout/FillParent/FillParent';
 import { Loading } from '@/components/layout/Loading/Loading';
+
 import { Searchbar } from '@/components/layout/Searchbar/Searchbar';
 import { FloatingButton } from '@/components/ui/floating-button';
 import { Link } from '@/components/ui/link';
@@ -127,6 +128,7 @@ export function ManageWord() {
           <Loading />
         </FillParent>
       )}
+      
       <Link href="/admin/create-word">
         <FloatingButton className="z-10 items-center justify-center gap-1">
           <Plus size={14} />

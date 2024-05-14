@@ -7,7 +7,6 @@ import { useToast } from '@/lib/hooks/useToast';
 
 import { WordForm } from '../components/WordForm';
 
-
 export function CreateNewWord() {
   useSetBreadcrumb([
     {
