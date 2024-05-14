@@ -7,11 +7,10 @@ import { cn } from '@/lib/utils/utils';
 import { SelectedWordTable } from './Table/SelectedWord';
 
 export function AddWordManuallyForm() {
-  const [value, setValue] = useState('');
   const [isFocus, setIsFocus] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const [data, setData] = useState<string[]>([]);
-  const [selectedValue, setSelectedValue] = useState<string | null>(null);
+  const [_, setSelectedValue] = useState<string | null>(null);
 
   const debounceValue = useDebounce(inputRef.current?.value, 1000);
 

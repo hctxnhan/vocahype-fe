@@ -2,13 +2,13 @@ import { ColumnDef } from '@tanstack/react-table';
 
 import { Button } from '@/components/ui/button';
 
-export type WordColumns = {
+export type TopicColumns = {
   name: string;
   description: string;
   wordCount: number;
 };
 
-export const columns: ColumnDef<WordColumns>[] = [
+export const columns: ColumnDef<TopicColumns>[] = [
   {
     accessorKey: 'name',
     header: 'Topic Name'
@@ -25,7 +25,7 @@ export const columns: ColumnDef<WordColumns>[] = [
     id: 'actions',
     size: 10,
     header: 'Actions',
-    cell: ({ row }) => {
+    cell: () => {
       return (
         <div className="flex flex-row gap-2">
           <Button variant={'secondary'}>Edit</Button>

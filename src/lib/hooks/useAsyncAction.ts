@@ -57,7 +57,7 @@ export function useAsyncAction<
         .then(data => {
           dispatchFn({
             type: ActionState.SUCCESS,
-            data,
+            data: data as T | E,
           });
         })
         .catch(error => {

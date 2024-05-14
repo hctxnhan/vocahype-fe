@@ -18,12 +18,12 @@ export async function getWord({ wordId }: { wordId: string }) {
       Word & {
         meanings: {
           pos: PartOfSpeech;
-          definitions?: Partial<
+          definitions: Array<
             Definition & {
               examples: Example[];
             }
-          >[];
-          synonyms?: Synonym[];
+          >;
+          synonyms: Synonym[];
         }[];
       } & {
         comprehension: Comprehension
