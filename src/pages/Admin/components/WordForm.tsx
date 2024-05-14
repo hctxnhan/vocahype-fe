@@ -96,10 +96,11 @@ export function WordForm({
     meanings:
       defaultValues?.meanings?.map(m => ({
         pos: m.pos,
-        definitions: m.definitions?.map(d => ({
-          definition: d?.definition,
-          examples: d?.examples?.map(e => ({ example: e })),
-        })) || [],
+        definitions:
+          m.definitions?.map(d => ({
+            definition: d?.definition,
+            examples: d?.examples?.map(e => ({ example: e })),
+          })) || [],
       })) || [],
   } as WordFormValues;
 
@@ -119,7 +120,6 @@ export function WordForm({
     const serializedData = transformWordForm(defaultValues?.id || '', data);
     onSubmit?.(serializedData);
   }
-
 
   return (
     <Form {...form}>
@@ -249,6 +249,7 @@ export function WordForm({
           <Button
             variant={'link'}
             className="items-center gap-1"
+            type="button"
             onClick={() =>
               append({
                 pos: { id: '' },
@@ -314,6 +315,7 @@ function DefinitionFieldArray({
       ))}
       <Button
         variant={'link'}
+        type="button"
         onClick={() =>
           append(
             {
@@ -371,6 +373,7 @@ function ExampleFieldArray({
 
       <Button
         variant={'link'}
+        type="button"
         onClick={() => {
           append(
             {
