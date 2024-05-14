@@ -10,6 +10,7 @@ import {
 } from 'react-hook-form';
 import { z } from 'zod';
 
+import { SerializedWordFormValues } from '@/api/words/updateWord';
 import { Button } from '@/components/ui/button';
 import {
   Form,
@@ -20,6 +21,7 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import { ScrollArea } from '@/components/ui/scroll-area';
 import {
   Select,
   SelectContent,
@@ -27,6 +29,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { posTags } from '@/lib/utils/constant';
+import { transformWordForm } from '@/lib/utils/transformWordForm';
+import { LoadingButton } from '@/components/ui/loading-button';
 
 const Schema = z.object({
   word: z.string({
@@ -39,7 +44,9 @@ const Schema = z.object({
   point: z.coerce.number({ required_error: 'Point is required' }).min(0).max(1),
   meanings: z.array(
     z.object({
-      pos: z.string({ required_error: 'Part of speech is required' }),
+      pos: z.object({
+        id: z.string({ required_error: 'Part of speech is required' }),
+      }),
       definitions: z.array(
         z.object({
           definition: z.string({ required_error: 'Definition is required' }),
@@ -54,14 +61,18 @@ const Schema = z.object({
   ),
 });
 
-type WordFormValues = z.infer<typeof Schema>;
+export type WordFormValues = z.infer<typeof Schema>;
+
 type TransformWordFormValues = {
+  id: string;
   meanings: {
     definitions: {
       examples: string[];
       definition: string;
     }[];
-    pos: string;
+    pos: {
+      id: string;
+    };
   }[];
   phonetic: string;
   point: number;
@@ -71,10 +82,15 @@ type TransformWordFormValues = {
 
 interface WordFormProps {
   defaultValues?: TransformWordFormValues;
-  onSubmit?: (data: TransformWordFormValues) => void;
+  onSubmit?: (data: SerializedWordFormValues) => void;
+  isLoading?: boolean;
 }
 
-export function WordForm({ defaultValues, onSubmit }: WordFormProps) {
+export function WordForm({
+  defaultValues,
+  onSubmit,
+  isLoading = false,
+}: WordFormProps) {
   const transformedDefaultValues = {
     ...defaultValues,
     meanings:
@@ -92,7 +108,7 @@ export function WordForm({ defaultValues, onSubmit }: WordFormProps) {
     resolver: zodResolver(Schema),
   });
 
-  const { handleSubmit, control, register } = form;
+  const { control, register } = form;
 
   const { fields, append, remove } = useFieldArray({
     control,
@@ -100,19 +116,10 @@ export function WordForm({ defaultValues, onSubmit }: WordFormProps) {
   });
 
   function submit(data: WordFormValues) {
-    const transformedData: TransformWordFormValues = {
-      ...data,
-      meanings: data.meanings.map(m => ({
-        ...m,
-        definitions: m.definitions.map(d => ({
-          ...d,
-          examples: d.examples.map(e => e.example),
-        })),
-      })),
-    };
-
-    onSubmit?.(transformedData);
+    const serializedData = transformWordForm(defaultValues?.id || '', data);
+    onSubmit?.(serializedData);
   }
+
 
   return (
     <Form {...form}>
@@ -200,16 +207,22 @@ export function WordForm({ defaultValues, onSubmit }: WordFormProps) {
                   render={({ field }) => {
                     return (
                       <Select
-                        value={field.value}
-                        onValueChange={field.onChange}
+                        value={field.value.id}
+                        onValueChange={(value: string) => {
+                          field.onChange({ id: value });
+                        }}
                       >
                         <SelectTrigger className="w-[180px]">
                           <SelectValue placeholder="Part of speech" />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="nn">Noun</SelectItem>
-                          <SelectItem value="adj">Adjective</SelectItem>
-                          <SelectItem value="v">Verb</SelectItem>
+                          <ScrollArea className="h-72 w-56">
+                            {Object.entries(posTags).map(([key, value]) => (
+                              <SelectItem key={key} value={key}>
+                                {value}
+                              </SelectItem>
+                            ))}
+                          </ScrollArea>
                         </SelectContent>
                       </Select>
                     );
@@ -238,7 +251,7 @@ export function WordForm({ defaultValues, onSubmit }: WordFormProps) {
             className="items-center gap-1"
             onClick={() =>
               append({
-                pos: '',
+                pos: { id: '' },
                 definitions: [],
               })
             }
@@ -248,9 +261,9 @@ export function WordForm({ defaultValues, onSubmit }: WordFormProps) {
           </Button>
         </div>
 
-        <Button className="mt-6" type="submit">
+        <LoadingButton isLoading={isLoading} className="mt-6" type="submit">
           Submit
-        </Button>
+        </LoadingButton>
       </form>
     </Form>
   );

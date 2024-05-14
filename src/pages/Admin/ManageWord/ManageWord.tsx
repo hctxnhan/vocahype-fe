@@ -1,8 +1,11 @@
+import { PaginationState } from '@tanstack/react-table';
 import { Plus } from 'lucide-react';
 import { useReducer, useState } from 'react';
 import useSWR from 'swr';
 
 import { searchWord } from '@/api/words/searchWord';
+import { FillParent } from '@/components/layout/FillParent/FillParent';
+import { Loading } from '@/components/layout/Loading/Loading';
 import { Searchbar } from '@/components/layout/Searchbar/Searchbar';
 import { FloatingButton } from '@/components/ui/floating-button';
 import { Link } from '@/components/ui/link';
@@ -99,15 +102,31 @@ export function ManageWord() {
   );
 
   const result = searchResult?.data.map(item => ({
-    id: item.id,
+    id: Number.parseInt(item.id),
     word: item.word,
     phonetic: item.phonetic,
     syllable: item.syllable,
-    point: item.point.toFixed(2),
+    point: item.point ? Number.parseFloat(item.point.toFixed(2)) : 0,
   }));
+
+  function handleSetPage(
+    calculatePage: (state: PaginationState) => PaginationState
+  ) {
+    const res = calculatePage({
+      pageIndex: state.page,
+      pageSize: 10,
+    });
+
+    dispatch({ type: ActionType.SET_PAGE, payload: res.pageIndex });
+  }
 
   return (
     <div>
+      {isLoading && (
+        <FillParent>
+          <Loading />
+        </FillParent>
+      )}
       <Link href="/admin/create-word">
         <FloatingButton className="z-10 items-center justify-center gap-1">
           <Plus size={14} />
@@ -128,14 +147,11 @@ export function ManageWord() {
       <div className="py-3" />
       {!!result && (
         <DataTable
-          onNextPage={() =>
-            dispatch({ type: ActionType.SET_PAGE, payload: state.page + 1 })
-          }
-          onPreviousPage={() =>
-            dispatch({ type: ActionType.SET_PAGE, payload: state.page - 1 })
-          }
           columns={columns}
           data={result}
+          currentPage={state.page}
+          pageCount={totalPage}
+          setPagination={handleSetPage}
         />
       )}
     </div>
