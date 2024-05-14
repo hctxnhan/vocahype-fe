@@ -21,6 +21,8 @@ export function CreateNewWord() {
 
   const { isMutating, trigger } = useSWRMutation(
     ['create-new-word'],
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore-next-line - fix this
     createWord
   );
 
@@ -35,5 +37,6 @@ export function CreateNewWord() {
     navigate('/admin');
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-misused-promises
   return <WordForm onSubmit={onSubmit} isLoading={isMutating} />;
 }

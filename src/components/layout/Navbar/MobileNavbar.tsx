@@ -9,7 +9,7 @@ import {
 } from '@/components/ui/sheet';
 import { useSidebarMobile } from '@/lib/store';
 
-import { Searchbar } from '../Searchbar/Searchbar';
+// import { Searchbar } from '../Searchbar/Searchbar';
 import { LearningTimeProgress } from '../Sidebar/components/LearningTimeProgress';
 
 import { KnowledgeCheckNavbarItem } from './KnowledgeCheckNavbarItem';
@@ -52,7 +52,7 @@ export function MobileNavbar() {
           {/* <SheetClose>
             <NavbarItem href="/notifications">Notifications</NavbarItem>
           </SheetClose> */}
-          <Searchbar />
+          {/* <Searchbar /> */}
         </div>
       </SheetContent>
     </Sheet>

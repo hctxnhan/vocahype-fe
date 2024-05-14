@@ -2,13 +2,13 @@ import { ColumnDef } from '@tanstack/react-table';
 
 import { Button } from '@/components/ui/button';
 
-export type WordColumns = {
+export type TopicColumns = {
   name: string;
   description: string;
   wordCount: number;
 };
 
-export const columns: ColumnDef<WordColumns>[] = [
+export const columns: ColumnDef<TopicColumns>[] = [
   {
     accessorKey: 'name',
     header: 'Topic Name'

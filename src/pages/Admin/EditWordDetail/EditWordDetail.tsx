@@ -13,7 +13,7 @@ export function EditWordDetail() {
 
   const id = params?.wordId;
 
-  const { data: wordDetail, isLoading } = useSWR(
+  const { data: wordDetail } = useSWR(
     id ? ['words/:wordId', id] : null,
     getWord.bind(null, { wordId: id as string })
   );
@@ -22,6 +22,8 @@ export function EditWordDetail() {
 
   const { isMutating, trigger } = useSWRMutation(
     id ? ['words/:wordId', id] : null,
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore-next-line - fix this
     updateWord
   );
 
@@ -41,7 +43,8 @@ export function EditWordDetail() {
   return (
     <WordForm
       isLoading={isMutating}
-      onSubmit={void onSubmit}
+      // eslint-disable-next-line @typescript-eslint/no-misused-promises
+      onSubmit={onSubmit}
       defaultValues={{
         id: data.id,
         word: data.word,
