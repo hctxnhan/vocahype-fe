@@ -1,4 +1,4 @@
-import { PaginationState } from '@tanstack/react-table';
+import { OnChangeFn, PaginationState } from '@tanstack/react-table';
 import { Plus } from 'lucide-react';
 import { useReducer, useState } from 'react';
 import useSWR from 'swr';
@@ -6,7 +6,6 @@ import useSWR from 'swr';
 import { searchWord } from '@/api/words/searchWord';
 import { FillParent } from '@/components/layout/FillParent/FillParent';
 import { Loading } from '@/components/layout/Loading/Loading';
-
 import { Searchbar } from '@/components/layout/Searchbar/Searchbar';
 import { FloatingButton } from '@/components/ui/floating-button';
 import { Link } from '@/components/ui/link';
@@ -153,7 +152,7 @@ export function ManageWord() {
           data={result}
           currentPage={state.page}
           pageCount={totalPage}
-          setPagination={handleSetPage}
+          setPagination={handleSetPage as OnChangeFn<PaginationState>}
         />
       )}
     </div>

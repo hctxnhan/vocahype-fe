@@ -9,7 +9,9 @@ import { useToast } from '@/lib/hooks/useToast';
 import { WordForm } from '../components/WordForm';
 
 export function EditWordDetail() {
-  const [, { wordId: id }] = useRoute('/admin/edit-word/:wordId');
+  const [, params] = useRoute('/admin/edit-word/:wordId');
+
+  const id = params?.wordId;
 
   const { data: wordDetail, isLoading } = useSWR(
     id ? ['words/:wordId', id] : null,

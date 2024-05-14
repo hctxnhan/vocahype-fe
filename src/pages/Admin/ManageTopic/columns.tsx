@@ -25,7 +25,7 @@ export const columns: ColumnDef<WordColumns>[] = [
     id: 'actions',
     size: 10,
     header: 'Actions',
-    cell: ({ row }) => {
+    cell: () => {
       return (
         <div className="flex flex-row gap-2">
           <Button variant={'secondary'}>Edit</Button>

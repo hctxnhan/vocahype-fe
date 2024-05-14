@@ -29,7 +29,7 @@ export type SerializedWordFormValues = {
 };
 
 export async function updateWord(
-  url: string,
+  _: string,
   {
     arg: { wordId, body },
   }: { arg: { wordId: string; body: SerializedWordFormValues } }
@@ -38,7 +38,7 @@ export async function updateWord(
 }
 
 export async function createWord(
-  url: string,
+  _: string,
   { arg: { body } }: { arg: { body: SerializedWordFormValues } }
 ) {
   return await axiosInstance.post(`/words`, body);
