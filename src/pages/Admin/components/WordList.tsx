@@ -1,5 +1,4 @@
 import { ColumnDef, OnChangeFn, PaginationState } from '@tanstack/react-table';
-import { Plus } from 'lucide-react';
 import { useReducer, useState } from 'react';
 import useSWR from 'swr';
 
@@ -7,11 +6,9 @@ import { searchWord } from '@/api/words/searchWord';
 import { FillParent } from '@/components/layout/FillParent/FillParent';
 import { Loading } from '@/components/layout/Loading/Loading';
 import { Searchbar } from '@/components/layout/Searchbar/Searchbar';
-import { FloatingButton } from '@/components/ui/floating-button';
-import { Link } from '@/components/ui/link';
 
 import { DataTable } from './Table';
-import { WordColumns, columns } from './columns';
+import { WordColumns } from './columns';
 
 enum ActionType {
   SET_PAGE = 'SET_PAGE',
