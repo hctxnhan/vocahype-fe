@@ -1,7 +1,7 @@
 import useSWRMutation from 'swr/mutation';
 import { useLocation } from 'wouter';
 
-import { SerializedWordFormValues, createWord } from '@/api/words/updateWord';
+import { SerializedWordFormValues, createWord } from '@/api/words/manageWord';
 import { useSetBreadcrumb } from '@/lib/hooks/useSetBreadcrumb';
 import { useToast } from '@/lib/hooks/useToast';
 
@@ -34,7 +34,7 @@ export function CreateNewWord() {
       title: 'Success',
     });
 
-    navigate('/admin');
+    navigate('/admin/words');
   }
 
   // eslint-disable-next-line @typescript-eslint/no-misused-promises

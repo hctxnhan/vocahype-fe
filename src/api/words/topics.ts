@@ -10,3 +10,9 @@ export async function getTopicsList() {
 
   return deserialize<APIResponse<Topic>>(response.data as string);
 }
+
+export async function getTopic(topicId: number) {
+  const response = await axiosInstance.get(`/topics/${topicId}`);
+
+  return deserialize<APIResponse<Topic>>(response.data as string);
+}

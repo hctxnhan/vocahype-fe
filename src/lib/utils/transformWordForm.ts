@@ -1,4 +1,4 @@
-import { SerializedWordFormValues } from '@/api/words/updateWord';
+import { SerializedWordFormValues } from '@/api/words/manageWord';
 import { WordFormValues } from '@/pages/Admin/components/WordForm';
 
 export function transformWordForm(id: string, data: WordFormValues) {

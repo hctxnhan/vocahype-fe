@@ -1,96 +1,136 @@
-import { useEffect, useRef, useState } from 'react';
+import { Plus } from 'lucide-react';
 
-import { Input } from '@/components/ui/input';
-import { useDebounce } from '@/lib/hooks/useDebounce';
-import { cn } from '@/lib/utils/utils';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
+import { FloatingButton } from '@/components/ui/floating-button';
+import { LoadingButton } from '@/components/ui/loading-button';
 
-import { SelectedWordTable } from './Table/SelectedWord';
+import { WordList } from '../components/WordList';
+import { columns } from '../components/columns';
 
-export function AddWordManuallyForm() {
-  const [isFocus, setIsFocus] = useState(false);
-  const inputRef = useRef<HTMLInputElement>(null);
-  const [data, setData] = useState<string[]>([]);
-  const [_, setSelectedValue] = useState<string | null>(null);
+interface SelectedWord {
+  id: number;
+  word: string;
+}
 
-  const debounceValue = useDebounce(inputRef.current?.value, 1000);
+interface AddWordManuallyFormProps {
+  onSubmit: (wordIds: number[]) => Promise<void>;
+  isLoading: boolean;
+  canSubmit: boolean;
+  onRemove?: (word: SelectedWord) => void;
+  onAdd?: (word: SelectedWord) => void;
+  selectedWord: SelectedWord[];
+}
 
-  function fakeSearchApi(query: string) {
-    return new Promise<string[]>(resolve => {
-      setTimeout(() => {
-        resolve([query, query + '1', query + '2']);
-      }, 1000);
-    });
+export function AddWordManuallyForm({
+  onSubmit,
+  isLoading,
+  canSubmit,
+  selectedWord,
+  onRemove: handleRemoveValue,
+  onAdd: handleSelectValue,
+}: AddWordManuallyFormProps) {
+  function handleClick(item: SelectedWord) {
+    if (hasBeenSelected(item)) {
+      handleRemoveValue?.(item);
+    } else {
+      handleSelectValue?.(item);
+    }
   }
 
-  useEffect(() => {
-    if (!debounceValue) return;
+  // const handleSelectValue = (value: SelectedWord) => {
+  //   setSelectedValue([...selectedValue, value]);
+  // };
 
-    void fakeSearchApi(debounceValue).then(data => {
-      setData(data);
-    });
-  }, [debounceValue]);
+  // const handleRemoveValue = (value: SelectedWord) => {
+  //   setSelectedValue(selectedValue.filter(v => v.id !== value.id));
+  // };
 
-  useEffect(() => {
-    if (!inputRef.current) return;
+  function hasBeenSelected(value: SelectedWord) {
+    return selectedWord.some(v => v.id === value.id);
+  }
 
-    const ref = inputRef.current;
-
-    const handleFocus = () => {
-      setIsFocus(true);
-    };
-
-    const handleBlur = () => {
-      setIsFocus(false);
-    };
-
-    ref.addEventListener('focus', handleFocus);
-    ref.addEventListener('blur', handleBlur);
-
-    return () => {
-      ref?.removeEventListener('focus', handleFocus);
-      ref?.removeEventListener('blur', handleBlur);
-    };
-  }, []);
-
-  const handleSearch = (e: React.FormEvent) => {
-    e.preventDefault();
-    // Perform search or any other action here
-  };
-
-  const handleSelectValue = (value: string) => {
-    setSelectedValue(value);
-  };
+  function handleSubmit() {
+    const wordIds = selectedWord.map(item => item.id);
+    void onSubmit(wordIds);
+  }
 
   return (
-    <div>
-      <form
-        onSubmit={handleSearch}
-        className={cn('relative flex h-auto w-full gap-2 max-md:gap-1', {
-          'z-[9999]': isFocus,
-        })}
+    <div className="w-full gap-2">
+      <Dialog>
+        <DialogTrigger asChild>
+          <FloatingButton className="z-10 items-center justify-center gap-1">
+            <Plus size={14} />
+            Add word{' '}
+          </FloatingButton>
+        </DialogTrigger>
+        <DialogContent className="h-[80%] overflow-scroll">
+          <WordList
+            columns={[
+              ...columns,
+              {
+                id: 'actions',
+                size: 10,
+                header: 'Actions',
+                cell: ({ row }) => {
+                  return (
+                    <Button
+                      variant={'secondary'}
+                      onClick={() => {
+                        handleClick({
+                          id: row.original.id,
+                          word: row.original.word,
+                        });
+                      }}
+                    >
+                      {hasBeenSelected({
+                        id: row.original.id,
+                        word: row.original.word,
+                      })
+                        ? 'Remove'
+                        : 'Add'}
+                    </Button>
+                  );
+                },
+              },
+            ]}
+          />
+        </DialogContent>
+      </Dialog>
+
+      {selectedWord.length <= 0 ? (
+        <div className="text-muted-foreground">
+          No word selected. Click 'Add word +' button to begin.
+        </div>
+      ) : (
+        <div className="text-muted-foreground">
+          Selected word (click to remove)
+        </div>
+      )}
+
+      <div className="mt-4 flex flex-wrap gap-4">
+        {selectedWord.map(item => (
+          <Badge
+            onClick={() => handleRemoveValue?.(item)}
+            variant={'outline'}
+            key={item.id}
+            className="text-md flex min-w-[70px] cursor-pointer justify-center font-normal transition-all hover:bg-destructive hover:text-white"
+          >
+            {item.word}
+          </Badge>
+        ))}
+      </div>
+
+      <LoadingButton
+        disabled={!canSubmit}
+        isLoading={isLoading}
+        onClick={handleSubmit}
+        className="mt-6"
+        type="submit"
       >
-        <Input
-          ref={inputRef}
-          placeholder="Search for a word"
-          className="font-dinRound mb-4"
-        />
-
-        {data.length > 0 && isFocus && debounceValue?.length && (
-          <div className="absolute top-full z-[9999] mt-2 w-full overflow-hidden rounded-lg border border-gray-100 bg-white shadow-lg">
-            {data.map((item, index) => (
-              <div
-                key={index}
-                className="border-b border-solid border-border px-8 py-4 text-sm last:border-b-0 hover:cursor-pointer hover:bg-accent hover:last:rounded-b-lg"
-                onClick={() => handleSelectValue(item)}
-              >
-                {item}
-              </div>
-            ))}
-          </div>
-        )}
-      </form>
-
-      <SelectedWordTable />
+        Submit
+      </LoadingButton>
     </div>
   );
 }
