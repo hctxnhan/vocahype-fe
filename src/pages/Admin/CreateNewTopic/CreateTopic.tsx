@@ -21,7 +21,7 @@ export function CreateTopic() {
   const [topicName, setTopicName] = useState('');
   const [topicDescription, setTopicDescription] = useState('');
   const [selectedValue, setSelectedValue] = useState<SelectedWord[]>([]);
-  
+
   const handleSelectValue = (value: SelectedWord) => {
     setSelectedValue([...selectedValue, value]);
   };
@@ -41,7 +41,7 @@ export function CreateTopic() {
 
   const toast = useToast();
   const [, navigate] = useLocation();
-  
+
   const { isMutating, trigger } = useSWRMutation(
     ['create-new-word'],
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -49,8 +49,8 @@ export function CreateTopic() {
     createTopic
   );
 
-  async function handleCreateTopic(wordIds: number[]) {
-    if (!topicName || !topicDescription || !wordIds.length) {
+  async function handleCreateTopic(wordIds: number[], file?: File) {
+    if (!topicName || !topicDescription || (!wordIds.length && !file)) {
       return;
     }
 
@@ -68,16 +68,17 @@ export function CreateTopic() {
           },
         ],
       },
+      file,
     });
 
-    await mutate(/topics/)
+    await mutate(/topics/);
 
     toast.success({
       msg: 'Successfully created topic',
       title: 'Success',
     });
 
-    navigate('/admin/topics')
+    navigate('/admin/topics');
   }
 
   return (
@@ -110,7 +111,11 @@ export function CreateTopic() {
           />
         </TabsContent>
         <TabsContent value="subtitle">
-          <UploadSrtSubtitle />
+          <UploadSrtSubtitle
+            canSubmit={!!topicName && !!topicDescription}
+            onSubmit={(file) =>  handleCreateTopic([], file)}
+            isLoading={isMutating}
+          />
         </TabsContent>
       </Tabs>
     </div>

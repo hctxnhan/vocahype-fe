@@ -41,9 +41,19 @@ export async function updateTopic(
 
 export async function createTopic(
   _: string,
-  { arg: { body } }: { arg: { body: SerializedTopicFormValues } }
+  {
+    arg: { body, file },
+  }: { arg: { body: SerializedTopicFormValues; file?: File } }
 ) {
-  return await axiosInstance.post(`/topics`, body);
+  const formData = new FormData();
+
+  if (file) {
+    formData.append('file', file);
+  }
+
+  formData.append('topic', JSON.stringify(body));
+
+  return await axiosInstance.post(`/topics`, formData);
 }
 
 export async function deleteTopic(
@@ -52,23 +62,3 @@ export async function deleteTopic(
 ) {
   return await axiosInstance.delete(`/topics/${topicId}`);
 }
-
-export function importTopicWords(
-  _: string,
-  { arg: { topicId, file } }: { arg: { topicId: number; file: File } }
-) {
-  return axiosInstance.post(`/import?topicId=${topicId}/`, {
-    file,
-  });
-}
-
-// export async function createTopicWithImportFile(
-//   _: string,
-//   { arg: { body, file } }: { arg: { body: SerializedTopicFormValues; file: File } }
-// ) {
-//   const { data } = await createTopic(_, { arg: { body } });
-
-//   await importTopicWords(_, { arg: { topicId: data.data[0].id, file } });
-
-//   return data;
-// }
