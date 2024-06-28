@@ -1,4 +1,5 @@
 import { TOUR_STEPS } from '@/lib/configs/tour';
+import { GenerateStory } from '@/pages/GenerateStory';
 
 import { KnowledgeCheckNavbarItem } from '../Navbar/KnowledgeCheckNavbarItem';
 import { NavbarItem } from '../Navbar/NavbarItem';
@@ -23,14 +24,15 @@ export function Sidebar() {
           <NavbarItem href="/report" data-tour={TOUR_STEPS.SIDEBAR.REPORT}>
             Report
           </NavbarItem>
-          <NavbarItem href="/admin">
-            Admin
-          </NavbarItem>
+          <NavbarItem href="/admin">Admin</NavbarItem>
         </div>
-        <LearningTimeProgress
-          className="mt-auto"
-          data-tour={TOUR_STEPS.SIDEBAR.LEARN_TIME}
-        />
+        <div className='flex flex-col gap-4'>
+          <GenerateStory />
+          <LearningTimeProgress
+            className="mt-auto"
+            data-tour={TOUR_STEPS.SIDEBAR.LEARN_TIME}
+          />
+        </div>
       </div>
     </div>
   );
