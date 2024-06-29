@@ -11,10 +11,12 @@ import { useToast } from '@/lib/hooks/useToast';
 import { goalSettingOptions } from '@/lib/utils/constant';
 
 import { SettingRadioGroup } from './components/SettingRadioGroup';
+import { useMatchMutate } from '@/lib/hooks/useMatchMutate';
 
 export function DailyGoalSetting() {
   const [currentValue, setCurrentValue] = useState('');
-  const { mutate } = useSWRConfig()
+  const { mutate } = useSWRConfig();
+  const mutate2 = useMatchMutate();
 
   const { data, isLoading: isFetchingProfile } = useSWR(
     'profile',
@@ -28,7 +30,9 @@ export function DailyGoalSetting() {
     start([level], {
       onSuccess: () => {
         toast.success({ title: 'Updated daily goal successfully' });
-        void mutate('profile')
+        void mutate('profile');
+        void mutate('learning-time');
+        void mutate2(/learning-time/);
       },
       onError: () => {
         toast.error({ title: 'Daily goal update failed' });
