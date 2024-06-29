@@ -115,7 +115,7 @@ export function KnowledgeCheck() {
           <p>
             We estimated that your vocabulary size is{' '}
             <span className="font-bold">{estimateData.data.estimate}</span>{' '}
-            words based on test result built from top 1000 most popular words.
+            words based on test result built from top 3000 most popular words.
           </p>
           <Link href="/">
             <Button className="text-base" variant={'outline'}>

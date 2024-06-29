@@ -34,7 +34,7 @@ export function Quiz({
   }
 
   if (isLoading) {
-    <FillParent>
+    return <FillParent>
       <Loading loadingText="Loading quiz..." />
     </FillParent>;
   }

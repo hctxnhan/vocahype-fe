@@ -18,6 +18,7 @@ export function LearningTimeProgress({
     isLoading: isLoadingLearningTime,
     error: errorGetLearningTime,
   } = useSWR('learning-time', getTrackLearningTime);
+  
   const { data: userProfile } = useSWR('profile', getUserprofile);
 
   if (isLoadingLearningTime || errorGetLearningTime) return null;

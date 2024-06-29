@@ -11,7 +11,7 @@ export function RecentSearch({
   onRemoveAll,
   onClickWord,
 }: RecentSearchProps) {
-  return isOpen ? (
+  return isOpen && history.length > 0 ? (
     <div className="absolute top-12 w-full rounded-lg border border-border bg-background shadow-2xl">
       <div className="flex items-center justify-between border-b border-border px-8 py-4 text-sm last:border-b-0">
         <div className="font-semibold">RECENT SEARCH</div>
