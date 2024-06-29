@@ -1,3 +1,8 @@
+export interface WordInTopic {
+  id: number;
+  word: string;
+}
+
 export interface Topic {
   id: number;
   name: string;
@@ -6,4 +11,5 @@ export interface Topic {
   wordCount: number;
   learningWordCount: number;
   masteredWordCount: number;
+  wordInTopic: WordInTopic[];
 }

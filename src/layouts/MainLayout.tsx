@@ -10,6 +10,7 @@ import { CreateNewWord } from '@/pages/Admin/CreateNewWord/CreateNewWord';
 import { EditWordDetail } from '@/pages/Admin/EditWordDetail/EditWordDetail';
 import { ManageTopic } from '@/pages/Admin/ManageTopic/ManageTopic';
 import { ManageWord } from '@/pages/Admin/ManageWord/ManageWord';
+import { UpdateTopic } from '@/pages/Admin/UpdateTopic/UpdateTopic';
 import { InternalServerErrorPage } from '@/pages/Error/InternalServerErrorPage';
 import { Exploration } from '@/pages/Exploration/Exploration';
 import { KnowledgeCheck } from '@/pages/KnowledgeCheck/KnowledgeCheck';
@@ -42,6 +43,7 @@ export function MainLayout() {
             <Route component={ManageWord} path="/admin/words" />
             <Route component={ManageTopic} path="/admin/topics" />
             <Route component={EditWordDetail} path="/admin/edit-word/:wordId" />
+            <Route component={UpdateTopic} path="/admin/edit-topic/:topicId" />
             <Route component={CreateNewWord} path="/admin/create-word" />
             <Route component={CreateTopic} path="/admin/create-topic" />
             <Route

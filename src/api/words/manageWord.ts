@@ -43,3 +43,11 @@ export async function createWord(
 ) {
   return await axiosInstance.post(`/words`, body);
 }
+
+
+export async function deleteWord(
+  _: string,
+  { arg: { wordId } }: { arg: { wordId: number } }
+) {
+  return await axiosInstance.delete(`/words/${wordId}`);
+}

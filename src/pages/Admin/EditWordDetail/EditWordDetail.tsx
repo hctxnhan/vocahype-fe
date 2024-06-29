@@ -3,7 +3,7 @@ import useSWRMutation from 'swr/mutation';
 import { useRoute } from 'wouter';
 
 import { getWord } from '@/api/words/getWord';
-import { SerializedWordFormValues, updateWord } from '@/api/words/updateWord';
+import { SerializedWordFormValues, updateWord } from '@/api/words/manageWord';
 import { useToast } from '@/lib/hooks/useToast';
 
 import { WordForm } from '../components/WordForm';

@@ -10,7 +10,7 @@ import {
 } from 'react-hook-form';
 import { z } from 'zod';
 
-import { SerializedWordFormValues } from '@/api/words/updateWord';
+import { SerializedWordFormValues } from '@/api/words/manageWord';
 import { Button } from '@/components/ui/button';
 import {
   Form,
