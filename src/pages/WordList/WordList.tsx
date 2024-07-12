@@ -11,33 +11,53 @@ import { useAuthState } from '@/lib/hooks/firebase/auth/useAuthState';
 import { useSetBreadcrumb } from '@/lib/hooks/useSetBreadcrumb';
 
 import { WordItem } from './components/WordItem';
+import { cn } from '@/lib/utils/utils';
+import { useMatchMutate } from '@/lib/hooks/useMatchMutate';
 
 interface WordListProps {
   breadcrumb: BreadcrumbItem[];
   topicFilter?: string;
   loadingText?: string;
+  needToFinishLearning?: boolean;
 }
 
 export function WordList({
   breadcrumb,
   topicFilter,
   loadingText,
+  needToFinishLearning = false,
 }: WordListProps) {
   useSetBreadcrumb(breadcrumb ?? ['Learn']);
 
   const { user } = useAuthState();
 
-  const { data, mutate, size, setSize, isLoading } = useSWRInfinite(index => {
-    const url = new URLSearchParams({
-      'filter[topicId]': topicFilter ?? '',
-      'page[offset]': (index + 1).toString(),
-      'page[limit]': '10',
-    });
+  const { data, size, setSize, isLoading, isValidating } = useSWRInfinite(
+    index => {
+      const url = new URLSearchParams({
+        'filter[topicId]': topicFilter ?? '',
+        'page[offset]': (index + 1).toString(),
+        'page[limit]': '10',
+      });
 
-    return `/words/learn?${url.toString()}`;
-  }, getLearnWordList);
+      return `/words/learn?${url.toString()}`;
+    },
+    getLearnWordList,
+    {
+      keepPreviousData: true,
+    }
+  );
+
+  const mutateMatch = useMatchMutate();
+
+  console.log(data);
 
   const words = data ? data.flatMap(page => page.data) : [];
+  const learningWords = words.filter(
+    word => word && word.status === WORD_STATUS_LEARN.LEARNING
+  );
+  const toLearnWords = words.filter(
+    word => word && word.status === WORD_STATUS_LEARN.TO_LEARN
+  );
 
   const isLoadingMore =
     isLoading || (size > 0 && data && typeof data[size - 1] === 'undefined');
@@ -97,7 +117,7 @@ export function WordList({
   }
 
   const handleLearnWord = () => {
-    void mutate();
+    mutateMatch(/\/words\/learn/gi);
   };
 
   if (isLoading && size === 1)
@@ -107,7 +127,12 @@ export function WordList({
       </FillParent>
     );
 
-  if (!words) return <div>Something went wrong</div>;
+  if (!words)
+    return (
+      <div className="text-center font-display text-xl font-bold text-primary">
+        Something went wrong
+      </div>
+    );
 
   return (
     <div className="limit-content-to-min-height flex flex-1 flex-col overflow-hidden">
@@ -118,24 +143,69 @@ export function WordList({
       </div>
       <div
         onWheel={handleScroll}
-        className="flex h-[calc(100%-5rem)] flex-col gap-2 overflow-auto"
+        className="relative flex h-[calc(100%-5rem)] flex-col gap-2 overflow-auto pr-2"
         data-tour={TOUR_STEPS.WORD_LIST.LIST}
       >
-        {words.length ? (
-          words.map((word) => {
-            return (
-              <WordItem
-                status={word?.status as WORD_STATUS_LEARN}
-                level={word?.level || 0}
-                dueDate={word?.dueDate || ''}
-                onLearnWord={handleLearnWord}
-                data={word}
-                key={word.word}
-              />
-            );
-          })
-        ) : (
-          <div className="h-[350px] w-full text-center">No data to display</div>
+        {words.length === 0 && !isValidating && (
+          <div className="text-center font-display text-xl text-primary">
+            There're nothing to learn right now. Please come back later!
+          </div>
+        )}
+        {learningWords.length > 0 && (
+          <div className="pb-6">
+            <p className="relative mb-2 w-full font-display font-bold text-red-500">
+              Learning
+            </p>
+            {learningWords.map(word => {
+              return (
+                <WordItem
+                  status={word?.status as WORD_STATUS_LEARN}
+                  level={word?.level || 0}
+                  dueDate={word?.dueDate || ''}
+                  onLearnWord={handleLearnWord}
+                  data={word}
+                  key={word.word}
+                />
+              );
+            })}
+          </div>
+        )}
+
+        {learningWords.length > 0 && needToFinishLearning && (
+          <div className="cross-line text-balance sticky top-0 text-center text-neutral-400 z-[1001]">
+            please finish all the learning words first
+          </div>
+        )}
+
+        {toLearnWords.length > 0 && (
+          <div
+            className={cn({
+              'pointer-events-none relative':
+                learningWords.length > 0 && needToFinishLearning,
+            })}
+          >
+            <FillParent
+              className={cn({
+                'block-background z-[1000] rounded-lg':
+                  learningWords.length > 0 && needToFinishLearning,
+              })}
+            ></FillParent>
+            <p className="mb-2 w-full font-display font-bold text-green-500">
+              To Learn
+            </p>
+            {toLearnWords.map(word => {
+              return (
+                <WordItem
+                  status={word?.status as WORD_STATUS_LEARN}
+                  level={word?.level || 0}
+                  dueDate={word?.dueDate || ''}
+                  onLearnWord={handleLearnWord}
+                  data={word}
+                  key={word.word}
+                />
+              );
+            })}
+          </div>
         )}
       </div>
     </div>

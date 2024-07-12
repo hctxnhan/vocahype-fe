@@ -59,6 +59,8 @@ export function useAsyncAction<
             type: ActionState.SUCCESS,
             data: data as T | E,
           });
+
+          void fetchOptions?.onSuccess?.(data as Awaited<ReturnType<T>>);
         })
         .catch(error => {
           dispatchFn({

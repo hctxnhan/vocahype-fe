@@ -1,4 +1,4 @@
-import { ChevronDownIcon, SpeakerLoudIcon } from '@radix-ui/react-icons';
+import { SpeakerLoudIcon } from '@radix-ui/react-icons';
 import { ToggleGroup, ToggleGroupItem } from '@radix-ui/react-toggle-group';
 import { motion } from 'framer-motion';
 import { useState } from 'react';
@@ -14,12 +14,15 @@ import { Button } from '@/components/ui/button';
 import { TOUR_STEPS } from '@/lib/configs/tour';
 import { WORD_STATUS_LEARN } from '@/lib/enums/word';
 import { useSetBreadcrumb } from '@/lib/hooks/useSetBreadcrumb';
-import { cn, playAudio } from '@/lib/utils/utils';
+import { cn, getLearningPercentage, playAudio } from '@/lib/utils/utils';
 
 import { Example } from './components/Example';
 import { LearnButton } from './components/LearnButton';
 import { PronunciationChecking } from './components/PronunciationChecking';
 import { Synonym } from './components/Synonym';
+import { ResetWordProgression } from './components/ResetWordProgression';
+import useSWRMutation from 'swr/mutation';
+import { resetLearnWord } from '@/api/words/learnWord';
 
 const variants = {
   arrow: {
@@ -30,32 +33,28 @@ const variants = {
       rotate: 0,
     },
   },
-  cardImage: {
-    open: {
-      height: 300,
-    },
-    close: {
-      height: 'auto',
-    },
-  },
 };
 
 export function Learn() {
+  const [, params] = useRoute('/words/:wordId');
+
+  return <Component params={params} key={params?.wordId} />;
+}
+
+function Component({ params }: { params: { wordId: string } | null }) {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const [isOpen, setIsOpen] = useState(false);
-
-  const [, params] = useRoute('/words/:wordId');
 
   const { data: wordDetail, isLoading } = useSWR(
     ['words/:wordId', params?.wordId ?? ''],
     getWord.bind(null, { wordId: params?.wordId as string } ?? '')
   );
 
-  // const { trigger, isMutating } = useSWRMutation(
-  //   ['words/:wordId', params?.wordId ?? ''],
-  //   resetLearnWord.bind(null, params!.wordId)
-  // );
+  const { trigger, isMutating } = useSWRMutation(
+    ['words/:wordId', params?.wordId ?? ''],
+    resetLearnWord.bind(null, params!.wordId)
+  );
 
   const { data: wordImage } = useSWR(
     ['pexels', wordDetail?.word],
@@ -99,8 +98,8 @@ export function Learn() {
       >
         <motion.div
           data-tour={TOUR_STEPS.WORD.DETAIL}
-          variants={variants.cardImage}
-          animate={isOpen ? 'open' : 'close'}
+          // variants={variants.cardImage}
+          // animate={isOpen ? 'open' : 'close'}
           style={{
             backgroundImage: `url("${
               wordImage?.data.photos[0].src.original ?? ''
@@ -110,7 +109,7 @@ export function Learn() {
         >
           <div className="relative z-30 flex justify-between">
             <div className="font-sans text-xs font-normal">
-              {/* {`${wordDetail.comprehension.status.toUpperCase()}${
+              {`${wordDetail.comprehension.status.toUpperCase()}${
                 wordDetail.comprehension.status === WORD_STATUS_LEARN.LEARNING
                   ? ` - ${getLearningPercentage(
                       wordDetail.comprehension.level ?? 0
@@ -123,7 +122,7 @@ export function Learn() {
                   isMutating={isMutating}
                   onConfirm={() => void trigger()}
                 />
-              )} */}
+              )}
               <div className="flex items-center gap-4">
                 <div className="text-4xl font-black">{wordDetail.word}</div>
                 <Button
@@ -150,7 +149,7 @@ export function Learn() {
             onClick={() => setIsOpen(!isOpen)}
             className="absolute bottom-8 right-8 z-10 h-fit w-fit cursor-pointer"
           >
-            <ChevronDownIcon width={30} height={30} />
+            {/* <ChevronDownIcon width={30} height={30} /> */}
           </motion.div>
         </motion.div>
         <ToggleGroup
@@ -177,7 +176,10 @@ export function Learn() {
           {currentSelectedMeaning?.definition}
         </div>
 
-        <div className="flex-1 basis-0" data-tour={TOUR_STEPS.WORD.EXAMPLE}>
+        <div
+          className="flex flex-1 basis-0 flex-col gap-4"
+          data-tour={TOUR_STEPS.WORD.EXAMPLE}
+        >
           {currentSelectedMeaning?.examples?.map((example, index) => (
             <Example
               key={index}

@@ -6,18 +6,20 @@ import { delayLearnWord, learnWord } from '@/api/words/learnWord';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
-import { TOUR_STEPS } from '@/lib/configs/tour';
-import { WORD_STATUS_LEARN } from '@/lib/enums/word';
-import { useAsyncAction } from '@/lib/hooks/useAsyncAction';
-import { useToast } from '@/lib/hooks/useToast';
-import { cn, getLearningPercentage } from '@/lib/utils/utils';
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui/tooltip';
+import { TOUR_STEPS } from '@/lib/configs/tour';
+import { WORD_STATUS_LEARN } from '@/lib/enums/word';
+import { useAsyncAction } from '@/lib/hooks/useAsyncAction';
+import { useToast } from '@/lib/hooks/useToast';
+import { cn, getLearningPercentage } from '@/lib/utils/utils';
 import { SparkleIcon } from 'lucide-react';
+import { FillParent } from '@/components/layout/FillParent/FillParent';
+import { Loading } from '@/components/layout/Loading/Loading';
 
 interface WordItemProps {
   data: Word;
@@ -43,8 +45,10 @@ export function WordItem({
   const { word, isInTopic } = data;
 
   const [, navigate] = useLocation();
-  const { start: ignoreWord } = useAsyncAction(learnWord);
-  const { start: delayWord } = useAsyncAction(delayLearnWord);
+  const { start: ignoreWord, isLoading: isIgnoringWord } =
+    useAsyncAction(learnWord);
+  const { start: delayWord, isLoading: isDelayingWord } =
+    useAsyncAction(delayLearnWord);
   const toast = useToast();
 
   const handleClickLearnWord = () => {
@@ -95,15 +99,18 @@ export function WordItem({
     });
   };
 
+  const isLoading = isIgnoringWord || isDelayingWord;
+
   return (
     <div
-      className="relative my-0 mb-2 flex w-full flex-shrink-0 flex-grow-0 basis-auto flex-col justify-between overflow-hidden rounded-lg border border-border bg-muted/70 p-2"
+      className="relative my-0 mb-2 flex w-full flex-shrink-0 flex-grow-0 basis-auto items-center justify-between overflow-hidden rounded-lg border border-border bg-muted/70 p-4"
       data-tour={TOUR_STEPS.WORD_LIST.CARD.CONTAINER}
     >
       <Progress
-        className="absolute inset-x-0 top-0 h-1"
+        className="absolute inset-x-0 top-0 h-1 bg-slate-200"
         value={getLearningPercentage(level ?? 0)}
       ></Progress>
+      {isLoading && <FillParent className="bg-muted/80"></FillParent>}
       {isInTopic && (
         <TooltipProvider>
           <Tooltip>
@@ -126,17 +133,8 @@ export function WordItem({
         </TooltipProvider>
       )}
 
-      <div className="text-2xl font-bold text-primary">{word}</div>
-      <div className="mt-2 flex gap-4">
-        <div
-          data-tour={TOUR_STEPS.WORD_LIST.CARD.STATUS}
-          className={cn('text-base font-bold', {
-            'text-destructive': status === WORD_STATUS_LEARN.LEARNING,
-            'text-green-600': status === WORD_STATUS_LEARN.TO_LEARN,
-          })}
-        >
-          {status.toUpperCase()}
-        </div>
+      <div className="flex gap-4">
+        <div className="text-2xl font-bold text-primary">{word}</div>
         {dueDate && (
           <Badge
             className={cn('w-fit text-xs font-normal', {
@@ -152,7 +150,7 @@ export function WordItem({
           </Badge>
         )}
       </div>
-      <div className="mt-6 flex flex-wrap gap-4">
+      <div className="flex flex-wrap items-center gap-4">
         <Button
           variant={'link'}
           onClick={handleIgnore}
@@ -162,10 +160,7 @@ export function WordItem({
           IGNORE
         </Button>
         {status === WORD_STATUS_LEARN.LEARNING && (
-          <div
-            className="flex gap-4"
-            data-tour={TOUR_STEPS.WORD_LIST.CARD.DELAY}
-          >
+          <>
             <Button
               variant={'link'}
               onClick={handleDelayWord(7)}
@@ -180,7 +175,7 @@ export function WordItem({
             >
               TOMORROW
             </Button>
-          </div>
+          </>
         )}
         <Button
           variant={'link'}

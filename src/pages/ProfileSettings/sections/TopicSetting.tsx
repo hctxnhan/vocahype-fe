@@ -26,15 +26,16 @@ export function TopicSetting() {
   const toast = useToast();
   const { start, isLoading: isSettingTopic } = useAsyncAction(postTargetTopic);
 
-  const topics = topicsList
-    ?.filter(item => item.attributes.wordCount > 10)
-    .map(item => ({ ...item.attributes, id: item.id }))
-    .sort((a, b) => b.wordCount - a.wordCount)
-    .map(item => ({
-      label: `${item?.name}${item.emoji ? ` ${item.emoji}` : ''}`,
-      value: item.id.toString(),
-      description: item.description,
-    })) ?? [];
+  const topics =
+    topicsList
+      ?.filter(item => item.attributes.wordCount > 10)
+      .map(item => ({ ...item.attributes, id: item.id }))
+      .sort((a, b) => b.wordCount - a.wordCount)
+      .map(item => ({
+        label: `${item?.name}${item.emoji ? ` ${item.emoji}` : ''}`,
+        value: item.id.toString(),
+        description: item.description,
+      })) ?? [];
 
   useEffect(() => {
     if (profile?.data.length) {

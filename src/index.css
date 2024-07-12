@@ -202,3 +202,35 @@ input::placeholder {
     repeating-linear-gradient(#2463eb55, #2463eb);
   pointer-events: none;
 }
+
+.block-background {
+  background-color: #707070;
+  opacity: 0.5;
+  /* black and white only */
+  filter: grayscale(100%);
+  background: repeating-linear-gradient(
+    -45deg,
+    #000000,
+    #696969 2px,
+    #e5e5f7 2px,
+    #e5e5f7 15px
+  );
+}
+
+.cross-line {
+  display: flex;
+  flex-direction: row;
+}
+.cross-line:before,
+.cross-line:after {
+  content: '';
+  flex: 1 1;
+  border-bottom: 1px solid;
+  margin: auto;
+}
+.cross-line:before {
+  margin-right: 10px;
+}
+.cross-line:after {
+  margin-left: 10px;
+}
