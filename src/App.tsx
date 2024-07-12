@@ -11,7 +11,7 @@ import { EnterEmail } from './pages/ResetPassword/components/EnterEmail';
 function App() {
   return (
     <ErrorBoundary>
-      <div className="relative text-foreground">
+      <div className="text-foreground">
         <div className="fixed left-0 top-0 h-full w-full z-30 pattern-background" />
         <Switch>
           <Route path="/auth" component={Authentication} />

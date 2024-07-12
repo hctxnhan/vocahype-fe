@@ -11,6 +11,13 @@ import { WORD_STATUS_LEARN } from '@/lib/enums/word';
 import { useAsyncAction } from '@/lib/hooks/useAsyncAction';
 import { useToast } from '@/lib/hooks/useToast';
 import { cn, getLearningPercentage } from '@/lib/utils/utils';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/ui/tooltip';
+import { SparkleIcon } from 'lucide-react';
 
 interface WordItemProps {
   data: Word;
@@ -33,11 +40,7 @@ export function WordItem({
   status = WORD_STATUS_LEARN.TO_LEARN,
   onLearnWord,
 }: WordItemProps) {
-  const { word, 
-    // results,
-    //  syllables, 
-    // pronunciation 
-  } = data;
+  const { word, isInTopic } = data;
 
   const [, navigate] = useLocation();
   const { start: ignoreWord } = useAsyncAction(learnWord);
@@ -101,7 +104,7 @@ export function WordItem({
         className="absolute inset-x-0 top-0 h-1"
         value={getLearningPercentage(level ?? 0)}
       ></Progress>
-      {/* {data.inSelectedTopic && (
+      {isInTopic && (
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger className="absolute right-2 top-2">
@@ -121,7 +124,7 @@ export function WordItem({
             </TooltipContent>
           </Tooltip>
         </TooltipProvider>
-      )} */}
+      )}
 
       <div className="text-2xl font-bold text-primary">{word}</div>
       <div className="mt-2 flex gap-4">

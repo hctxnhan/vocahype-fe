@@ -43,7 +43,7 @@ export function WordList({
     isLoading || (size > 0 && data && typeof data[size - 1] === 'undefined');
   const isEmpty = data?.length === 0;
   const isReachingEnd =
-    isEmpty || (data && data[data.length - 1].data?.length < 5);
+    isEmpty || (data && data[data.length - 1].data?.length < 10);
 
   const handleScroll = (event: WheelEvent) => {
     if (isLoading) return;
@@ -123,12 +123,11 @@ export function WordList({
       >
         {words.length ? (
           words.map((word) => {
-            const comprehension = word.comprehension;
             return (
               <WordItem
-                status={comprehension?.status as WORD_STATUS_LEARN}
-                level={comprehension?.level || 0}
-                dueDate={comprehension?.dueDate || ''}
+                status={word?.status as WORD_STATUS_LEARN}
+                level={word?.level || 0}
+                dueDate={word?.dueDate || ''}
                 onLearnWord={handleLearnWord}
                 data={word}
                 key={word.word}

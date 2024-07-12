@@ -1,3 +1,4 @@
+import { WORD_STATUS_LEARN } from '@/lib/enums/word';
 import { Meaning } from './Meaning';
 
 export interface Word {
@@ -13,4 +14,8 @@ export interface Word {
     list: string[];
   };
   frequency: number;
+  status?: WORD_STATUS_LEARN;
+  isInTopic?: boolean;
+  dueDate?: string;
+  level?: number;
 }
