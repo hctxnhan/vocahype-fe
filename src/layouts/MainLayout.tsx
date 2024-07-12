@@ -1,3 +1,5 @@
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
 import useSWR from 'swr';
 import { Route } from 'wouter';
 
@@ -18,6 +20,7 @@ import { Exploration } from '@/pages/Exploration/Exploration';
 import { KnowledgeCheck } from '@/pages/KnowledgeCheck/KnowledgeCheck';
 import { Learn } from '@/pages/Learn/Learn';
 import { ProfileSettings } from '@/pages/ProfileSettings/ProfileSettings';
+import { QuizContainer } from '@/pages/Quiz/components/QuizContainer';
 import { ReportPage } from '@/pages/Report/ReportPage';
 import { SearchResult } from '@/pages/Search/SearchResult';
 import { LearnPage } from '@/pages/WordList/LearnPage';
@@ -32,46 +35,49 @@ export function MainLayout() {
   const userRole = profile?.data[0].role?.title || 'user';
 
   return (
-    <div className="container h-screen w-full text-foreground">
+    <div className="container flex flex-col h-screen w-full text-foreground">
       <Navbar />
       <div className="relative grid min-h-full flex-1 grid-cols-main-layout gap-4 pt-navbar max-md:grid-cols-1 max-md:pt-navbar-sm">
         <Sidebar />
-        <BreadcrumbProvider>
-          <div className="main-min-height relative mt-8 flex flex-1 flex-col overflow-x-hidden px-2 max-md:mt-0">
-            <Breadcrumb />
-            <Route component={KnowledgeCheck} path="/knowledge-check" />
-            <Route component={SearchResult} path="/search" />
-            <Route component={Learn} path="/words/:wordId" />
-            <Route component={ProfileSettings} path="/profile" />
-            <Route component={LearnPage} path="/" />
-            <Route component={Exploration} path="/exploration" />
-            <Route component={TopicDetailPage} path="/topics/:topicId" />
-            <Route component={ReportPage} path="/report" />
+        <DndProvider backend={HTML5Backend}>
+          <BreadcrumbProvider>
+            <div className="main-min-height relative mt-8 flex flex-1 flex-col overflow-x-hidden px-2 max-md:mt-0">
+              <Breadcrumb />
+              <Route component={QuizContainer} path="/example-test" />
+              <Route component={KnowledgeCheck} path="/knowledge-check" />
+              <Route component={SearchResult} path="/search" />
+              <Route component={Learn} path="/words/:wordId" />
+              <Route component={ProfileSettings} path="/profile" />
+              <Route component={LearnPage} path="/" />
+              <Route component={Exploration} path="/exploration" />
+              <Route component={TopicDetailPage} path="/topics/:topicId" />
+              <Route component={ReportPage} path="/report" />
 
-            {!isFetchingProfile && userRole === 'admin' && (
-              <>
-                <Route component={AdminPage} path="/admin" />
-                <Route component={ManageWord} path="/admin/words" />
-                <Route component={ManageTopic} path="/admin/topics" />
-                <Route
-                  component={EditWordDetail}
-                  path="/admin/edit-word/:wordId"
-                />
-                <Route
-                  component={UpdateTopic}
-                  path="/admin/edit-topic/:topicId"
-                />
-                <Route component={CreateNewWord} path="/admin/create-word" />
-                <Route component={CreateTopic} path="/admin/create-topic" />
-                <Route
-                  component={InternalServerErrorPage}
-                  path="/error/500-internal-server-error"
-                />
-              </>
-            )}
-            {/* <Route path="/:any*" component={NotFoundError} /> */}
-          </div>
-        </BreadcrumbProvider>
+              {!isFetchingProfile && userRole === 'admin' && (
+                <>
+                  <Route component={AdminPage} path="/admin" />
+                  <Route component={ManageWord} path="/admin/words" />
+                  <Route component={ManageTopic} path="/admin/topics" />
+                  <Route
+                    component={EditWordDetail}
+                    path="/admin/edit-word/:wordId"
+                  />
+                  <Route
+                    component={UpdateTopic}
+                    path="/admin/edit-topic/:topicId"
+                  />
+                  <Route component={CreateNewWord} path="/admin/create-word" />
+                  <Route component={CreateTopic} path="/admin/create-topic" />
+                  <Route
+                    component={InternalServerErrorPage}
+                    path="/error/500-internal-server-error"
+                  />
+                </>
+              )}
+              {/* <Route path="/:any*" component={NotFoundError} /> */}
+            </div>
+          </BreadcrumbProvider>
+        </DndProvider>
       </div>
     </div>
   );

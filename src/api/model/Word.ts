@@ -1,11 +1,16 @@
+import { Meaning } from './Meaning';
+
 export interface Word {
-  id: string;
+  results?: Meaning[];
   word: string;
-  count: number;
-  point: number;
-  phonetic: string;
-  syllable: number;
-  phoneticStart: string;
-  phoneticEnd: string;
-  inSelectedTopic: boolean;
+  pronunciation?: {
+    all: string;
+    noun: string;
+    verb: string;
+  };
+  syllables?: {
+    count: number;
+    list: string[];
+  };
+  frequency: number;
 }

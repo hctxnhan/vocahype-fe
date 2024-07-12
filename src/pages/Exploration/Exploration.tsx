@@ -15,20 +15,23 @@ export function Exploration() {
   if (isLoading) {
     return (
       <FillParent>
-        <Loading loadingText='Getting topics...' />
+        <Loading loadingText="Getting topics..." />
       </FillParent>
     );
   }
 
+  const topics = data
+    ?.filter(item => item.attributes.wordCount > 10)
+    .map(item => ({ ...item.attributes, id: item.id }))
+    .sort((a, b) => b.wordCount - a.wordCount);
 
   return (
     <div
       className="grid grid-cols-[repeat(auto-fill,minmax(300px,1fr))] gap-4"
       data-tour={TOUR_STEPS.EXPLORATION.SECTION}
     >
-      {data?.data.map(topic => (
+      {topics?.map(topic => (
         <TopicItem
-          isNone={!topic.emoji}
           topicCurrentWords={topic.masteredWordCount}
           topicTotalWords={topic.wordCount}
           topicDescription={topic.description}

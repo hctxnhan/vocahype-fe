@@ -24,11 +24,9 @@ const mapDifficultyToLevel: Partial<Record<WordLevel, QuizLevel>> = {
 };
 
 export function LearnButton({
-  wordId,
   word,
   status,
 }: {
-  wordId: string;
   word: string;
   status: WORD_STATUS_LEARN;
 }) {
@@ -48,7 +46,7 @@ export function LearnButton({
   };
 
   function handleLearn(level: WordLevel) {
-    start([wordId, level], {
+    start([word, level], {
       onSuccess: () => {
         toast.success({
           title: `Word "${word}" is added to ${level.toUpperCase()} list`,

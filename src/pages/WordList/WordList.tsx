@@ -8,7 +8,6 @@ import { TOUR_STEPS } from '@/lib/configs/tour';
 import { BreadcrumbItem } from '@/lib/context/breadcrumb.context';
 import { WORD_STATUS_LEARN } from '@/lib/enums/word';
 import { useAuthState } from '@/lib/hooks/firebase/auth/useAuthState';
-import { useMediaQuery } from '@/lib/hooks/useMediaQuery';
 import { useSetBreadcrumb } from '@/lib/hooks/useSetBreadcrumb';
 
 import { WordItem } from './components/WordItem';
@@ -25,8 +24,6 @@ export function WordList({
   loadingText,
 }: WordListProps) {
   useSetBreadcrumb(breadcrumb ?? ['Learn']);
-
-  const isSmallScreen = useMediaQuery('(max-width: 640px)');
 
   const { user } = useAuthState();
 
@@ -55,31 +52,31 @@ export function WordList({
       void setSize(size + 1);
     };
 
-    if (isSmallScreen) {
-      handleScrollVertical(event, onReachEnd);
-    } else {
-      handleScrollHorizontal(event, onReachEnd);
-    }
+    // if (isSmallScreen) {
+    handleScrollVertical(event, onReachEnd);
+    // } else {
+    //   handleScrollHorizontal(event, onReachEnd);
+    // }
   };
 
-  function handleScrollHorizontal(event: WheelEvent, onReachEnd: VoidFunction) {
-    const container = event.currentTarget;
-    const scrollAmount = event.deltaY;
+  // function handleScrollHorizontal(event: WheelEvent, onReachEnd: VoidFunction) {
+  //   const container = event.currentTarget;
+  //   const scrollAmount = event.deltaY;
 
-    container.scrollTo({
-      top: 0,
-      left: container.scrollLeft + scrollAmount,
-    });
+  //   container.scrollTo({
+  //     top: 0,
+  //     left: container.scrollLeft + scrollAmount,
+  //   });
 
-    if (
-      container.scrollLeft + container.clientWidth + 200 >=
-        container.scrollWidth &&
-      !isLoadingMore &&
-      !isReachingEnd
-    ) {
-      onReachEnd();
-    }
-  }
+  //   if (
+  //     container.scrollLeft + container.clientWidth + 200 >=
+  //       container.scrollWidth &&
+  //     !isLoadingMore &&
+  //     !isReachingEnd
+  //   ) {
+  //     onReachEnd();
+  //   }
+  // }
 
   function handleScrollVertical(event: WheelEvent, onReachEnd: VoidFunction) {
     const container = event.currentTarget;
@@ -100,7 +97,6 @@ export function WordList({
   }
 
   const handleLearnWord = (id: string, index: number) => {
-    console.error(id, index);
     void mutate();
   };
 
@@ -114,15 +110,15 @@ export function WordList({
   if (!words) return <div>Something went wrong</div>;
 
   return (
-    <div className="max-sm:limit-content-to-min-height flex flex-1 flex-col overflow-hidden">
-      <div className="mb-10 flex flex-col gap-2 max-sm:mb-4">
+    <div className="limit-content-to-min-height flex flex-1 flex-col overflow-hidden">
+      <div className="mb-4 flex flex-col gap-2">
         <p className="text-4xl font-bold leading-normal text-primary max-sm:text-2xl">
           Keep up the good work, {user?.displayName}!
         </p>
       </div>
       <div
         onWheel={handleScroll}
-        className="flex gap-2 overflow-auto max-sm:h-[calc(100%-5rem)] max-sm:flex-col"
+        className="flex h-[calc(100%-5rem)] flex-col gap-2 overflow-auto"
         data-tour={TOUR_STEPS.WORD_LIST.LIST}
       >
         {words.length ? (
@@ -133,9 +129,9 @@ export function WordList({
                 status={comprehension?.status as WORD_STATUS_LEARN}
                 level={comprehension?.level || 0}
                 dueDate={comprehension?.dueDate || ''}
-                onLearnWord={handleLearnWord.bind(null, word.id, index)}
+                onLearnWord={handleLearnWord.bind(null, word.word, index)}
                 data={word}
-                key={word.id}
+                key={word.word}
               />
             );
           })

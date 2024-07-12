@@ -4,12 +4,13 @@ export interface WordInTopic {
 }
 
 export interface Topic {
-  id: number;
-  name: string;
-  description: string;
-  emoji: string;
-  wordCount: number;
-  learningWordCount: number;
-  masteredWordCount: number;
-  wordInTopic: WordInTopic[];
+  type: string;
+  id: string;
+  attributes: {
+    name: string;
+    emoji: string;
+    description: string;
+    wordCount: number;
+    masteredWordCount: number;
+  };
 }
