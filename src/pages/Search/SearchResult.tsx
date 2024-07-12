@@ -49,7 +49,7 @@ export function SearchResult() {
     },
     {
       onSuccess: data => {
-        setTotalPage(data?.meta?.pagination?.last ?? 1);
+        setTotalPage((data?.total ?? 1) / (data.limit ?? 10));
       },
     }
   );
@@ -118,7 +118,7 @@ export function SearchResult() {
         {!isLoading && !!wordList?.length && (
           <div className="flex w-full flex-col">
             {wordList.map(word => (
-              <SearchItem key={word.word} word={word} selectWord={selectWord} />
+              <SearchItem key={word} word={word} selectWord={selectWord} />
             ))}
           </div>
         )}

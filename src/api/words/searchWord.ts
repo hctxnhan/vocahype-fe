@@ -1,11 +1,8 @@
-import { deserialize } from 'deserialize-json-api';
 
 import { axiosInstance } from '@/lib/configs/axios';
 import { paginationSchema } from '@/lib/formScheme/paginationSchema';
-import { APIResponse, PaginationMeta } from '@/lib/interfaces/type';
+import { PaginationMeta } from '@/lib/interfaces/type';
 
-import { Comprehension } from '../model/Comprehension';
-import { Word } from '../model/Word';
 
 export async function searchWord({
   word,
@@ -36,12 +33,7 @@ export async function searchWord({
 
   const response = await axiosInstance.get(`/words?${searchParams.toString()}`);
 
-  return deserialize<
-    APIResponse<
-      Word & {
-        comprehension: Comprehension;
-      },
-      PaginationMeta
-    >
-  >(response.data as string);
+  return response.data as {
+    data: string[];
+  } & PaginationMeta;
 }

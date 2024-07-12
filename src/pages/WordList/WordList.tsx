@@ -49,8 +49,6 @@ export function WordList({
 
   const mutateMatch = useMatchMutate();
 
-  console.log(data);
-
   const words = data ? data.flatMap(page => page.data) : [];
   const learningWords = words.filter(
     word => word && word.status === WORD_STATUS_LEARN.LEARNING

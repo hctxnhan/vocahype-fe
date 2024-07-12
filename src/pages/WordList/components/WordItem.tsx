@@ -111,27 +111,6 @@ export function WordItem({
         value={getLearningPercentage(level ?? 0)}
       ></Progress>
       {isLoading && <FillParent className="bg-muted/80"></FillParent>}
-      {isInTopic && (
-        <TooltipProvider>
-          <Tooltip>
-            <TooltipTrigger className="absolute right-2 top-2">
-              <Badge
-                className="border-orange-500 bg-orange-500 text-xs font-normal uppercase text-background"
-                variant="outline"
-              >
-                Topic
-                <SparkleIcon className="ml-1 h-4 w-4" />
-              </Badge>
-            </TooltipTrigger>
-            <TooltipContent>
-              <p className="text">
-                This word belongs to the topic that you have selected in profile
-                settings.
-              </p>
-            </TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
-      )}
 
       <div className="flex gap-4">
         <div className="text-2xl font-bold text-primary">{word}</div>
@@ -149,7 +128,29 @@ export function WordItem({
             {renderDueDate().text}
           </Badge>
         )}
+        {isInTopic && (
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger className="">
+                <Badge
+                  className="border-orange-500 bg-orange-500 text-xs font-normal uppercase text-background"
+                  variant="outline"
+                >
+                  Topic
+                  <SparkleIcon className="ml-1 h-4 w-4" />
+                </Badge>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p className="text">
+                  This word belongs to the topic that you have selected in
+                  profile settings.
+                </p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+        )}
       </div>
+
       <div className="flex flex-wrap items-center gap-4">
         <Button
           variant={'link'}

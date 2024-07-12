@@ -91,7 +91,9 @@ export function WordList() {
     },
     {
       onSuccess: data => {
-        setTotalPage(data?.meta?.pagination?.last ?? 1);
+        setTotalPage(
+          (data?.total ?? 1) / (data.limit ?? 10)
+        );
       },
     }
   );

@@ -23,7 +23,7 @@ export function LearningTimeProgress({
 
   if (isLoadingLearningTime || errorGetLearningTime) return null;
 
-  const currentLearningTime = learningTime?.data[0].userLearntTime ?? 0;
+  const currentLearningTime = learningTime?.data?.[0].userLearntTime ?? 0;
   const dailyGoal = userProfile?.data[0].goalSeconds;
 
   if (!dailyGoal)

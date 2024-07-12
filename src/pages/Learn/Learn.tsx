@@ -109,19 +109,26 @@ function Component({ params }: { params: { wordId: string } | null }) {
         >
           <div className="relative z-30 flex justify-between">
             <div className="font-sans text-xs font-normal">
-              {`${wordDetail.comprehension.status.toUpperCase()}${
-                wordDetail.comprehension.status === WORD_STATUS_LEARN.LEARNING
-                  ? ` - ${getLearningPercentage(
-                      wordDetail.comprehension.level ?? 0
-                    )}%`
-                  : ''
-              }`}{' '}
-              {wordDetail.comprehension.status !==
-                WORD_STATUS_LEARN.TO_LEARN && (
-                <ResetWordProgression
-                  isMutating={isMutating}
-                  onConfirm={() => void trigger()}
-                />
+              {wordDetail.comprehension && (
+                <>
+                  <p>
+                    {`${wordDetail.comprehension?.status.toUpperCase()}${
+                      wordDetail.comprehension?.status ===
+                      WORD_STATUS_LEARN.LEARNING
+                        ? ` - ${getLearningPercentage(
+                            wordDetail.comprehension.level ?? 0
+                          )}%`
+                        : ''
+                    }`}{' '}
+                  </p>
+                  {wordDetail.comprehension?.status !==
+                    WORD_STATUS_LEARN.TO_LEARN && (
+                    <ResetWordProgression
+                      isMutating={isMutating}
+                      onConfirm={() => void trigger()}
+                    />
+                  )}
+                </>
               )}
               <div className="flex items-center gap-4">
                 <div className="text-4xl font-black">{wordDetail.word}</div>
