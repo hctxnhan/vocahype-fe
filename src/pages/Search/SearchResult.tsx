@@ -118,7 +118,7 @@ export function SearchResult() {
         {!isLoading && !!wordList?.length && (
           <div className="flex w-full flex-col">
             {wordList.map(word => (
-              <SearchItem key={word.id} word={word} selectWord={selectWord} />
+              <SearchItem key={word.word} word={word} selectWord={selectWord} />
             ))}
           </div>
         )}

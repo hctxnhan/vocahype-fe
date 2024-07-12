@@ -33,7 +33,11 @@ export function WordItem({
   status = WORD_STATUS_LEARN.TO_LEARN,
   onLearnWord,
 }: WordItemProps) {
-  const { word, results, syllables, pronunciation } = data;
+  const { word, 
+    // results,
+    //  syllables, 
+    // pronunciation 
+  } = data;
 
   const [, navigate] = useLocation();
   const { start: ignoreWord } = useAsyncAction(learnWord);

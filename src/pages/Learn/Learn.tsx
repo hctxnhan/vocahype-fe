@@ -1,14 +1,12 @@
 import { ChevronDownIcon, SpeakerLoudIcon } from '@radix-ui/react-icons';
 import { ToggleGroup, ToggleGroupItem } from '@radix-ui/react-toggle-group';
 import { motion } from 'framer-motion';
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 import useSWR from 'swr';
-import useSWRMutation from 'swr/mutation';
 import { useRoute } from 'wouter';
 
 import { getImage } from '@/api/pexels/pexels';
 import { getWord } from '@/api/words/getWord';
-import { resetLearnWord } from '@/api/words/learnWord';
 import { FillParent } from '@/components/layout/FillParent/FillParent';
 import { Loading } from '@/components/layout/Loading/Loading';
 import { TrackLearningTime } from '@/components/layout/TrackLearningTime/TrackLearningTime';
@@ -54,10 +52,10 @@ export function Learn() {
     getWord.bind(null, { wordId: params?.wordId as string } ?? '')
   );
 
-  const { trigger, isMutating } = useSWRMutation(
-    ['words/:wordId', params?.wordId ?? ''],
-    resetLearnWord.bind(null, params!.wordId)
-  );
+  // const { trigger, isMutating } = useSWRMutation(
+  //   ['words/:wordId', params?.wordId ?? ''],
+  //   resetLearnWord.bind(null, params!.wordId)
+  // );
 
   const { data: wordImage } = useSWR(
     ['pexels', wordDetail?.word],

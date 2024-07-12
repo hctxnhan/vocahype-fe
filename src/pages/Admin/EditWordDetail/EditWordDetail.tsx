@@ -6,7 +6,6 @@ import { getWord } from '@/api/words/getWord';
 import { SerializedWordFormValues, updateWord } from '@/api/words/manageWord';
 import { useToast } from '@/lib/hooks/useToast';
 
-import { WordForm } from '../components/WordForm';
 
 export function EditWordDetail() {
   const [, params] = useRoute('/admin/edit-word/:wordId');
@@ -27,9 +26,9 @@ export function EditWordDetail() {
     updateWord
   );
 
-  const data = wordDetail?.data[0];
+  // const data = wordDetail?.data[0];
 
-  if (!data) return null;
+  // if (!data) return null;
 
   async function onSubmit(values: SerializedWordFormValues) {
     await trigger({ wordId: id as string, body: values });
@@ -41,18 +40,19 @@ export function EditWordDetail() {
   }
 
   return (
-    <WordForm
-      isLoading={isMutating}
-      // eslint-disable-next-line @typescript-eslint/no-misused-promises
-      onSubmit={onSubmit}
-      defaultValues={{
-        id: data.id,
-        word: data.word,
-        syllable: data.syllable,
-        phonetic: data.phonetic,
-        point: data.point,
-        meanings: data.meanings,
-      }}
-    />
+    <></>
+    // <WordForm
+    //   isLoading={isMutating}
+    //   // eslint-disable-next-line @typescript-eslint/no-misused-promises
+    //   onSubmit={onSubmit}
+    //   defaultValues={{
+    //     id: data.id,
+    //     word: data.word,
+    //     syllable: data.syllable,
+    //     phonetic: data.phonetic,
+    //     point: data.point,
+    //     meanings: data.meanings,
+    //   }}
+    // />
   );
 }

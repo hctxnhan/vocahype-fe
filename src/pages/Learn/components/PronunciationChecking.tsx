@@ -1,12 +1,12 @@
-import { Button } from '@/components/ui/button';
-import { cn } from '@/lib/utils/utils';
 import { diffChars } from 'diff';
-import levenshtein from 'fast-levenshtein';
+import { get } from 'fast-levenshtein';
 import { Mic } from 'lucide-react';
 import { useState } from 'react';
 import SpeechRecognition, {
   useSpeechRecognition,
 } from 'react-speech-recognition';
+
+import { cn } from '@/lib/utils/utils';
 
 interface PronunciationCheckingProps {
   word: string;
@@ -16,7 +16,7 @@ function calculateSimilarity(word: string, userWord: string) {
   const word64 = btoa(word.toLowerCase());
   const userWord64 = btoa(userWord.toLowerCase());
 
-  const distance = levenshtein.get(word64, userWord64);
+  const distance = get(word64, userWord64);
 
   const maxLength = Math.max(word64.length, userWord64.length);
   const similarity = ((maxLength - distance) / maxLength) * 100;
@@ -45,7 +45,7 @@ const Feedback = ({
 
   return (
     <div className="text-lg">
-      {diff.map((word, index) => {
+      {diff.map((word) => {
         return word.map((part, index) => {
           if (part.added) return;
 

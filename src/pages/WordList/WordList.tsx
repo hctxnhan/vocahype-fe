@@ -96,7 +96,7 @@ export function WordList({
     }
   }
 
-  const handleLearnWord = (id: string, index: number) => {
+  const handleLearnWord = () => {
     void mutate();
   };
 
@@ -122,14 +122,14 @@ export function WordList({
         data-tour={TOUR_STEPS.WORD_LIST.LIST}
       >
         {words.length ? (
-          words.map((word, index) => {
+          words.map((word) => {
             const comprehension = word.comprehension;
             return (
               <WordItem
                 status={comprehension?.status as WORD_STATUS_LEARN}
                 level={comprehension?.level || 0}
                 dueDate={comprehension?.dueDate || ''}
-                onLearnWord={handleLearnWord.bind(null, word.word, index)}
+                onLearnWord={handleLearnWord}
                 data={word}
                 key={word.word}
               />

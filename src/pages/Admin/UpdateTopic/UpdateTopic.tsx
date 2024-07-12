@@ -66,16 +66,16 @@ export function UpdateTopic() {
   );
 
   const topic = useMemo(() => {
-    if (!topicDetail?.data.length || isLoadingTopic) {
+    if (!topicDetail || isLoadingTopic) {
       return null;
     }
 
-    const topic = topicDetail.data[0];
+    const topic = topicDetail;
 
     return {
-      name: topic.name,
-      description: topic.description,
-      wordList: topic.wordInTopic ?? [],
+      name: topic.attributes.name,
+      description: topic.attributes.description,
+      // wordList: topic.wordInTopic ?? [],
     };
   }, [topicDetail, isLoadingTopic]);
 
@@ -83,7 +83,7 @@ export function UpdateTopic() {
     if (topic) {
       setTopicName(topic.name);
       setTopicDescription(topic.description);
-      setSelectedValue(topic.wordList);
+      // setSelectedValue(topic.wordList);
     }
   }, [topic]);
 

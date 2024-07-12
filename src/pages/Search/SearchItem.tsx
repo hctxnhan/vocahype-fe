@@ -30,9 +30,9 @@ export function SearchItem({ word, selectWord }: SearchItemProps) {
   return (
     <Button
       variant={'ghost'}
-      onClick={() => selectWord(word.id)}
+      onClick={() => selectWord(word.word)}
       className="relative my-1 ml-1 mr-2 flex h-fit cursor-pointer flex-col gap-2 overflow-hidden rounded-md bg-accent px-8 py-4 transition hover:bg-primary hover:text-primary-foreground"
-      key={word.id}
+      key={word.word}
     >
       {learningStatus !== WORD_STATUS_LEARN.TO_LEARN && (
         <Progress
@@ -48,7 +48,7 @@ export function SearchItem({ word, selectWord }: SearchItemProps) {
         <p className="text-2xl font-semibold">{word.word}</p>
       </div>
       <div className="center gap-2">
-        {word.phonetic ? <p>[{word.phonetic}]</p> : null}
+        {word.pronunciation?.all ? <p>[{word.pronunciation?.all}]</p> : null}
         <Button
           onClick={playPronunciation(word.word)}
           size={'icon'}

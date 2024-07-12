@@ -1,4 +1,4 @@
-import { ColumnDef, OnChangeFn, PaginationState } from '@tanstack/react-table';
+import { PaginationState } from '@tanstack/react-table';
 import { useReducer, useState } from 'react';
 import useSWR from 'swr';
 
@@ -7,8 +7,7 @@ import { FillParent } from '@/components/layout/FillParent/FillParent';
 import { Loading } from '@/components/layout/Loading/Loading';
 import { Searchbar } from '@/components/layout/Searchbar/Searchbar';
 
-import { DataTable } from './Table';
-import { WordColumns } from './columns';
+// import { WordColumns } from './columns';
 
 enum ActionType {
   SET_PAGE = 'SET_PAGE',
@@ -57,11 +56,12 @@ const reducer = (state: State, { type, payload }: Action) => {
   }
 };
 
-interface WordListProps<T extends WordColumns> {
-  columns: ColumnDef<T>[];
-}
+// interface WordListProps<T extends WordColumns> {
+//   columns: ColumnDef<T>[];
+// }
 
-export function WordList({ columns }: WordListProps<WordColumns>) {
+// export function WordList({ columns }: WordListProps<WordColumns>) {
+export function WordList() {
   const [state, dispatch] = useReducer<React.Reducer<State, Action>>(
     reducer,
     initialState
@@ -96,27 +96,29 @@ export function WordList({ columns }: WordListProps<WordColumns>) {
     }
   );
 
-  const result = searchResult?.data?.map(item => ({
-    id: Number.parseInt(item.id),
-    word: item.word,
-    phonetic: item.phonetic,
-    syllable: item.syllable,
-    point: item.point ? Number.parseFloat(item.point.toFixed(2)) : 0,
-  }));
+  // const result = searchResult?.data?.map(item => ({
+  //   id: Number.parseInt(item.id),
+  //   word: item.word,
+  //   phonetic: item.phonetic,
+  //   syllable: item.syllable,
+  //   point: item.point ? Number.parseFloat(item.point.toFixed(2)) : 0,
+  // }));
 
-  function handleSetPage(
-    calculatePage: (state: PaginationState) => PaginationState
-  ) {
-    const res = calculatePage({
-      pageIndex: state.page,
-      pageSize: 10,
-    });
+  // const result = [] as unknown[];
 
-    dispatch({ type: ActionType.SET_PAGE, payload: res.pageIndex });
-  }
+  // function handleSetPage(
+  //   calculatePage: (state: PaginationState) => PaginationState
+  // ) {
+  //   const res = calculatePage({
+  //     pageIndex: state.page,
+  //     pageSize: 10,
+  //   });
+
+  //   dispatch({ type: ActionType.SET_PAGE, payload: res.pageIndex });
+  // }
 
   return (
-    <div className='flex-1'>
+    <div className="flex-1">
       {isLoading && (
         <FillParent>
           <Loading />
@@ -135,7 +137,7 @@ export function WordList({ columns }: WordListProps<WordColumns>) {
         noFocusOverlay
       />
       <div className="py-3" />
-      {!!result && (
+      {/* {!!result && (
         <DataTable
           columns={columns}
           data={result}
@@ -143,7 +145,7 @@ export function WordList({ columns }: WordListProps<WordColumns>) {
           pageCount={totalPage}
           setPagination={handleSetPage as OnChangeFn<PaginationState>}
         />
-      )}
+      )} */}
     </div>
   );
 }
