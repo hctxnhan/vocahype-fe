@@ -12,7 +12,7 @@ import { Link } from '@/components/ui/link';
 import { useMatchMutate } from '@/lib/hooks/useMatchMutate';
 import { useSetBreadcrumb } from '@/lib/hooks/useSetBreadcrumb';
 import { useToast } from '@/lib/hooks/useToast';
-
+  
 import { DataTable } from './Table';
 import { columns } from './columns';
 

@@ -1,5 +1,6 @@
 import { FirebaseError } from 'firebase/app';
-import { useCallback, useEffect, useReducer } from 'react';
+import { useCallback, useEffect, useReducer, useRef } from 'react';
+import { AbortController } from 'abort-controller';
 
 export enum ActionState {
   IDLE = 'IDLE',
@@ -46,6 +47,7 @@ export function useAsyncAction<
   const [state, dispatchFn] = useReducer<typeof reducer>(reducer, {
     state: ActionState.IDLE,
   }) as [State<Awaited<ReturnType<T>>, E>, (action: Action<T, E>) => void];
+  const hasCanceled = useRef(false);
 
   const start = useCallback(
     (
@@ -55,6 +57,7 @@ export function useAsyncAction<
       dispatchFn({ type: ActionState.LOADING });
       dispatch(...((args || []) as Parameters<T>))
         .then(data => {
+          if (hasCanceled.current) return;
           dispatchFn({
             type: ActionState.SUCCESS,
             data: data as T | E,
@@ -63,11 +66,15 @@ export function useAsyncAction<
           void fetchOptions?.onSuccess?.(data as Awaited<ReturnType<T>>);
         })
         .catch(error => {
+          if (hasCanceled.current) return;
           dispatchFn({
             type: ActionState.ERROR,
             data: error as E,
           });
           void fetchOptions?.onError?.(error as E);
+        })
+        .finally(() => {
+          hasCanceled.current = false;
         });
     },
     [dispatch, options]
@@ -77,6 +84,10 @@ export function useAsyncAction<
     if (options?.autoStart) {
       start();
     }
+
+    return () => {
+      hasCanceled.current = true;
+    };
   }, []);
 
   return {
