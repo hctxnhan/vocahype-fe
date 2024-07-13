@@ -6,25 +6,6 @@ import { Droppable } from './drag-and-drop/Drop';
 import { DndItem } from './drag-and-drop/ItemType';
 import { ItemTypes } from './drag-and-drop/ItemTypes';
 
-const question = {
-  type: 'definition_match',
-  question: 'Match the definition to the word.',
-  definitions: [
-    {
-      text: 'the quality of being capable',
-      word: 'capable',
-    },
-    {
-      text: 'the quality of being able to perform',
-      word: 'capability',
-    },
-    {
-      text: 'the quality of being able to perform',
-      word: 'ability',
-    },
-  ],
-};
-
 interface DustbinState {
   accepts: string[];
   lastDroppedItem: DndItem | null;
@@ -43,7 +24,20 @@ export interface ContainerState {
   boxes: DndItem[];
 }
 
-export const Matching: FC = memo(function Container() {
+interface MatchingProps {
+  question: {
+    type: string;
+    question: string;
+    definitions: {
+      text: string;
+      word: string;
+    }[];
+  };
+}
+
+export const Matching: FC = memo(function Container({
+  question,
+}: MatchingProps) {
   const [dustbins, setDustbins] = useState<DustbinState[]>(
     Array.from({ length: 9 }).map(() => ({
       accepts: [ItemTypes.ANY],
@@ -65,30 +59,27 @@ export const Matching: FC = memo(function Container() {
       undefined
   );
 
-  const handleDrop = useCallback(
-    (index: number, item: DndItem) => {
-      setDustbins(dustbins =>
-        dustbins.map((dustbin, i) =>
-          i === index
-            ? {
+  const handleDrop = useCallback((index: number, item: DndItem) => {
+    setDustbins(dustbins =>
+      dustbins.map((dustbin, i) =>
+        i === index
+          ? {
               ...dustbin,
               lastDroppedItem: item,
             }
-            : dustbin
-        )
-      );
-    },
-    []
-  );
+          : dustbin
+      )
+    );
+  }, []);
 
   const handleRemoveItem = useCallback((boxIndex: number) => {
     setDustbins(dustbins =>
       dustbins.map((dustbin, i) =>
         i === boxIndex
           ? {
-            ...dustbin,
-            lastDroppedItem: null,
-          }
+              ...dustbin,
+              lastDroppedItem: null,
+            }
           : dustbin
       )
     );

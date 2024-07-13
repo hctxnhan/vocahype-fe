@@ -193,10 +193,10 @@ input::placeholder {
 
 .pattern-background {
   background-color: #dbe7ff;
-  opacity: 0.07;
+  opacity: 0.03;
   background-image: repeating-radial-gradient(
       circle at 0 0,
-      transparent 0,
+      transparen  t 0,
       #dbe7ff 40px
     ),
     repeating-linear-gradient(#2463eb55, #2463eb);

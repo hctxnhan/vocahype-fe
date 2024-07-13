@@ -168,12 +168,7 @@ export function LearnButton({
         {learning}
       </div>
       <Dialog open={showQuiz} onOpenChange={setShowQuiz}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>
-              Choose the correct answer to add this word to {quizLevel} list
-            </DialogTitle>
-          </DialogHeader>
+        <DialogContent className="p-0 rounded-lg border-none min-h-[400px]">
           <Quiz
             word={word}
             difficulty={quizLevel ?? 'easy'}

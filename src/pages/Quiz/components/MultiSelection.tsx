@@ -2,29 +2,55 @@ import { useState } from 'react';
 
 import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
+import { QuizCompProps, SelectionQuiz } from './type';
+import { Button } from '@/components/ui/button';
 
 const question = {
-  type: 'definition_select',
+  type: 'definition_multiple_select',
   question: 'Select all the definitions that match the word.',
-  word: 'capability',
-  answers: [
+  word: 'bar',
+  result: [
     {
-      text: 'the quality of being capable',
+      text: 'the body of individuals qualified to practice law in a particular jurisdiction',
       correct: true,
     },
     {
-      text: 'the quality of being able to perform',
+      text: 'prevent from entering; keep out',
       correct: true,
     },
     {
-      text: 'deo ai ma biet duoc',
-      correct: false,
+      text: 'a portable .30 caliber automatic rifle operated by gas pressure and fed by cartridges from a magazine; used by United States troops in World War I and in World War II and in the Korean War',
+      correct: true,
+    },
+    {
+      text: 'render unsuitable for passage',
+      correct: true,
+    },
+    {
+      text: 'musical notation for a repeating pattern of musical beats',
+      correct: true,
+    },
+    {
+      text: 'expel, as if by official decree',
+      correct: true,
+    },
+    {
+      text: 'a block of solid substance (such as soap or wax)',
+      correct: true,
+    },
+    {
+      text: 'the act of preventing',
+      correct: true,
     },
   ],
 };
 
-export function MultiSelection() {
+export function MultiSelection({
+  question,
+  onChoose,
+}: QuizCompProps<SelectionQuiz>) {
   const [selectedAnswers, setSelectedAnswers] = useState<number[]>([]);
+  const canSubmit = selectedAnswers.length > 0;
 
   const handleSelection = (index: number) => {
     if (selectedAnswers?.includes(index)) {
@@ -34,27 +60,49 @@ export function MultiSelection() {
     }
   };
 
+  function handleSubmit() {
+    if (selectedAnswers.length === 0) return;
+
+    const correct = selectedAnswers.every(
+      index => question.result[index].correct
+    );
+    onChoose(correct);
+  }
+
   return (
-    <div className="flex flex-col gap-4">
-      {question.answers.map((answer, index) => (
-        <div
-          key={index}
-          className={`group flex cursor-pointer items-center space-x-2 rounded-lg p-3 ring-2 ring-muted ring-offset-2 transition-all hover:bg-primary hover:text-primary-foreground ${
-            selectedAnswers?.includes(index)
-              ? 'bg-primary text-primary-foreground'
-              : ''
-          }`}
-          onClick={() => handleSelection(index)}
-        >
-          <Checkbox
-            id={`option-${index}`}
-            checked={selectedAnswers?.includes(index)}
-          />
-          <Label htmlFor={`option-${index}`} className="text-base font-normal pointer-events-none">
-            {answer.text}
-          </Label>
-        </div>
-      ))}
+    <div className='flex flex-col'>
+      <div className="flex flex-col gap-4 flex-1 overflow-y-auto">
+        {question.result.map((answer, index) => (
+          <div
+            key={index}
+            className={`m-1 group flex cursor-pointer items-center space-x-2 rounded-lg p-3 ring-2 ring-muted ring-offset-2 transition-all hover:bg-primary hover:text-primary-foreground ${
+              selectedAnswers?.includes(index)
+                ? 'bg-primary text-primary-foreground'
+                : ''
+            }`}
+            onClick={() => handleSelection(index)}
+          >
+            <Checkbox
+              id={`option-${index}`}
+              checked={selectedAnswers?.includes(index)}
+            />
+            <Label
+              htmlFor={`option-${index}`}
+              className="pointer-events-none text-base font-normal"
+            >
+              {answer.text}
+            </Label>
+          </div>
+        ))}
+      </div>
+
+      <Button
+        onClick={handleSubmit}
+        disabled={!canSubmit}
+        className="mt-6 w-full"
+      >
+        Submit
+      </Button>
     </div>
   );
 }
