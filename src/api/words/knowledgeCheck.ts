@@ -6,7 +6,7 @@ import { APIResponse } from '@/lib/interfaces/type';
 import { WordKnowledgeCheck } from '../model/WordKnowledgeCheck';
 
 type KnowledgeCheckBody = Array<{
-  wordId: string;
+  word: string;
   status: boolean;
 }>;
 
