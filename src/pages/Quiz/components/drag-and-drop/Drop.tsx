@@ -22,6 +22,7 @@ export interface DropProps {
   item: DndItem | null;
   removeItem?: (item: DndItem) => void;
   onDrop: (item: DndItem) => void;
+  disabled?: boolean;
 }
 
 export const Droppable: FC<DropProps> = memo(function Droppable({
@@ -29,6 +30,7 @@ export const Droppable: FC<DropProps> = memo(function Droppable({
   item,
   removeItem,
   onDrop,
+  disabled,
 }) {
   const [_, drop] = useDrop({
     accept,
@@ -47,7 +49,7 @@ export const Droppable: FC<DropProps> = memo(function Droppable({
       ref={drop}
       data-testid="dustbin"
       onClick={() => {
-        if (!item) return;
+        if (!item || disabled) return;
         removeItem?.(item);
       }}
     >

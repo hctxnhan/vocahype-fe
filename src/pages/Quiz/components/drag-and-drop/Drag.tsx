@@ -4,9 +4,11 @@ import { useDrag } from 'react-dnd';
 
 import { DndItem } from './ItemType';
 
-export type DragProps = DndItem;
+export type DragProps = DndItem & {
+  disabled?: boolean;
+};
 
-export const Draggable: FC<DragProps> = memo(function Box({ name, type, id }) {
+export const Draggable: FC<DragProps> = memo(function Box({ name, type, id, disabled = false }) {
   const [{ opacity }, drag] = useDrag(
     () => ({
       type,
@@ -14,6 +16,7 @@ export const Draggable: FC<DragProps> = memo(function Box({ name, type, id }) {
       collect: monitor => ({
         opacity: monitor.isDragging() ? 0.4 : 1,
       }),
+      canDrag: () => !disabled,
     }),
     [name, type, id]
   );

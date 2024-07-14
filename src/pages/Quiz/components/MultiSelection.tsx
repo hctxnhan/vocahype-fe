@@ -107,8 +107,8 @@ export function MultiSelection({
       </div>
 
       <Button
-        onClick={handleSubmit || showResult}
-        disabled={!canSubmit}
+        onClick={handleSubmit}
+        disabled={!canSubmit || showResult}
         className="mt-6 w-full"
       >
         Submit

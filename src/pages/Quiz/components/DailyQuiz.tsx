@@ -24,10 +24,9 @@ export function DailyQuiz({ questions }: { questions: any[] }) {
               <TabsTrigger
                 className={cn('rounded-full bg-muted', {
                   'border border-primary text-primary':
-                    selectedIndex === index.toString()
-                      ? 'bg-green-500 text-green-50'
-                      : result[index],
-                  'bg-red-500 text-red-50': !result[index],
+                    selectedIndex === index.toString(),
+                  'bg-green-500 text-green-50': result[index],
+                  'bg-red-500 text-red-50': !result[index] && result[index] !== undefined,
                 })}
                 key={index}
                 value={index.toString()}

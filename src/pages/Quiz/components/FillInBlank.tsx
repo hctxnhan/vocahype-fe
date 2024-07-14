@@ -60,8 +60,9 @@ const Container = ({ question, onChoose }: QuizCompProps<WordScrambleQuiz>) => {
   function handleSubmit() {
     if (answer.length !== question.result.length) return;
 
-    const correct =
-      question.result === dustbins.map(d => d.lastDroppedItem?.name).join('');
+    console.log(question.word === answer);
+
+    const correct = question.word === answer;
 
     setShowResult(true);
     onChoose(correct);
@@ -101,6 +102,7 @@ const Container = ({ question, onChoose }: QuizCompProps<WordScrambleQuiz>) => {
 
           return (
             <Droppable
+              disabled={showResult}
               accept={dustbins[boxIndex].accepts}
               item={dustbins[boxIndex].lastDroppedItem}
               onDrop={item => handleDrop(boxIndex, item)}
@@ -109,13 +111,8 @@ const Container = ({ question, onChoose }: QuizCompProps<WordScrambleQuiz>) => {
             />
           );
         }
-        // return (
-        //   <p className="text-2xl font-thin" key={index}>
-        //     {word}
-        //   </p>
-        // );
       }),
-    [dustbins, handleDrop, handleRemoveItem]
+    [dustbins, handleDrop, handleRemoveItem, showResult]
   );
 
   return (
@@ -124,11 +121,23 @@ const Container = ({ question, onChoose }: QuizCompProps<WordScrambleQuiz>) => {
         {renderedContentWithBoxes}
       </div>
 
-      <div className="flex gap-4">
+      <div className="mt-5 flex gap-4">
         {remainingBox.map(({ name, type, id }) => (
-          <Draggable name={name} id={id} type={type} key={id} />
+          <Draggable
+            disabled={showResult}
+            name={name}
+            id={id}
+            type={type}
+            key={id}
+          />
         ))}
       </div>
+
+      {showResult && (
+        <p className="text-sm">
+          {answer === question.word ? 'Correct!' : 'Incorrect!'}
+        </p>
+      )}
 
       <Button
         onClick={handleSubmit}
