@@ -190,7 +190,7 @@ function Component({ params }: { params: { wordId: string } | null }) {
               {meaning?.examples?.map((example, index) => (
                 <Example
                   key={index}
-                  className="bg-slate-300/20 [&:not(:last-child)]:border-b [&:not(:last-child)]:border-neutral-300 [&:not(:last-child)]:border-opacity-50"
+                  className="bg-slate-300/20 [&:not(:last-child)]:border-b [&:not(:last-child)]:border-neutral-300 [&:not(:last-child)]:border-opacity-50 border-black border-1"
                   example={example}
                   word={wordDetail.word}
                 />

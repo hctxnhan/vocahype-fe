@@ -44,7 +44,7 @@ const Feedback = ({
   const diff = calculateDiff(correctWord.toLowerCase(), userWord.toLowerCase());
 
   return (
-    <div className="text-lg">
+    <div className="flex gap-1 flex-wrap text-sm">
       {diff.map((word) => {
         return word.map((part, index) => {
           if (part.added) return;
@@ -58,7 +58,7 @@ const Feedback = ({
         });
       })}
 
-      <div className="text-center text-sm italic">{userWord.toLowerCase()}</div>
+      <div className="text-center italic">{userWord.toLowerCase()}</div>
     </div>
   );
 };
