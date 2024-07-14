@@ -1,7 +1,15 @@
-import { ScrollArea } from '@/components/ui/scroll-area';
+import { FillInBlank } from './FillInBlank';
 import { MultiSelection } from './MultiSelection';
 import { Selection } from './Selection';
-import { Quiz, QuizType, SelectionQuiz } from './type';
+import { WordGuess } from './WordGuess';
+import {
+  Quiz,
+  QuizType,
+  SelectionQuiz,
+  TrueFalseQuiz,
+  WordGuessQuiz,
+  WordScrambleQuiz,
+} from './type';
 
 interface QuizItemProps {
   quiz: Quiz;
@@ -17,25 +25,29 @@ export function QuizItem({ quiz, onChoose }: QuizItemProps) {
       <Selection onChoose={onChoose} question={quiz as SelectionQuiz} />
     );
   } else if (quiz.type === QuizType.TRUE_FALSE) {
+    const typedQuiz = quiz as TrueFalseQuiz;
     mappedQuiz = {
       type: QuizType.DEFINITION_SINGLE_SELECT,
-      question: `${quiz.question}: ${quiz.statement}`,
+      question: typedQuiz.statement,
       word: quiz.word,
       result: [
         {
           text: 'True',
-          correct: quiz.result === 'true',
+          correct: typedQuiz.result === 'true',
         },
         {
           text: 'False',
-          correct: quiz.result === 'false',
+          correct: typedQuiz.result === 'false',
         },
       ],
     } as SelectionQuiz;
     quizComponent = (
       <Selection onChoose={onChoose} question={mappedQuiz as SelectionQuiz} />
     );
-  } else if (quiz.type === QuizType.DEFINITION_MULTIPLE_SELECT || quiz.type === QuizType.RELATED_WORD_SELECT) {
+  } else if (
+    quiz.type === QuizType.DEFINITION_MULTIPLE_SELECT ||
+    quiz.type === QuizType.RELATED_WORD_SELECT
+  ) {
     mappedQuiz = {
       ...quiz,
       question: `${quiz.question}: ${quiz.word}`,
@@ -43,12 +55,24 @@ export function QuizItem({ quiz, onChoose }: QuizItemProps) {
     quizComponent = (
       <MultiSelection onChoose={onChoose} question={quiz as SelectionQuiz} />
     );
+  } else if (quiz.type === QuizType.WORD_GUESS) {
+    quizComponent = (
+      <WordGuess onChoose={onChoose} question={quiz as WordGuessQuiz} />
+    );
+  } else if (quiz.type === QuizType.WORD_SCRAMBLE) {
+    quizComponent = (
+      <FillInBlank onChoose={onChoose} question={quiz as WordScrambleQuiz} />
+    );
   }
 
   return (
     <div className="h-full overflow-y-hidden overflow-x-visible">
       <h2 className="px-6 pt-6 text-2xl font-bold">{mappedQuiz?.question}</h2>
-      <ScrollArea className="max-h-[500px] p-6">{quizComponent}</ScrollArea>
+      {/* <ScrollArea className="min-h-[200px] max-h-[500px] p-6"> */}
+      <div className="p-6">
+        {quizComponent}
+        {/* </ScrollArea> */}
+      </div>
     </div>
   );
 }

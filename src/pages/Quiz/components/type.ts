@@ -4,6 +4,8 @@ export enum QuizType {
   TRUE_FALSE = 'true_false',
   RELATED_WORD_SELECT = 'related_word_select',
   ANTONYM_SYNONYM_MATCH = 'antonym_synonym_match',
+  WORD_GUESS = 'word_guess',
+  WORD_SCRAMBLE = 'word_scramble',
 }
 
 export interface Quiz {
@@ -21,6 +23,16 @@ export interface TrueFalseQuiz extends Quiz {
   type: QuizType.TRUE_FALSE;
   result: 'true' | 'false';
   statement: string;
+}
+
+export interface WordGuessQuiz extends Quiz {
+  type: QuizType.WORD_GUESS;
+  description: string;
+}
+
+export interface WordScrambleQuiz extends Quiz {
+  type: QuizType.WORD_SCRAMBLE;
+  result: string;
 }
 
 interface Result {

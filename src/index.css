@@ -192,14 +192,18 @@ input::placeholder {
 }
 
 .pattern-background {
-  background-color: #dbe7ff;
-  opacity: 0.03;
-  background-image: repeating-radial-gradient(
-      circle at 0 0,
-      transparen  t 0,
-      #dbe7ff 40px
-    ),
-    repeating-linear-gradient(#2463eb55, #2463eb);
+  background-color: #ffffff;
+  opacity: 0.05;
+  background-image: radial-gradient(circle at center center, #c4c4c4, #ffffff),
+    repeating-radial-gradient(
+      circle at center center,
+      #c4c4c4,
+      #c4c4c4,
+      27px,
+      transparent 54px,
+      transparent 27px
+    );
+  background-blend-mode: multiply;
   pointer-events: none;
 }
 

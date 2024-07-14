@@ -16,7 +16,6 @@ import { useToast } from '@/lib/hooks/useToast';
 
 import { AddWordManuallyForm } from '../CreateNewTopic/AddWordManuallyForm';
 
-
 export function UpdateTopic() {
   const [topicName, setTopicName] = useState('');
   const [topicDescription, setTopicDescription] = useState('');
@@ -70,11 +69,11 @@ export function UpdateTopic() {
       return null;
     }
 
-    const topic = topicDetail;
+    const topic = topicDetail.data[0];
 
     return {
-      name: topic.attributes.name,
-      description: topic.attributes.description,
+      name: topic.name,
+      description: topic.description,
       // wordList: topic.wordInTopic ?? [],
     };
   }, [topicDetail, isLoadingTopic]);

@@ -41,7 +41,7 @@ export const Droppable: FC<DropProps> = memo(function Droppable({
 
   return (
     <div
-      className={`min-h-[30px] h-full w-fit min-w-[60px] max-w-[120px] rounded-sm border-2 border-dashed border-neutral-200 flex justify-center items-center text-2xl font-thin ${
+      className={`min-h-[40px] h-full w-fit min-w-[60px] max-w-[120px] rounded-sm border-2 border-dashed border-neutral-200 flex justify-center items-center text-2xl font-thin ${
         item !== null ? 'border-primary' : ''
       } px-4 py-1 text-center text-primary`}
       ref={drop}

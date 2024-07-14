@@ -57,6 +57,7 @@
     "dayjs": "^1.11.10",
     "deserialize-json-api": "^1.4.0",
     "diff": "^5.2.0",
+    "embla-carousel-react": "^8.1.6",
     "fast-levenshtein": "^3.0.0",
     "firebase": "^10.1.0",
     "framer-motion": "^10.13.0",

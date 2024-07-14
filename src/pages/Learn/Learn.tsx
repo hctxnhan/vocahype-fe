@@ -198,20 +198,20 @@ function Component({ params }: { params: { wordId: string } | null }) {
             </div>
             <div className="space-y-4" data-tour={TOUR_STEPS.WORD.SYNONYM}>
               <Synonym
-                title="Derivation"
+                title="derivation"
                 synonymsList={meaning?.derivation ?? []}
               />
               <Synonym
-                title="Similar words"
+                title="similar words"
                 synonymsList={meaning?.similarTo ?? []}
               />
-              <Synonym title="Type of" synonymsList={meaning?.typeOf ?? []} />
+              <Synonym title="type of" synonymsList={meaning?.typeOf ?? []} />
               <Synonym
-                title="Synonyms"
+                title="synonyms"
                 synonymsList={meaning?.synonyms ?? []}
               />
               <Synonym
-                title="Antonyms"
+                title="antonyms"
                 synonymsList={meaning?.antonyms ?? []}
               />
             </div>

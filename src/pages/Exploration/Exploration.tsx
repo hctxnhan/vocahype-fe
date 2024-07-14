@@ -11,7 +11,7 @@ import { TopicItem } from './components/TopicItem';
 export function Exploration() {
   useSetBreadcrumb(['Exploration']);
   const { data, isLoading } = useSWR('/topics', getTopicsList);
-
+  console.log(data);
   if (isLoading) {
     return (
       <FillParent>
@@ -20,9 +20,8 @@ export function Exploration() {
     );
   }
 
-  const topics = data
-    ?.filter(item => item.attributes.wordCount > 10)
-    .map(item => ({ ...item.attributes, id: item.id }))
+  const topics = data?.data
+    ?.filter(item => item.wordCount > 10)
     .sort((a, b) => b.wordCount - a.wordCount);
 
   return (

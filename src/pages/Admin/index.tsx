@@ -7,8 +7,8 @@ export function AdminPage() {
   useSetBreadcrumb(['Admin']);
 
   return (
-    <div className="grid grid-cols-2 gap-4">
-      <Link
+    <div className="flex flex-col gap-4">
+      {/* <Link
         href="/admin/words"
         className={cn(
           'vh-flex-column h-full cursor-pointer space-y-1 rounded-md border-2 bg-muted/70 p-3 transition-colors hover:bg-primary hover:text-primary-foreground'
@@ -16,7 +16,7 @@ export function AdminPage() {
       >
         <span className="font-medium uppercase">Manage Words</span>
         <span className={cn('flex-1 text-sm')}>Manage words in the system</span>
-      </Link>
+      </Link> */}
       <Link
         href="/admin/topics"
         className={cn(

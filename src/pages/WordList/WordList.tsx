@@ -170,7 +170,7 @@ export function WordList({
         )}
 
         {learningWords.length > 0 && needToFinishLearning && (
-          <div className="cross-line text-balance sticky top-0 text-center text-neutral-400 z-[1001]">
+          <div className="cross-line text-balance sticky top-0 text-center text-neutral-400 z-[1]">
             please finish all the learning words first
           </div>
         )}
@@ -184,7 +184,7 @@ export function WordList({
           >
             <FillParent
               className={cn({
-                'block-background z-[1000] rounded-lg':
+                'block-background z-[1] rounded-lg':
                   learningWords.length > 0 && needToFinishLearning,
               })}
             ></FillParent>

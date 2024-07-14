@@ -10,3 +10,10 @@ export const getQuiz = async (word: string, difficulty: string) =>
       level: difficulty,
     },
   });
+
+export const getDailyQuiz = async (numOfDays: number) =>
+  axiosInstance.get<QuizResponse>('/words/quiz/multi', {
+    params: {
+      days: numOfDays,
+    },
+  });

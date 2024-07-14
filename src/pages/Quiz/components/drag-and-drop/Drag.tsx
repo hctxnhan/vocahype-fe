@@ -19,7 +19,7 @@ export const Draggable: FC<DragProps> = memo(function Box({ name, type, id }) {
   );
 
   return (
-    <div ref={drag} style={{ opacity }} data-testid="box">
+    <div className='overflow-hidden text-lg px-6 py-1 rounded-md bg-primary text-primary-foreground cursor-pointer' ref={drag} style={{ opacity }} data-testid="box">
       {name}
     </div>
   );

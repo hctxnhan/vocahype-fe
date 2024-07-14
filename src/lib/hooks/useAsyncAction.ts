@@ -57,20 +57,21 @@ export function useAsyncAction<
       dispatchFn({ type: ActionState.LOADING });
       dispatch(...((args || []) as Parameters<T>))
         .then(data => {
-          if (hasCanceled.current) return;
           dispatchFn({
             type: ActionState.SUCCESS,
             data: data as T | E,
           });
 
+          if (hasCanceled.current) return;
           void fetchOptions?.onSuccess?.(data as Awaited<ReturnType<T>>);
         })
         .catch(error => {
-          if (hasCanceled.current) return;
           dispatchFn({
             type: ActionState.ERROR,
             data: error as E,
           });
+          
+          if (hasCanceled.current) return;
           void fetchOptions?.onError?.(error as E);
         })
         .finally(() => {

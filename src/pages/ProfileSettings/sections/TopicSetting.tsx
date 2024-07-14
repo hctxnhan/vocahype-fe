@@ -27,9 +27,8 @@ export function TopicSetting() {
   const { start, isLoading: isSettingTopic } = useAsyncAction(postTargetTopic);
 
   const topics =
-    topicsList
-      ?.filter(item => item.attributes.wordCount > 10)
-      .map(item => ({ ...item.attributes, id: item.id }))
+    topicsList?.data
+      ?.filter(item => item.wordCount > 10)
       .sort((a, b) => b.wordCount - a.wordCount)
       .map(item => ({
         label: `${item?.name}${item.emoji ? ` ${item.emoji}` : ''}`,

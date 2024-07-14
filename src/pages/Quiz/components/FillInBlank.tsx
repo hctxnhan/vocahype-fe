@@ -1,10 +1,11 @@
-import type { FC } from 'react';
 import { memo, useCallback, useMemo, useState } from 'react';
 
 import { Draggable } from './drag-and-drop/Drag';
 import { Droppable } from './drag-and-drop/Drop';
 import { DndItem } from './drag-and-drop/ItemType';
 import { ItemTypes } from './drag-and-drop/ItemTypes';
+import { QuizCompProps, WordScrambleQuiz } from './type';
+import { Button } from '@/components/ui/button';
 
 interface DustbinState {
   accepts: string[];
@@ -24,14 +25,14 @@ export interface ContainerState {
   boxes: DndItem[];
 }
 
-const question = {
-  title: 'Drag and Drop',
-  description: 'Drag the words to the correct boxes.',
-  content: '{0} {1} {2} {3} {4} {5} {6}',
-  correctOrder: ['A', 'B', 'I', 'L', 'I', 'T', 'Y'],
-};
+// {
+//   "type": "word_scramble",
+//   "question": "Re-arrange the letters to form a word.",
+//   "word": "turn",
+//   "result": "untr"
+// },
 
-export const FillInTheBlank: FC = memo(function Container() {
+const Container = ({ question, onChoose }: QuizCompProps<WordScrambleQuiz>) => {
   const [dustbins, setDustbins] = useState<DustbinState[]>(
     Array.from({ length: 9 }).map(() => ({
       accepts: [ItemTypes.ANY],
@@ -40,27 +41,40 @@ export const FillInTheBlank: FC = memo(function Container() {
   );
 
   const [boxes] = useState<BoxState[]>(
-    question.correctOrder
-      .map((word, index) => ({
-        name: word,
-        id: index.toString(),
-        type: ItemTypes.ANY,
-      }))
-      .sort(() => Math.random() - 0.5)
+    question.result.split('').map((letter, index) => ({
+      name: letter,
+      type: ItemTypes.ANY,
+      id: index.toString(),
+    }))
   );
 
   const remainingBox = boxes.filter(
     n => dustbins.find(d => d.lastDroppedItem?.id === n.id) === undefined
   );
 
+  const [showResult, setShowResult] = useState(false);
+  const answer = dustbins.map(d => d.lastDroppedItem?.name).join('');
+
+  const canSubmit = answer.length === question.result.length;
+
+  function handleSubmit() {
+    if (answer.length !== question.result.length) return;
+
+    const correct =
+      question.result === dustbins.map(d => d.lastDroppedItem?.name).join('');
+
+    setShowResult(true);
+    onChoose(correct);
+  }
+
   const handleDrop = useCallback((index: number, item: DndItem) => {
     setDustbins(dustbins =>
       dustbins.map((dustbin, i) =>
         i === index
           ? {
-            ...dustbin,
-            lastDroppedItem: item,
-          }
+              ...dustbin,
+              lastDroppedItem: item,
+            }
           : dustbin
       )
     );
@@ -71,9 +85,9 @@ export const FillInTheBlank: FC = memo(function Container() {
       dustbins.map((dustbin, i) =>
         i === boxIndex
           ? {
-            ...dustbin,
-            lastDroppedItem: null,
-          }
+              ...dustbin,
+              lastDroppedItem: null,
+            }
           : dustbin
       )
     );
@@ -81,10 +95,10 @@ export const FillInTheBlank: FC = memo(function Container() {
 
   const renderedContentWithBoxes = useMemo(
     () =>
-      question.content.split(' ').map((word, index) => {
-        const match = word.match(/{(\d)}/);
-        if (match) {
-          const boxIndex = parseInt(match[1]);
+      question.word.split('').map((word, index) => {
+        if (true) {
+          const boxIndex = index;
+
           return (
             <Droppable
               accept={dustbins[boxIndex].accepts}
@@ -95,25 +109,19 @@ export const FillInTheBlank: FC = memo(function Container() {
             />
           );
         }
-        return (
-          <p className="text-2xl font-thin" key={index}>
-            {word}
-          </p>
-        );
+        // return (
+        //   <p className="text-2xl font-thin" key={index}>
+        //     {word}
+        //   </p>
+        // );
       }),
     [dustbins, handleDrop, handleRemoveItem]
   );
 
   return (
     <div>
-      <div className="gap-2">
-        <h2>{question.title}</h2>
-        <p>{question.description}</p>
-        {
-          <div className="flex flex-wrap items-center gap-2">
-            {renderedContentWithBoxes}
-          </div>
-        }
+      <div className="flex flex-wrap items-center gap-2">
+        {renderedContentWithBoxes}
       </div>
 
       <div className="flex gap-4">
@@ -121,6 +129,16 @@ export const FillInTheBlank: FC = memo(function Container() {
           <Draggable name={name} id={id} type={type} key={id} />
         ))}
       </div>
+
+      <Button
+        onClick={handleSubmit}
+        disabled={!canSubmit || showResult}
+        className="mt-6 w-full"
+      >
+        Submit
+      </Button>
     </div>
   );
-});
+};
+
+export const FillInBlank = memo(Container);
