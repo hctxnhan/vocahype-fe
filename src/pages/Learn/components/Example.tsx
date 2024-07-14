@@ -14,7 +14,7 @@ export function Example({ example, word, className, ...rest }: ExampleProps) {
   return (
     <p
       {...rest}
-      className={cn('p-4 bg-muted rounded-md', className)}
+      className={cn('p-4 rounded-md', className)}
       dangerouslySetInnerHTML={{ __html: result }}
     />
   );

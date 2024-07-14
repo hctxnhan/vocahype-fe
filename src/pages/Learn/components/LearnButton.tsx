@@ -75,7 +75,6 @@ export function LearnButton({
 
   const mastered = status === WORD_STATUS_LEARN.MASTERED && (
     <Button
-      onClick={handleClickLearn('mastered')}
       className="w-full uppercase max-md:px-2 max-md:py-1"
       size={'lg'}
       variant={'outline'}
@@ -88,7 +87,6 @@ export function LearnButton({
 
   const ignored = status === WORD_STATUS_LEARN.IGNORE && (
     <Button
-      onClick={handleClickLearn('mastered')}
       className="w-full uppercase max-md:px-2 max-md:py-1"
       size={'lg'}
       variant={'outline'}
@@ -159,7 +157,7 @@ export function LearnButton({
 
   return (
     <div
-      className="sticky flex flex-col gap-1"
+      className="sticky bottom-0 flex flex-col gap-1"
       data-tour={TOUR_STEPS.WORD.LEARN_BUTTON.CONTAINER}
     >
       <div className="flex justify-between gap-4 max-md:gap-2">
@@ -168,7 +166,7 @@ export function LearnButton({
         {learning}
       </div>
       <Dialog open={showQuiz} onOpenChange={setShowQuiz}>
-        <DialogContent className="p-0 rounded-lg border-none min-h-[400px]">
+        <DialogContent className="rounded-lg border-none p-0">
           <Quiz
             word={word}
             difficulty={quizLevel ?? 'easy'}

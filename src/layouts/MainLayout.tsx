@@ -20,7 +20,6 @@ import { Exploration } from '@/pages/Exploration/Exploration';
 import { KnowledgeCheck } from '@/pages/KnowledgeCheck/KnowledgeCheck';
 import { Learn } from '@/pages/Learn/Learn';
 import { ProfileSettings } from '@/pages/ProfileSettings/ProfileSettings';
-import { QuizContainer } from '@/pages/Quiz/components/QuizContainer';
 import { ReportPage } from '@/pages/Report/ReportPage';
 import { SearchResult } from '@/pages/Search/SearchResult';
 import { LearnPage } from '@/pages/WordList/LearnPage';
@@ -43,7 +42,6 @@ export function MainLayout() {
           <BreadcrumbProvider>
             <div className="main-min-height relative mt-8 flex flex-1 flex-col overflow-x-hidden px-2 max-md:mt-0">
               <Breadcrumb />
-              <Route component={QuizContainer} path="/example-test" />
               <Route component={KnowledgeCheck} path="/knowledge-check" />
               <Route component={SearchResult} path="/search" />
               <Route component={Learn} path="/words/:wordId" />

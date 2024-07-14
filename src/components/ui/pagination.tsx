@@ -237,16 +237,16 @@ function PaginationPageSize() {
       </SelectTrigger>
       <SelectContent>
         <SelectItem className="font-medium" value="10">
-          10 rows per page
+          10 per page
         </SelectItem>
         <SelectItem className="font-medium" value="20">
-          20 rows per page
+          20 per page
         </SelectItem>
         <SelectItem className="font-medium" value="50">
-          50 rows per page
+          50 per page
         </SelectItem>
         <SelectItem className="font-medium" value="100">
-          100 rows per page
+          100 per page
         </SelectItem>
       </SelectContent>
     </Select>

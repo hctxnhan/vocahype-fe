@@ -35,7 +35,7 @@ interface MatchingProps {
   };
 }
 
-export const Matching: FC = memo(function Container({
+export const Matching: FC<MatchingProps> = memo(function Container({
   question,
 }: MatchingProps) {
   const [dustbins, setDustbins] = useState<DustbinState[]>(

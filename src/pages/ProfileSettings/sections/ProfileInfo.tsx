@@ -117,7 +117,7 @@ export function ProfileInfo() {
         className="vh-flex-column gap-4"
         onSubmit={form.handleSubmit(onSubmit) as VoidFunction}
       >
-        <span className="text-2xl font-bold text-slate-800">PROFILE</span>
+        <span className="text-2xl font-bold text-neutral-800">PROFILE</span>
         <div className="flex gap-8 max-lg:flex-col">
           <Card className="flex-1">
             <CardHeader className="center center mx-auto h-full max-w-[350px] gap-2 p-8">

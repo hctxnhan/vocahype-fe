@@ -85,8 +85,8 @@ export function SearchResult() {
   const wordList = searchResult?.data;
 
   return (
-    <div className="flex h-full flex-col">
-      <div className="mb-6 flex justify-between max-sm:flex-col">
+    <div className="flex gap-4 h-full flex-col overflow-x-auto">
+      <div className="flex justify-between max-sm:flex-col">
         {word !== '' && (
           <p className="text-lg">
             Search result for <b>"{word}"</b>
@@ -98,12 +98,10 @@ export function SearchResult() {
           className="ml-1 mr-2 w-[180px]"
         />
       </div>
-      <div className="relative h-full flex-1 basis-0 pb-12">
+      <div className="relative overflow-y-auto h-full flex-1 basis-0">
         {isLoading && (
           <FillParent>
-            <Loading
-              loadingText="Searching..."
-            />
+            <Loading loadingText="Searching..." />
           </FillParent>
         )}
         {!isLoading && !wordList?.length && (
@@ -123,7 +121,7 @@ export function SearchResult() {
           </div>
         )}
       </div>
-      <div className="fixed bottom-4 left-1/2 -translate-x-1/2">
+      <div className="">
         <Pagination
           key={word?.concat(params?.exact ?? 'false')}
           defaultValue={{
