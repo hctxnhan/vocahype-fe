@@ -15,12 +15,12 @@ interface SelectedWord {
 }
 
 interface AddWordManuallyFormProps {
-  onSubmit: (wordIds: number[]) => Promise<void>;
+  onSubmit: (wordIds: string[]) => Promise<void>;
   isLoading: boolean;
   canSubmit: boolean;
-  onRemove?: (word: SelectedWord) => void;
-  onAdd?: (word: SelectedWord) => void;
-  selectedWord: SelectedWord[];
+  onRemove?: (word: string) => void;
+  onAdd?: (word: string) => void;
+  selectedWord: string[];
 }
 
 export function AddWordManuallyForm({
@@ -31,7 +31,7 @@ export function AddWordManuallyForm({
   onRemove: handleRemoveValue,
   onAdd: handleSelectValue,
 }: AddWordManuallyFormProps) {
-  function handleClick(item: SelectedWord) {
+  function handleClick(item: string) {
     if (hasBeenSelected(item)) {
       handleRemoveValue?.(item);
     } else {
@@ -39,21 +39,12 @@ export function AddWordManuallyForm({
     }
   }
 
-  // const handleSelectValue = (value: SelectedWord) => {
-  //   setSelectedValue([...selectedValue, value]);
-  // };
-
-  // const handleRemoveValue = (value: SelectedWord) => {
-  //   setSelectedValue(selectedValue.filter(v => v.id !== value.id));
-  // };
-
-  function hasBeenSelected(value: SelectedWord) {
-    return selectedWord.some(v => v.id === value.id);
+  function hasBeenSelected(value: string) {
+    return selectedWord.some(v => v === value);
   }
 
   function handleSubmit() {
-    const wordIds = selectedWord.map(item => item.id);
-    void onSubmit(wordIds);
+    void onSubmit(selectedWord);
   }
 
   return (
@@ -65,7 +56,7 @@ export function AddWordManuallyForm({
             Add word{' '}
           </FloatingButton>
         </DialogTrigger>
-        <DialogContent className="h-[80%] overflow-scroll">
+        <DialogContent className="h-[80%] overflow-y-scroll rounded-lg">
           <WordList
             columns={[
               ...columns,
@@ -78,16 +69,10 @@ export function AddWordManuallyForm({
                     <Button
                       variant={'secondary'}
                       onClick={() => {
-                        handleClick({
-                          id: row.original.id,
-                          word: row.original.word,
-                        });
+                        handleClick(row.original.word);
                       }}
                     >
-                      {hasBeenSelected({
-                        id: row.original.id,
-                        word: row.original.word,
-                      })
+                      {hasBeenSelected(row.original.word)
                         ? 'Remove'
                         : 'Add'}
                     </Button>
@@ -114,10 +99,10 @@ export function AddWordManuallyForm({
           <Badge
             onClick={() => handleRemoveValue?.(item)}
             variant={'outline'}
-            key={item.id}
+            key={item}
             className="text-md flex min-w-[70px] cursor-pointer justify-center font-normal transition-all hover:bg-destructive hover:text-white"
           >
-            {item.word}
+            {item}
           </Badge>
         ))}
       </div>

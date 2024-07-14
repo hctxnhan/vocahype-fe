@@ -11,4 +11,7 @@ export interface Topic {
   description: string;
   wordCount: number;
   masteredWordCount: number;
+  wordInTopic: {
+    word: string;
+  }[];
 }

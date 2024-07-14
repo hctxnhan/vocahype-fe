@@ -1,4 +1,4 @@
-import { PaginationState } from '@tanstack/react-table';
+import { ColumnDef, OnChangeFn, PaginationState } from '@tanstack/react-table';
 import { useReducer, useState } from 'react';
 import useSWR from 'swr';
 
@@ -6,6 +6,8 @@ import { searchWord } from '@/api/words/searchWord';
 import { FillParent } from '@/components/layout/FillParent/FillParent';
 import { Loading } from '@/components/layout/Loading/Loading';
 import { Searchbar } from '@/components/layout/Searchbar/Searchbar';
+import { DataTable } from '../ManageWord/Table';
+import { WordColumns } from '../ManageWord/columns';
 
 // import { WordColumns } from './columns';
 
@@ -56,12 +58,11 @@ const reducer = (state: State, { type, payload }: Action) => {
   }
 };
 
-// interface WordListProps<T extends WordColumns> {
-//   columns: ColumnDef<T>[];
-// }
+interface WordListProps<T extends WordColumns> {
+  columns: ColumnDef<T>[];
+}
 
-// export function WordList({ columns }: WordListProps<WordColumns>) {
-export function WordList() {
+export function WordList({ columns }: WordListProps<WordColumns>) {
   const [state, dispatch] = useReducer<React.Reducer<State, Action>>(
     reducer,
     initialState
@@ -91,33 +92,21 @@ export function WordList() {
     },
     {
       onSuccess: data => {
-        setTotalPage(
-          (data?.total ?? 1) / (data.limit ?? 10)
-        );
+        setTotalPage((data?.total ?? 1) / (data.limit ?? 10));
       },
     }
   );
 
-  // const result = searchResult?.data?.map(item => ({
-  //   id: Number.parseInt(item.id),
-  //   word: item.word,
-  //   phonetic: item.phonetic,
-  //   syllable: item.syllable,
-  //   point: item.point ? Number.parseFloat(item.point.toFixed(2)) : 0,
-  // }));
+  function handleSetPage(
+    calculatePage: (state: PaginationState) => PaginationState
+  ) {
+    const res = calculatePage({
+      pageIndex: state.page,
+      pageSize: 10,
+    });
 
-  // const result = [] as unknown[];
-
-  // function handleSetPage(
-  //   calculatePage: (state: PaginationState) => PaginationState
-  // ) {
-  //   const res = calculatePage({
-  //     pageIndex: state.page,
-  //     pageSize: 10,
-  //   });
-
-  //   dispatch({ type: ActionType.SET_PAGE, payload: res.pageIndex });
-  // }
+    dispatch({ type: ActionType.SET_PAGE, payload: res.pageIndex });
+  }
 
   return (
     <div className="flex-1">
@@ -139,15 +128,17 @@ export function WordList() {
         noFocusOverlay
       />
       <div className="py-3" />
-      {/* {!!result && (
+      {!!searchResult?.data && (
         <DataTable
           columns={columns}
-          data={result}
+          data={searchResult.data.map(item => ({
+            word: item,
+          }))}
           currentPage={state.page}
           pageCount={totalPage}
           setPagination={handleSetPage as OnChangeFn<PaginationState>}
         />
-      )} */}
+      )}
     </div>
   );
 }
