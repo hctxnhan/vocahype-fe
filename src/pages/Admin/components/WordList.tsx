@@ -7,8 +7,10 @@ import { FillParent } from '@/components/layout/FillParent/FillParent';
 import { Loading } from '@/components/layout/Loading/Loading';
 import { Searchbar } from '@/components/layout/Searchbar/Searchbar';
 
-import { DataTable } from './Table';
-import { WordColumns } from './columns';
+import { DataTable } from '../ManageWord/Table';
+import { WordColumns } from '../ManageWord/columns';
+
+// import { WordColumns } from './columns';
 
 enum ActionType {
   SET_PAGE = 'SET_PAGE',
@@ -91,18 +93,10 @@ export function WordList({ columns }: WordListProps<WordColumns>) {
     },
     {
       onSuccess: data => {
-        setTotalPage(data?.meta?.pagination?.last ?? 1);
+        setTotalPage((data?.total ?? 1) / (data.limit ?? 10));
       },
     }
   );
-
-  const result = searchResult?.data?.map(item => ({
-    id: Number.parseInt(item.id),
-    word: item.word,
-    phonetic: item.phonetic,
-    syllable: item.syllable,
-    point: item.point ? Number.parseFloat(item.point.toFixed(2)) : 0,
-  }));
 
   function handleSetPage(
     calculatePage: (state: PaginationState) => PaginationState
@@ -116,7 +110,7 @@ export function WordList({ columns }: WordListProps<WordColumns>) {
   }
 
   return (
-    <div className='flex-1'>
+    <div className="flex-1">
       {isLoading && (
         <FillParent>
           <Loading />
@@ -135,10 +129,12 @@ export function WordList({ columns }: WordListProps<WordColumns>) {
         noFocusOverlay
       />
       <div className="py-3" />
-      {!!result && (
+      {!!searchResult?.data && (
         <DataTable
           columns={columns}
-          data={result}
+          data={searchResult.data.map(item => ({
+            word: item,
+          }))}
           currentPage={state.page}
           pageCount={totalPage}
           setPagination={handleSetPage as OnChangeFn<PaginationState>}

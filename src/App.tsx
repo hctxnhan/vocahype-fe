@@ -12,6 +12,7 @@ function App() {
   return (
     <ErrorBoundary>
       <div className="text-foreground">
+        <div className="fixed left-0 top-0 h-full w-full z-50 pattern-background" />
         <Switch>
           <Route path="/auth" component={Authentication} />
           <Route path="/auth/reset-password" component={EnterEmail} />
@@ -27,4 +28,3 @@ function App() {
 }
 
 export { App };
-

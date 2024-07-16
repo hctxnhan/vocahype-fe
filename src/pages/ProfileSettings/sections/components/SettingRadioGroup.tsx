@@ -1,4 +1,7 @@
-import { SettingRadioOption, SettingRadioOptionProps } from './SettingRadioOption';
+import {
+  SettingRadioOption,
+  SettingRadioOptionProps,
+} from './SettingRadioOption';
 
 export function SettingRadioGroup({
   value,
@@ -12,7 +15,7 @@ export function SettingRadioGroup({
   disabled?: boolean;
 }) {
   return (
-    <div className="grid grid-flow-row gap-4 grid-cols-[repeat(auto-fill,minmax(250px,1fr))]">
+    <div className="grid grid-flow-row grid-cols-[repeat(auto-fill,minmax(200px,1fr))] gap-4">
       {options.map(option => (
         <SettingRadioOption
           disabled={disabled}

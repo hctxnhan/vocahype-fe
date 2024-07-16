@@ -63,11 +63,11 @@ export function KnowledgeCheck() {
   async function onFinished() {
     await trigger([
       ...known.map(word => ({
-        wordId: word,
+        word,
         status: true,
       })),
       ...unknown.map(word => ({
-        wordId: word,
+        word,
         status: false,
       })),
     ]);

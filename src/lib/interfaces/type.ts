@@ -7,11 +7,7 @@ export type APIResponse<T, M = any> = {
 };
 
 export type PaginationMeta = {
-  pagination: {
-    first: number;
-    last: number;
-    page: number;
-    size: number;
-    total: number;
-  };
+  total: number;
+  limit: number;
+  page: number;
 };

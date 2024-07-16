@@ -15,9 +15,7 @@ export function TopicDetailPage() {
 
   if (isLoadingTopicList) return null;
 
-  const topicName = data?.data.find(
-    topic => topic.id.toString() === params?.topicId
-  )?.name;
+  const topicName = data?.data.find(topic => topic.id.toString() == params?.topicId)?.name;
 
   if (!topicName) return null;
 

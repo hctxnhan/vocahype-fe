@@ -11,24 +11,26 @@ import { TopicItem } from './components/TopicItem';
 export function Exploration() {
   useSetBreadcrumb(['Exploration']);
   const { data, isLoading } = useSWR('/topics', getTopicsList);
-
+  console.log(data);
   if (isLoading) {
     return (
       <FillParent>
-        <Loading loadingText='Getting topics...' />
+        <Loading loadingText="Getting topics..." />
       </FillParent>
     );
   }
 
+  const topics = data?.data
+    ?.filter(item => item.wordCount > 10)
+    .sort((a, b) => b.wordCount - a.wordCount);
 
   return (
     <div
       className="grid grid-cols-[repeat(auto-fill,minmax(300px,1fr))] gap-4"
       data-tour={TOUR_STEPS.EXPLORATION.SECTION}
     >
-      {data?.data.map(topic => (
+      {topics?.map(topic => (
         <TopicItem
-          isNone={!topic.emoji}
           topicCurrentWords={topic.masteredWordCount}
           topicTotalWords={topic.wordCount}
           topicDescription={topic.description}

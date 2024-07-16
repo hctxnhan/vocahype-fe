@@ -18,6 +18,7 @@ import { columns } from './columns';
 
 export function ManageTopic() {
   const { data, isLoading } = useSWR('/topics', getTopicsList);
+
   useSetBreadcrumb([
     {
       label: 'Admin',
@@ -91,7 +92,7 @@ export function ManageTopic() {
                 },
               },
             ]}
-            data={data?.data}
+            data={data?.data ?? []}
           />
         </>
       )}

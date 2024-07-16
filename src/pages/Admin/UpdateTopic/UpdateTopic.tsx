@@ -3,7 +3,6 @@ import useSWR from 'swr';
 import useSWRMutation from 'swr/mutation';
 import { useLocation, useRoute } from 'wouter';
 
-import { WordInTopic } from '@/api/model/Topic';
 import { updateTopic } from '@/api/words/manageTopic';
 import { getTopic } from '@/api/words/topics';
 import { ApplicationError } from '@/components/layout/ErrorPage/ApplicationError';
@@ -16,29 +15,28 @@ import { useToast } from '@/lib/hooks/useToast';
 
 import { AddWordManuallyForm } from '../CreateNewTopic/AddWordManuallyForm';
 
-
 export function UpdateTopic() {
   const [topicName, setTopicName] = useState('');
   const [topicDescription, setTopicDescription] = useState('');
-  const [selectedValue, setSelectedValue] = useState<WordInTopic[]>([]);
+  const [selectedValue, setSelectedValue] = useState<string[]>([]);
 
   const [, params] = useRoute('/admin/edit-topic/:topicId');
 
   const topicId = params?.topicId ? Number(params.topicId) : 0;
 
   const changesRef = useRef({
-    addedWordIds: [] as number[],
-    removedWordIds: [] as number[],
+    addedWordIds: [] as string[],
+    removedWordIds: [] as string[],
   });
 
-  const handleSelectValue = (value: WordInTopic) => {
+  const handleSelectValue = (value: string) => {
     setSelectedValue([...selectedValue, value]);
-    changesRef.current.addedWordIds.push(value.id);
+    changesRef.current.addedWordIds.push(value);
   };
 
-  const handleRemoveValue = (value: WordInTopic) => {
-    setSelectedValue(selectedValue.filter(v => v.id !== value.id));
-    changesRef.current.removedWordIds.push(value.id);
+  const handleRemoveValue = (value: string) => {
+    setSelectedValue(selectedValue.filter(v => v !== value));
+    changesRef.current.removedWordIds.push(value);
   };
 
   const mutate = useMatchMutate();
@@ -66,16 +64,15 @@ export function UpdateTopic() {
   );
 
   const topic = useMemo(() => {
-    if (!topicDetail?.data.length || isLoadingTopic) {
+    if (!topicDetail || isLoadingTopic) {
       return null;
     }
 
     const topic = topicDetail.data[0];
-
     return {
       name: topic.name,
       description: topic.description,
-      wordList: topic.wordInTopic ?? [],
+      wordList: topic.wordInTopic.map(item => item.word),
     };
   }, [topicDetail, isLoadingTopic]);
 
@@ -87,7 +84,7 @@ export function UpdateTopic() {
     }
   }, [topic]);
 
-  async function handleUpdateTopic(wordIds: number[]) {
+  async function handleUpdateTopic(wordIds: string[]) {
     if (!topicName || !topicDescription || !wordIds.length) {
       return;
     }

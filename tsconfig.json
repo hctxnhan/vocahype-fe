@@ -37,6 +37,5 @@
     }
   },
   "include": ["src", "vite.config.ts", ".eslintrc.cjs", "tailwind.config.js"],
-  "exclude": ["api-definition/**/*.ts"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

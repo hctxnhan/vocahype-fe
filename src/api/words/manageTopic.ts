@@ -8,7 +8,7 @@ export type SerializedTopicFormValues = {
         name: string;
         description: string;
         emoji: string;
-        wordList: number[];
+        wordList: string[];
       };
     },
   ];
@@ -22,9 +22,9 @@ export type UpdateTopicBody = {
         name: string;
         description: string;
         emoji: string;
-        wordList: number[];
-        removedWordIds: number[];
-        addedWordIds: number[];
+        wordList: string[];
+        removedWordIds: string[];
+        addedWordIds: string[];
       };
     },
   ];

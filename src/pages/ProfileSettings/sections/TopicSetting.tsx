@@ -26,6 +26,16 @@ export function TopicSetting() {
   const toast = useToast();
   const { start, isLoading: isSettingTopic } = useAsyncAction(postTargetTopic);
 
+  const topics =
+    topicsList?.data
+      ?.filter(item => item.wordCount > 10)
+      .sort((a, b) => b.wordCount - a.wordCount)
+      .map(item => ({
+        label: `${item?.name}${item.emoji ? ` ${item.emoji}` : ''}`,
+        value: item.id.toString(),
+        description: item.description,
+      })) ?? [];
+
   useEffect(() => {
     if (profile?.data.length) {
       setCurrentValue(profile?.data[0].topic?.id.toString() ?? '');
@@ -71,13 +81,7 @@ export function TopicSetting() {
         {!isLoading && (
           <SettingRadioGroup
             disabled={isLoading}
-            options={topicsList!.data
-              .sort((a, b) => a.id - b.id)
-              .map(item => ({
-                label: `${item?.name}${item.emoji ? ` ${item.emoji}` : ''}`,
-                value: item.id.toString(),
-                description: item.description,
-              }))}
+            options={topics}
             onChange={handleUpdateDailyGoal}
             value={currentValue}
           />

@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { SWRConfig } from 'swr/_internal';
 
+import 'regenerator-runtime/runtime';
 import { App } from './App.tsx';
 import './index.css';
 import { ThemeProvider } from './lib/context/theme.context.tsx';

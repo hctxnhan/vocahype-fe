@@ -1,11 +1,21 @@
+import { WORD_STATUS_LEARN } from '@/lib/enums/word';
+import { Meaning } from './Meaning';
+
 export interface Word {
-  id: string;
+  results?: Meaning[];
   word: string;
-  count: number;
-  point: number;
-  phonetic: string;
-  syllable: number;
-  phoneticStart: string;
-  phoneticEnd: string;
-  inSelectedTopic: boolean;
+  pronunciation?: {
+    all: string;
+    noun: string;
+    verb: string;
+  };
+  syllables?: {
+    count: number;
+    list: string[];
+  };
+  frequency: number;
+  status?: WORD_STATUS_LEARN;
+  isInTopic?: boolean;
+  dueDate?: string;
+  level?: number;
 }

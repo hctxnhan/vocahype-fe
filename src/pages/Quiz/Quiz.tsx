@@ -25,8 +25,8 @@ export function Quiz({
     }
   );
 
-  function handleChoose(answer: string) {
-    if (answer === quiz?.data.answer) {
+  function handleChoose(correct: boolean) {
+    if (correct) {
       onCorrectAnswer();
     } else {
       onWrongAnswer();
@@ -34,16 +34,18 @@ export function Quiz({
   }
 
   if (isLoading) {
-    return <FillParent>
-      <Loading loadingText="Loading quiz..." />
-    </FillParent>;
+    return (
+      <FillParent>
+        <Loading loadingText="" />
+      </FillParent>
+    );
+  }
+
+  if (!quiz) {
+    return null;
   }
 
   return (
-    <QuizItem
-      options={quiz?.data?.options ?? []}
-      question={quiz?.data?.question ?? ''}
-      onChoose={handleChoose}
-    />
+    <QuizItem quiz={quiz.data} onChoose={handleChoose} />
   );
 }

@@ -1,9 +1,7 @@
-import { deserialize } from 'deserialize-json-api';
 
 import { axiosInstance } from '@/lib/configs/axios';
 import { APIResponse, PaginationMeta, WordLevel } from '@/lib/interfaces/type';
 
-import { Comprehension } from '../model/Comprehension';
 import { Word } from '../model/Word';
 
 export function learnWord(wordId: string, level: WordLevel) {
@@ -16,14 +14,7 @@ export function delayLearnWord(wordId: string, day: number) {
 
 export async function getLearnWordList(url: string) {
   const response = await axiosInstance.get(url);
-  return deserialize<
-    APIResponse<
-      Word & {
-        comprehension?: Comprehension;
-      },
-      PaginationMeta
-    >
-  >(response.data as string);
+  return response.data as APIResponse<Word, PaginationMeta>;
 }
 
 export function resetLearnWord(wordId: string) {

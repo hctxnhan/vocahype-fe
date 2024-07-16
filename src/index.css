@@ -190,3 +190,51 @@ input::placeholder {
   -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
   background-color: #64748b;
 }
+
+.pattern-background {
+  background-color: #ffffff;
+  opacity: 0.05;
+  background-image: radial-gradient(circle at center center, #c4c4c4, #ffffff),
+    repeating-radial-gradient(
+      circle at center center,
+      #c4c4c4,
+      #c4c4c4,
+      27px,
+      transparent 54px,
+      transparent 27px
+    );
+  background-blend-mode: multiply;
+  pointer-events: none;
+}
+
+.block-background {
+  background-color: #707070;
+  opacity: 0.5;
+  /* black and white only */
+  filter: grayscale(100%);
+  background: repeating-linear-gradient(
+    -45deg,
+    #000000,
+    #696969 2px,
+    #e5e5f7 2px,
+    #e5e5f7 15px
+  );
+}
+
+.cross-line {
+  display: flex;
+  flex-direction: row;
+}
+.cross-line:before,
+.cross-line:after {
+  content: '';
+  flex: 1 1;
+  border-bottom: 1px solid;
+  margin: auto;
+}
+.cross-line:before {
+  margin-right: 10px;
+}
+.cross-line:after {
+  margin-left: 10px;
+}

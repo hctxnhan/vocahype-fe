@@ -1,17 +1,11 @@
 import { Plus } from 'lucide-react';
-import useSWRMutation from 'swr/mutation';
 
-import { deleteWord } from '@/api/words/manageWord';
-import { Button } from '@/components/ui/button';
 import { FloatingButton } from '@/components/ui/floating-button';
 import { Link } from '@/components/ui/link';
-import { useMatchMutate } from '@/lib/hooks/useMatchMutate';
 import { useSetBreadcrumb } from '@/lib/hooks/useSetBreadcrumb';
-import { useToast } from '@/lib/hooks/useToast';
 
 import { WordList } from '../components/WordList';
 import { columns } from '../components/columns';
-
 
 export function ManageWord() {
   useSetBreadcrumb([
@@ -19,26 +13,26 @@ export function ManageWord() {
     { label: 'Manage Word' },
   ]);
 
-  const mutate = useMatchMutate()
-  const toast = useToast();
+  // const mutate = useMatchMutate();
+  // const toast = useToast();
 
-  const { trigger } = useSWRMutation(
-    ['create-new-word'],
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore-next-line - fix this
-    deleteWord
-  );
+  // const { trigger } = useSWRMutation(
+  //   ['create-new-word'],
+  //   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  //   // @ts-ignore-next-line - fix this
+  //   deleteWord
+  // );
 
-  async function handleDeleteWord(id: number) {
-    await trigger({ wordId: id });
+  // async function handleDeleteWord(id: number) {
+  //   await trigger({ wordId: id });
 
-    await mutate(/search/);
+  //   await mutate(/search/);
 
-    toast.success({
-      msg: 'Successfully deleted word',
-      title: 'Success',
-    });
-  }
+  //   toast.success({
+  //     msg: 'Successfully deleted word',
+  //     title: 'Success',
+  //   });
+  // }
 
   return (
     <div>
@@ -49,31 +43,7 @@ export function ManageWord() {
         </FloatingButton>
       </Link>
 
-      <WordList
-        columns={[
-          ...columns,
-          {
-            id: 'actions',
-            size: 10,
-            header: 'Actions',
-            cell: ({ row }) => {
-              return (
-                <div className="flex flex-row gap-2">
-                  <Link href={`/admin/edit-word/${row.original.id}`}>
-                    <Button variant={'secondary'}>Edit</Button>
-                  </Link>
-                  <Button
-                    onClick={() => void handleDeleteWord(row.original.id)}
-                    variant={'destructive'}
-                  >
-                    Delete
-                  </Button>
-                </div>
-              );
-            },
-          },
-        ]}
-      />
+      <WordList columns={columns} />
     </div>
   );
 }
