@@ -1,6 +1,5 @@
 import { FirebaseError } from 'firebase/app';
 import { useCallback, useEffect, useReducer, useRef } from 'react';
-import { AbortController } from 'abort-controller';
 
 export enum ActionState {
   IDLE = 'IDLE',

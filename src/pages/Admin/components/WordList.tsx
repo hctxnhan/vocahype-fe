@@ -6,6 +6,7 @@ import { searchWord } from '@/api/words/searchWord';
 import { FillParent } from '@/components/layout/FillParent/FillParent';
 import { Loading } from '@/components/layout/Loading/Loading';
 import { Searchbar } from '@/components/layout/Searchbar/Searchbar';
+
 import { DataTable } from '../ManageWord/Table';
 import { WordColumns } from '../ManageWord/columns';
 

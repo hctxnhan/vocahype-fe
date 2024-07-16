@@ -10,10 +10,7 @@ import { Sidebar } from '@/components/layout/Sidebar/Sidebar';
 import { BreadcrumbProvider } from '@/lib/context/breadcrumb.context';
 import { AdminPage } from '@/pages/Admin';
 import { CreateTopic } from '@/pages/Admin/CreateNewTopic/CreateTopic';
-import { CreateNewWord } from '@/pages/Admin/CreateNewWord/CreateNewWord';
-import { EditWordDetail } from '@/pages/Admin/EditWordDetail/EditWordDetail';
 import { ManageTopic } from '@/pages/Admin/ManageTopic/ManageTopic';
-import { ManageWord } from '@/pages/Admin/ManageWord/ManageWord';
 import { UpdateTopic } from '@/pages/Admin/UpdateTopic/UpdateTopic';
 import { InternalServerErrorPage } from '@/pages/Error/InternalServerErrorPage';
 import { Exploration } from '@/pages/Exploration/Exploration';
@@ -54,17 +51,11 @@ export function MainLayout() {
               {!isFetchingProfile && userRole === 'admin' && (
                 <>
                   <Route component={AdminPage} path="/admin" />
-                  <Route component={ManageWord} path="/admin/words" />
                   <Route component={ManageTopic} path="/admin/topics" />
-                  <Route
-                    component={EditWordDetail}
-                    path="/admin/edit-word/:wordId"
-                  />
                   <Route
                     component={UpdateTopic}
                     path="/admin/edit-topic/:topicId"
                   />
-                  <Route component={CreateNewWord} path="/admin/create-word" />
                   <Route component={CreateTopic} path="/admin/create-topic" />
                   <Route
                     component={InternalServerErrorPage}

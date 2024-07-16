@@ -1,9 +1,11 @@
-import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { cn } from '@/lib/utils/utils';
 import { useState } from 'react';
-import { QuizItem } from './QuizItem';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
+
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { cn } from '@/lib/utils/utils';
+
+import { QuizItem } from './QuizItem';
 
 export function DailyQuiz({ questions }: { questions: any[] }) {
   const [selectedIndex, setSelectedIndex] = useState<string>('0');

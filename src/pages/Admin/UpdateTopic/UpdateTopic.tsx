@@ -3,7 +3,6 @@ import useSWR from 'swr';
 import useSWRMutation from 'swr/mutation';
 import { useLocation, useRoute } from 'wouter';
 
-import { WordInTopic } from '@/api/model/Topic';
 import { updateTopic } from '@/api/words/manageTopic';
 import { getTopic } from '@/api/words/topics';
 import { ApplicationError } from '@/components/layout/ErrorPage/ApplicationError';

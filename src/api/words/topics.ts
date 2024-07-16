@@ -1,8 +1,9 @@
 
-import { axiosInstance } from '@/lib/configs/axios';
-
-import { APIResponse } from '@/lib/interfaces/type';
 import { deserialize } from 'deserialize-json-api';
+
+import { axiosInstance } from '@/lib/configs/axios';
+import { APIResponse } from '@/lib/interfaces/type';
+
 import { Topic } from '../model/Topic';
 
 export async function getTopicsList() {

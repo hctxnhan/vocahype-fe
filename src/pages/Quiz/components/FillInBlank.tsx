@@ -1,11 +1,12 @@
 import { memo, useCallback, useMemo, useState } from 'react';
 
+import { Button } from '@/components/ui/button';
+
 import { Draggable } from './drag-and-drop/Drag';
 import { Droppable } from './drag-and-drop/Drop';
 import { DndItem } from './drag-and-drop/ItemType';
 import { ItemTypes } from './drag-and-drop/ItemTypes';
 import { QuizCompProps, WordScrambleQuiz } from './type';
-import { Button } from '@/components/ui/button';
 
 interface DustbinState {
   accepts: string[];
@@ -60,8 +61,6 @@ const Container = ({ question, onChoose }: QuizCompProps<WordScrambleQuiz>) => {
   function handleSubmit() {
     if (answer.length !== question.result.length) return;
 
-    console.log(question.word === answer);
-
     const correct = question.word === answer;
 
     setShowResult(true);
@@ -73,9 +72,9 @@ const Container = ({ question, onChoose }: QuizCompProps<WordScrambleQuiz>) => {
       dustbins.map((dustbin, i) =>
         i === index
           ? {
-              ...dustbin,
-              lastDroppedItem: item,
-            }
+            ...dustbin,
+            lastDroppedItem: item,
+          }
           : dustbin
       )
     );
@@ -86,9 +85,9 @@ const Container = ({ question, onChoose }: QuizCompProps<WordScrambleQuiz>) => {
       dustbins.map((dustbin, i) =>
         i === boxIndex
           ? {
-              ...dustbin,
-              lastDroppedItem: null,
-            }
+            ...dustbin,
+            lastDroppedItem: null,
+          }
           : dustbin
       )
     );
@@ -96,21 +95,19 @@ const Container = ({ question, onChoose }: QuizCompProps<WordScrambleQuiz>) => {
 
   const renderedContentWithBoxes = useMemo(
     () =>
-      question.word.split('').map((word, index) => {
-        if (true) {
-          const boxIndex = index;
+      question.word.split('').map((_, index) => {
+        const boxIndex = index;
 
-          return (
-            <Droppable
-              disabled={showResult}
-              accept={dustbins[boxIndex].accepts}
-              item={dustbins[boxIndex].lastDroppedItem}
-              onDrop={item => handleDrop(boxIndex, item)}
-              removeItem={() => handleRemoveItem(boxIndex)}
-              key={index}
-            />
-          );
-        }
+        return (
+          <Droppable
+            disabled={showResult}
+            accept={dustbins[boxIndex].accepts}
+            item={dustbins[boxIndex].lastDroppedItem}
+            onDrop={item => handleDrop(boxIndex, item)}
+            removeItem={() => handleRemoveItem(boxIndex)}
+            key={index}
+          />
+        );
       }),
     [dustbins, handleDrop, handleRemoveItem, showResult]
   );

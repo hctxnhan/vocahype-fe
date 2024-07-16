@@ -8,7 +8,7 @@ export type SerializedTopicFormValues = {
         name: string;
         description: string;
         emoji: string;
-        wordList: number[];
+        wordList: string[];
       };
     },
   ];

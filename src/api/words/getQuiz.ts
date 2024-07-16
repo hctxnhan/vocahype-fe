@@ -1,7 +1,7 @@
 import { axiosInstance } from '@/lib/configs/axios';
 import { Quiz } from '@/pages/Quiz/components/type';
 
-interface QuizResponse extends Quiz {}
+type QuizResponse = Quiz;
 
 export const getQuiz = async (word: string, difficulty: string) =>
   axiosInstance.get<QuizResponse>(`/words/quiz`, {
@@ -12,7 +12,7 @@ export const getQuiz = async (word: string, difficulty: string) =>
   });
 
 export const getDailyQuiz = async (numOfDays: number) =>
-  axiosInstance.get<QuizResponse>('/words/quiz/multi', {
+  axiosInstance.get<QuizResponse[]>('/words/quiz/multi', {
     params: {
       days: numOfDays,
     },

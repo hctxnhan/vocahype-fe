@@ -1,8 +1,10 @@
 import dayjs from 'dayjs';
+import { SparkleIcon } from 'lucide-react';
 import { useLocation } from 'wouter';
 
 import { Word } from '@/api/model/Word';
 import { delayLearnWord, learnWord } from '@/api/words/learnWord';
+import { FillParent } from '@/components/layout/FillParent/FillParent';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
@@ -17,9 +19,6 @@ import { WORD_STATUS_LEARN } from '@/lib/enums/word';
 import { useAsyncAction } from '@/lib/hooks/useAsyncAction';
 import { useToast } from '@/lib/hooks/useToast';
 import { cn, getLearningPercentage } from '@/lib/utils/utils';
-import { SparkleIcon } from 'lucide-react';
-import { FillParent } from '@/components/layout/FillParent/FillParent';
-import { Loading } from '@/components/layout/Loading/Loading';
 
 interface WordItemProps {
   data: Word;

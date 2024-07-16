@@ -9,11 +9,6 @@ import { LoadingButton } from '@/components/ui/loading-button';
 import { WordList } from '../components/WordList';
 import { columns } from '../components/columns';
 
-interface SelectedWord {
-  id: number;
-  word: string;
-}
-
 interface AddWordManuallyFormProps {
   onSubmit: (wordIds: string[]) => Promise<void>;
   isLoading: boolean;

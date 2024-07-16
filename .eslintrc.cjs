@@ -54,7 +54,7 @@ module.exports = {
     '**/*.stories.tsx',
     'vite.config.ts',
     '**/*.d.ts',
-    'src/**/*'    
+    // 'src/**/*'    
   ],
   settings: {
     'import/parsers': {

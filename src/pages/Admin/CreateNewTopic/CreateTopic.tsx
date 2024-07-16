@@ -12,22 +12,17 @@ import { useToast } from '@/lib/hooks/useToast';
 import { AddWordManuallyForm } from './AddWordManuallyForm';
 import { UploadSrtSubtitle } from './UploadSrtSubtitle';
 
-interface SelectedWord {
-  id: number;
-  word: string;
-}
-
 export function CreateTopic() {
   const [topicName, setTopicName] = useState('');
   const [topicDescription, setTopicDescription] = useState('');
-  const [selectedValue, setSelectedValue] = useState<SelectedWord[]>([]);
+  const [selectedValue, setSelectedValue] = useState<string[]>([]);
 
-  const handleSelectValue = (value: SelectedWord) => {
+  const handleSelectValue = (value: string) => {
     setSelectedValue([...selectedValue, value]);
   };
 
-  const handleRemoveValue = (value: SelectedWord) => {
-    setSelectedValue(selectedValue.filter(v => v.id !== value.id));
+  const handleRemoveValue = (value: string) => {
+    setSelectedValue(selectedValue.filter(v => v.toLowerCase() !== value.toLowerCase()));
   };
 
   const mutate = useMatchMutate();
@@ -49,8 +44,8 @@ export function CreateTopic() {
     createTopic
   );
 
-  async function handleCreateTopic(wordIds: number[], file?: File) {
-    if (!topicName || !topicDescription || (!wordIds.length && !file)) {
+  async function handleCreateTopic(words: string[], file?: File) {
+    if (!topicName || !topicDescription || (!words.length && !file)) {
       return;
     }
 
@@ -63,7 +58,7 @@ export function CreateTopic() {
               description: topicDescription,
               emoji: '📚',
               name: topicName,
-              wordList: wordIds,
+              wordList: words,
             },
           },
         ],

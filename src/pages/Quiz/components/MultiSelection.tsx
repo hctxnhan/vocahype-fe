@@ -1,50 +1,12 @@
 import { useState } from 'react';
 
+import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
-import { QuizCompProps, SelectionQuiz } from './type';
-import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils/utils';
 
-const question = {
-  type: 'definition_multiple_select',
-  question: 'Select all the definitions that match the word.',
-  word: 'bar',
-  result: [
-    {
-      text: 'the body of individuals qualified to practice law in a particular jurisdiction',
-      correct: true,
-    },
-    {
-      text: 'prevent from entering; keep out',
-      correct: true,
-    },
-    {
-      text: 'a portable .30 caliber automatic rifle operated by gas pressure and fed by cartridges from a magazine; used by United States troops in World War I and in World War II and in the Korean War',
-      correct: true,
-    },
-    {
-      text: 'render unsuitable for passage',
-      correct: true,
-    },
-    {
-      text: 'musical notation for a repeating pattern of musical beats',
-      correct: true,
-    },
-    {
-      text: 'expel, as if by official decree',
-      correct: true,
-    },
-    {
-      text: 'a block of solid substance (such as soap or wax)',
-      correct: true,
-    },
-    {
-      text: 'the act of preventing',
-      correct: true,
-    },
-  ],
-};
+import { QuizCompProps, SelectionQuiz } from './type';
+
 
 export function MultiSelection({
   question,

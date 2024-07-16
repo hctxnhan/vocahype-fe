@@ -1,9 +1,7 @@
-import { deserialize } from 'deserialize-json-api';
 
 import { axiosInstance } from '@/lib/configs/axios';
 import { APIResponse, PaginationMeta, WordLevel } from '@/lib/interfaces/type';
 
-import { Comprehension } from '../model/Comprehension';
 import { Word } from '../model/Word';
 
 export function learnWord(wordId: string, level: WordLevel) {

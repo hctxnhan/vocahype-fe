@@ -5,7 +5,7 @@ export interface WordInTopic {
 
 export interface Topic {
   type: string;
-  id: string;
+  id: number;
   name: string;
   emoji: string;
   description: string;

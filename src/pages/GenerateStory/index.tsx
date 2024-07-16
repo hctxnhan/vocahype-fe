@@ -4,8 +4,8 @@ import {
   getGeneratedStory,
   getLearnedWords,
 } from '@/api/words/getGeneratedStory';
+import { getDailyQuiz } from '@/api/words/getQuiz';
 import { Loading } from '@/components/layout/Loading/Loading';
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -17,10 +17,9 @@ import {
 } from '@/components/ui/dialog';
 import { LoadingButton } from '@/components/ui/loading-button';
 import { Slider } from '@/components/ui/slider';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useAsyncAction } from '@/lib/hooks/useAsyncAction';
 import { useDebounce } from '@/lib/hooks/useDebounce';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { getDailyQuiz } from '@/api/words/getQuiz';
 import { DailyQuiz } from '../Quiz/components/DailyQuiz';
 
 export function GenerateStory() {

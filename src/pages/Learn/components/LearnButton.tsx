@@ -4,9 +4,7 @@ import { learnWord } from '@/api/words/learnWord';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
+  DialogContent
 } from '@/components/ui/dialog';
 import { TOUR_STEPS } from '@/lib/configs/tour';
 import { WORD_STATUS_LEARN } from '@/lib/enums/word';
